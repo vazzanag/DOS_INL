@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 126 42">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #699228;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        font-size: 12px;
+        font-family: SegoeUI-Bold, Segoe UI;
+        font-weight: 700;
+      }
+
+      .cls-4 {
+        filter: url(#Rectangle_1536);
+      }
+    </style>
+    <filter id="Rectangle_1536" x="0" y="0" width="126" height="42" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.392"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_175" data-name="Group 175" transform="translate(-1053 -14)">
+    <g class="cls-4" transform="matrix(1, 0, 0, 1, 1053, 14)">
+      <rect id="Rectangle_1536-2" data-name="Rectangle 1536" class="cls-1" width="108" height="24" rx="5" transform="translate(9 6)"/>
+    </g>
+    <g id="Group_169" data-name="Group 169" transform="translate(1)">
+      <g id="Group_67" data-name="Group 67" transform="translate(1085 24.055)">
+        <text id="UPLOAD_XLSX" data-name="UPLOAD XLSX" class="cls-2" transform="translate(-1 13)"><tspan x="0" y="0">UPLOAD XLSX</tspan></text>
+      </g>
+      <path id="upload" class="cls-3" d="M8.094,10.573H5.906a.655.655,0,0,1-.656-.656V5.323h-2.4a.546.546,0,0,1-.386-.932L6.625.229a.53.53,0,0,1,.746,0l4.162,4.162a.546.546,0,0,1-.386.932H8.75V9.917A.655.655,0,0,1,8.094,10.573ZM14,10.354v3.063a.655.655,0,0,1-.656.656H.656A.655.655,0,0,1,0,13.417V10.354A.655.655,0,0,1,.656,9.7H4.375v.219a1.532,1.532,0,0,0,1.531,1.531H8.094A1.532,1.532,0,0,0,9.625,9.917V9.7h3.719A.655.655,0,0,1,14,10.354ZM10.609,12.76a.547.547,0,1,0-.547.547A.548.548,0,0,0,10.609,12.76Zm1.75,0a.547.547,0,1,0-.547.547A.548.548,0,0,0,12.359,12.76Z" transform="translate(1066 23.925)"/>
+    </g>
+  </g>
+</svg>

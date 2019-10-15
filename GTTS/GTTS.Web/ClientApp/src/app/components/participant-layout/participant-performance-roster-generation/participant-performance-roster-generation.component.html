@@ -1,0 +1,274 @@
+<div class="modal-header no-border">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="Cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title text-center">Generate student roster</h4>
+</div>
+<form #GenerateRoster="ngForm" name="GenerateRoster1" (ngSubmit)="GenerateRoster_submit()">
+    <div *ngIf="!ShowCourseCatalog" class="modal-body no-padding-top-bottom">
+        <!-- Capture Roster values -->
+
+        <div class="box no-top-border ppr-capture">
+            <div class="box-body info">
+                <span>
+                    Select weight factor(s) of the element(s) that will determine a student’s final grade. Select the minimum final grade and
+                    attendance required for student to receive training completion credit or certificate. Choose “N/A” if element or criterion
+                    does not apply. Note: alternates and removed students will not be included in roster.
+                    <!--<span class="modal-link-align-right" id="ppr-catalogue-open" style="margin-top:10px;">
+                        <a id="configRoster" (click)="SwitchView('Catalog')" class="modal-action-link">Use a pre-configured roster</a>
+                    </span>-->
+                </span>
+            </div>
+
+            <div class="box-body no-padding" style="margin-top:10px;">
+                <table class="table ppr-table">
+                    <thead>
+                        <tr>
+                            <th><span style="margin-left:209px;">Final grade elements</span></th>
+                            <th class="weight-column text-center">Weight</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Test score</td>
+                            <td class="text-right">
+                                <select #TestsWeighting name="TestsWeighting" [(ngModel)]="CourseDefinitionModel.TestsWeighting" 
+                                        class="form-control select-roster select2 ppr-action-fge" [disabled]="UseCourseCatalog" 
+                                        (ngModelChange)="SetNumericValues('TestsWeighting',TestsWeighting.value);">
+                                    <option value="-1"></option>
+                                    <option value="0">N/A</option>
+                                    <option value="5">5%</option>
+                                    <option value="10">10%</option>
+                                    <option value="15">15%</option>
+                                    <option value="20">20%</option>
+                                    <option value="25">25%</option>
+                                    <option value="30">30%</option>
+                                    <option value="35">35%</option>
+                                    <option value="40">40%</option>
+                                    <option value="45">45%</option>
+                                    <option value="50">50%</option>
+                                    <option value="55">55%</option>
+                                    <option value="60">60%</option>
+                                    <option value="65">65%</option>
+                                    <option value="70">70%</option>
+                                    <option value="75">75%</option>
+                                    <option value="80">80%</option>
+                                    <option value="85">85%</option>
+                                    <option value="90">90%</option>
+                                    <option value="95">95%</option>
+                                    <option value="100">100%</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Performance</td>
+                            <td class="text-right">
+                                <select #PerformanceWeighting name="PerformanceWeighting" [(ngModel)]="CourseDefinitionModel.PerformanceWeighting" 
+                                        class="form-control select-roster  select2 ppr-action-fge" id="Performance_Id" [disabled]="UseCourseCatalog" 
+                                        (ngModelChange)="SetNumericValues('PerformanceWeighting',PerformanceWeighting.value);">
+                                    <option value="-1"></option>
+                                    <option value="0">N/A</option>
+                                    <option value="5">5%</option>
+                                    <option value="10">10%</option>
+                                    <option value="15">15%</option>
+                                    <option value="20">20%</option>
+                                    <option value="25">25%</option>
+                                    <option value="30">30%</option>
+                                    <option value="35">35%</option>
+                                    <option value="40">40%</option>
+                                    <option value="45">45%</option>
+                                    <option value="50">50%</option>
+                                    <option value="55">55%</option>
+                                    <option value="60">60%</option>
+                                    <option value="65">65%</option>
+                                    <option value="70">70%</option>
+                                    <option value="75">75%</option>
+                                    <option value="80">80%</option>
+                                    <option value="85">85%</option>
+                                    <option value="90">90%</option>
+                                    <option value="95">95%</option>
+                                    <option value="100">100%</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Product(s)</td>
+                            <td class="text-right">
+                                <select #ProductsWeighting name="ProductsWeighting" [(ngModel)]="CourseDefinitionModel.ProductsWeighting" 
+                                        class="form-control select-roster select2 ppr-action-fge" id="Products_Id" [disabled]="UseCourseCatalog" 
+                                        (ngModelChange)="SetNumericValues('ProductsWeighting',ProductsWeighting.value);">
+                                    <option value="-1"></option>
+                                    <option value="0">N/A</option>
+                                    <option value="5">5%</option>
+                                    <option value="10">10%</option>
+                                    <option value="15">15%</option>
+                                    <option value="20">20%</option>
+                                    <option value="25">25%</option>
+                                    <option value="30">30%</option>
+                                    <option value="35">35%</option>
+                                    <option value="40">40%</option>
+                                    <option value="45">45%</option>
+                                    <option value="50">50%</option>
+                                    <option value="55">55%</option>
+                                    <option value="60">60%</option>
+                                    <option value="65">65%</option>
+                                    <option value="70">70%</option>
+                                    <option value="75">75%</option>
+                                    <option value="80">80%</option>
+                                    <option value="85">85%</option>
+                                    <option value="90">90%</option>
+                                    <option value="95">95%</option>
+                                    <option value="100">100%</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div *ngIf="ShowPercentageWarning()" style="height:20px"><span class="ppr-sum-error">*The sum of the weight factors must equal 100%</span></div>
+            </div>
+            <div class="box-body no-padding">
+                <table class="table ppr-table">
+                    <thead>
+                        <tr>
+                            <th colspan="2" class="text-center">Training completion / certificate criteria</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Minimum final grade</td>
+                            <td class="text-right">
+                                <select #MinimumFinalGrade name="MinimumFinalGrade" [(ngModel)]="CourseDefinitionModel.MinimumFinalGrade" 
+                                        class="form-control select-roster select2" id="idMinFinGrade" [disabled]="UseCourseCatalog" 
+                                        (ngModelChange)="SetNumericValues('MinimumFinalGrade',MinimumFinalGrade.value);">
+                                    <option value="-1"></option>
+                                    <option value="0">N/A</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="25">25</option>
+                                    <option value="30">30</option>
+                                    <option value="35">35</option>
+                                    <option value="40">40</option>
+                                    <option value="45">45</option>
+                                    <option value="50">50</option>
+                                    <option value="55">55</option>
+                                    <option value="60">60</option>
+                                    <option value="65">65</option>
+                                    <option value="70">70</option>
+                                    <option value="75">75</option>
+                                    <option value="80">80</option>
+                                    <option value="85">85</option>
+                                    <option value="90">90</option>
+                                    <option value="95">95</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Minimum attendance required</td>
+                            <td class="text-right">
+                                <select #MinimumAttendance name="MinimumAttendance" [(ngModel)]="CourseDefinitionModel.MinimumAttendance" 
+                                        class="form-control select-roster select2" id="idMinAttendance" [disabled]="UseCourseCatalog" 
+                                        (ngModelChange)="SetNumericValues('MinimumAttendance',MinimumAttendance.value);">
+                                    <option value="-1"></option>
+                                    <option value="0">N/A</option>
+                                    <option value="5">5%</option>
+                                    <option value="10">10%</option>
+                                    <option value="15">15%</option>
+                                    <option value="20">20%</option>
+                                    <option value="25">25%</option>
+                                    <option value="30">30%</option>
+                                    <option value="35">35%</option>
+                                    <option value="40">40%</option>
+                                    <option value="45">45%</option>
+                                    <option value="50">50%</option>
+                                    <option value="55">55%</option>
+                                    <option value="60">60%</option>
+                                    <option value="65">65%</option>
+                                    <option value="70">70%</option>
+                                    <option value="75">75%</option>
+                                    <option value="80">80%</option>
+                                    <option value="85">85%</option>
+                                    <option value="90">90%</option>
+                                    <option value="95">95%</option>
+                                    <option value="100">100%</option>
+                                </select>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div *ngIf="HasGroups" class="box-body no-padding-side">
+                <table class="table ppr-table table-responsive table-rounded">
+                    <tbody>
+                        <tr>
+                            <td>Generate for: </td>
+                            <td class="text-right">
+                                <select class="form-control select-roster-group select2" id="TrainingEventGroupID" name="TrainingEventGroupID" 
+                                        [(ngModel)]="TrainingEventGroupID" required>
+                                    <option value="-1">All groups</option>
+                                    <option *ngFor="let group of TrainingEventGroups" [value]="group.TrainingEventGroupID">{{ group.GroupName }}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+    <div *ngIf="!ShowCourseCatalog" class="modal-footer">
+        <span class="ppr-capture">
+            <button type="button" [disabled]="GeneratingRoster" class="btn btn-rounded" data-dismiss="modal" (click)="Cancel()">Cancel</button>
+            <button type="submit" [disabled]="ShowPercentageWarning() || GeneratingRoster" class="btn btn-rounded bColorPrimary" id="ppr-ok">Generate roster</button>
+        </span>
+    </div>
+</form>
+
+<form #CourseCatalog="ngForm" name="CourseCatalog" (ngSubmit)="CourseCatalog_submit(CourseCatalog)">
+    <div *ngIf="ShowCourseCatalog" class="modal-body no-padding-top-bottom">
+        <!-- Course Catalogue list -->
+
+        <div class="box no-top-border ppr-course-catalogue">
+            <table id="tCourseCatalogue" class="table cc-table table-responsive table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th colspan="3">Final Grade Elements</th>
+                        <th colspan="2">INL Certificate Criteria</th>
+                    </tr>
+                    <tr>
+                        <th>Course Name</th>
+                        <th nowrap>Test score</th>
+                        <th>Perform.</th>
+                        <th>Product(s)</th>
+                        <th nowrap>Min. Attend.</th>
+                        <th nowrap>Min. Fin. Grade</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Course Catalg -->
+                    <!-- Row example -->
+                    <tr>
+                        <td class="no-align">Internal affairs</td>
+                        <td>80</td>
+                        <td>20</td>
+                        <td>N/A</td>
+                        <td>80</td>
+                        <td>80</td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div *ngIf="ShowCourseCatalog" class="modal-footer">
+        <span class="ppr-course-catalogue">
+            <button type="button" class="btn btn-rounded" id="ppr-catalogue-cancel" (click)="Cancel()">Cancel</button>
+            <button type="submit" class="btn btn-rounded bColorPrimary" id="ppr-catalogue-save">Select roster</button>
+        </span>
+    </div>
+</form>
+<a #DownloadLink></a>

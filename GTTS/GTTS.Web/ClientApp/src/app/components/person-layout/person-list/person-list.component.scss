@@ -1,0 +1,34 @@
+.participant-tab-totals {
+    width: 200px;
+    text-align: left;
+    color: #3c8dbc;
+    font-weight: normal;
+}
+
+.td-size-16 {
+    font-size: 16px !important;
+}
+
+.td-middle {
+    vertical-align: middle !important;
+}
+
+.content-wrapper, .main-footer {
+    margin-left: unset;
+    margin-top: 50px;
+}
+
+.box {
+    position: relative;
+    border-radius: 3px;
+    background: #ffffff;
+    border-top: 3px solid #d2d6de;
+    margin-bottom: 20px;
+    width: 100%;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+}
+
+.box.no-top-border {
+    border-top: none;
+}
+

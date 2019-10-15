@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="afa0c431-a84f-4758-a7e5-188da8ea0d2a" ChangeDateTime="11/07/2018 18:29:57">
+    <Property Name="ElementName" Value="[unitlibrary].[Units].[UnitHeadJobTitleID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[unitlibrary].[Units]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UnitHeadJobTitle" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="375bee79-405b-4bf9-abcc-72d1ad5648ef" ChangeDateTime="12/10/2018 16:44:38">
+    <Property Name="ElementName" Value="[training].[TrainingEventInstructors].[PersonVettingID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[training].[TrainingEventInstructors]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PersonsVettingID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e6d8dd1c-a21d-4e5a-b30a-c47827d25f53" ChangeDateTime="12/04/2018 12:11:18">
+    <Property Name="ElementName" Value="[unitlibrary].[Units].[IsActove]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[unitlibrary].[Units]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IsActive" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="34ee1117-8a3e-4515-a606-1cd9cef4efeb" ChangeDateTime="03/15/2019 12:18:21">
+    <Property Name="ElementName" Value="[training].[TrainingEventStudents].[HasLocalGovTrust]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[training].[TrainingEventStudents]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PassedLocalGovTrust" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f3b0433e-eb8c-4d15-a615-e810ecd775c0" ChangeDateTime="03/15/2019 12:18:47">
+    <Property Name="ElementName" Value="[training].[TrainingEventStudents].[LocalGovVetting]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[training].[TrainingEventStudents]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LocalGovTrust" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="73468552-216f-4585-8c95-a6ef07076164" ChangeDateTime="04/04/2019 19:20:25">
+    <Property Name="ElementName" Value="[dbo].[Notifications].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Notifications]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="NotificationID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="53cba573-2055-4b7b-ad5b-51dbd6aba9a6" ChangeDateTime="04/04/2019 19:26:43">
+    <Property Name="ElementName" Value="[dbo].[NotificationRecipients].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[NotificationRecipients]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="NotificationID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="ebf8fa86-97b7-4f18-ae9d-94a8c51d3f20" ChangeDateTime="04/04/2019 19:41:36">
+    <Property Name="ElementName" Value="[dbo].[NotificationMessages].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[NotificationMessages]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="NotificationMessageID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="114e8ba1-c490-47b7-80a1-5c92435ac27c" ChangeDateTime="04/05/2019 11:45:16">
+    <Property Name="ElementName" Value="[messaging].[NotificationRecipients].[DateLastViewed]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[messaging].[NotificationRecipients]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="DateViewed" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="eb8f6472-3c1c-42c6-b0c6-811bfb8b117d" ChangeDateTime="04/05/2019 17:09:24">
+    <Property Name="ElementName" Value="[messaging].[Notifications].[NotificationTitle]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[messaging].[Notifications]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Subject" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="bb92c4fc-dd92-49d2-bff1-8dd6d0faeb7a" ChangeDateTime="04/05/2019 17:09:34">
+    <Property Name="ElementName" Value="[messaging].[Notifications].[NotificationMessage]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[messaging].[Notifications]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Message" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a3c5342f-990d-4d5f-a6ad-4f9e21359f76" ChangeDateTime="04/05/2019 17:11:24">
+    <Property Name="ElementName" Value="[messaging].[Notifications].[Subject]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[messaging].[Notifications]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="NotificationSubject" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e1bb255f-3292-44ee-88fb-d77afeef47ba" ChangeDateTime="04/05/2019 17:11:29">
+    <Property Name="ElementName" Value="[messaging].[Notifications].[Message]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[messaging].[Notifications]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="NotificationMessage" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a9664dac-ee68-46e0-bd6b-f8313c47076a" ChangeDateTime="04/05/2019 18:08:44">
+    <Property Name="ElementName" Value="[messaging].[NotificationMessages].[MessageName]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[messaging].[NotificationMessages]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="MessageTemplateName" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1a223b6b-674e-4f78-b130-06474db927c7" ChangeDateTime="04/09/2019 12:09:12">
+    <Property Name="ElementName" Value="[messaging].[Notifications].[ContextTypeID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[messaging].[Notifications]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="NotificationContextTypeID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="d8785858-ed29-4128-b3ce-6dea4ebdafb6" ChangeDateTime="02/27/2019 13:39:21">
+    <Property Name="ElementName" Value="[users].[AppUsersWithAppRolesView]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="ParentElementName" Value="[users]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="AppUsersDetailedView" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="23c089c2-9043-4d0e-94c4-da19fae8d1bc" ChangeDateTime="04/06/2019 00:38:29">
+    <Property Name="ElementName" Value="[users].[UserBusinessUnits]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="ParentElementName" Value="[users]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[AppUserBusinessUnits]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7c40c56f-bd1d-4c5e-85f3-590ec5e67da8" ChangeDateTime="04/24/2019 15:47:08">
+    <Property Name="ElementName" Value="[vetting].[VettingBatchesDetailView]" />
+    <Property Name="ElementType" Value="SqlView" />
+    <Property Name="ParentElementName" Value="[vetting]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="VettingBatchesDetailView" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="926810c8-556c-461d-aa0e-d52644d6d39a" ChangeDateTime="04/24/2019 16:12:34">
+    <Property Name="ElementName" Value="[vetting].[VettingBatches].[FileID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[vetting].[VettingBatches]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FileID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="70506893-5dd9-41b0-bfa5-cb1f1c4389ed" ChangeDateTime="04/24/2019 19:28:12">
+    <Property Name="ElementName" Value="[vetting].[GetVettingBatch]" />
+    <Property Name="ElementType" Value="SqlProcedure" />
+    <Property Name="ParentElementName" Value="[vetting]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[GetVettingBatchDetail]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="16639a03-6c2d-4148-a76a-0af56b0f76c2" ChangeDateTime="04/24/2019 01:06:09">
+    <Property Name="ElementName" Value="[messaging].[NotificationRecipients].[DateViewed]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[messaging].[NotificationRecipients]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ViewedDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="10fac417-5df8-47a2-bf54-85952c86ce77" ChangeDateTime="05/07/2019 20:20:26">
+    <Property Name="ElementName" Value="[messaging].[NotificationRedirects].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[messaging].[NotificationRedirects]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="NotificationMessageID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="9b2d728c-5a28-4e88-82e1-ccf3b906042b" ChangeDateTime="05/07/2019 20:21:03">
+    <Property Name="ElementName" Value="[messaging].[NotificationRedirects].[AppUserRoleID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[messaging].[NotificationRedirects]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AppRoleID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="6f6852ce-68df-480a-be00-6cc216483d36" ChangeDateTime="05/07/2019 20:30:57">
+    <Property Name="ElementName" Value="[messaging].[NotificationRedirects].[DestinationCode]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[messaging].[NotificationRedirects]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Code" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c3008e56-bd8a-40c9-a8fb-9a71d63aeae9" ChangeDateTime="05/13/2019 17:23:13">
+    <Property Name="ElementName" Value="[dbo].[NotificationAppRoleContextTypes].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[NotificationAppRoleContextTypes]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="NotificationAppRoleContextTypeID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="411737f2-f103-4ebe-9edc-caf3dda0c941" ChangeDateTime="06/19/2019 17:23:00">
+    <Property Name="ElementName" Value="[vetting].[VettingHits].[UnitName]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[vetting].[VettingHits]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="HitUnit" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="0e840b9a-cb26-40dd-9ce1-6393c407863a" ChangeDateTime="10/07/2019 15:59:25">
+    <Property Name="ElementName" Value="[migration].[OnboardingTrainingEventTypes].[TrainingEventType]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[migration].[OnboardingTrainingEventTypes]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TrainingEventTypeName" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="17031bc7-4eaa-4123-b499-54d371b6ea01" ChangeDateTime="10/07/2019 16:00:05">
+    <Property Name="ElementName" Value="[migration].[OnboardingReportingTypesList].[Name]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[migration].[OnboardingReportingTypesList]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ReportingTypeName" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c511455f-ad05-4116-84b4-b51da8ff09be" ChangeDateTime="10/07/2019 16:00:36">
+    <Property Name="ElementName" Value="[migration].[OnboardingVettingFundingList].[Code]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[migration].[OnboardingVettingFundingList]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="VettingFundingSource" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a0e620e1-7229-4c5a-83e2-a759d5bda593" ChangeDateTime="10/07/2019 16:02:31">
+    <Property Name="ElementName" Value="[migration].[OnboardingVettingAuthorizingLawsList].[Code]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[migration].[OnboardingVettingAuthorizingLawsList]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="VettingAuthorizingLaw" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="99cf5eb4-7125-4252-8119-a771ec18c7eb" ChangeDateTime="10/01/2019 14:58:13">
+    <Property Name="ElementName" Value="[training].[TrainingEventParticipantTypes].[TrainingEventParticipantTypesID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[training].[TrainingEventParticipantTypes]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TrainingEventParticipantTypeID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="b89eeb6e-16ad-49c9-a5ba-45158cf06187" ChangeDateTime="10/01/2019 15:01:33">
+    <Property Name="ElementName" Value="[training].[TrainingEventParticipants].[TrainingParticipantID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[training].[TrainingEventParticipants]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="TrainingEventParticipantID" />
+  </Operation>
+</Operations>

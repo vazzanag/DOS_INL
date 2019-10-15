@@ -1,0 +1,333 @@
+﻿<#@ template language="C#" hostspecific="true" debug="true" #>
+<#@ assembly name="System" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="Microsoft.CSharp" #>
+<#@ assembly name="Microsoft.SqlServer.ConnectionInfo" #>
+<#@ assembly name="Microsoft.SqlServer.Management.Sdk.Sfc" #>
+<#@ assembly name="Microsoft.SqlServer.Smo" #>
+<#@ assembly name="Newtonsoft.Json.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="Microsoft.CSharp" #>
+<#@ import namespace="Microsoft.SqlServer.Management.Smo" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="Microsoft.SqlServer.Management.Common" #> 
+<#@ import namespace="System.IO" #>  
+<#@ import namespace="Newtonsoft.Json" #>
+
+
+
+<#
+	
+
+	// ##################################
+	// List of tables to generate entities for
+	// ##################################
+	var generateTheseEntities = new System.Collections.Generic.List<string> {
+
+		// Tables
+        "training.AuthorizingLaw",  
+        "training.ApprovalEventTypes", 
+        "training.ApprovalChainLinks", 
+        "training.ApprovalChainLinkApprovers", 
+        "training.TrainingEventUSPartnerAgencies", 
+        "training.TrainingEventTypes", 
+        "training.TrainingEventStatusLog", 
+        "training.TrainingEventStatuses", 
+        "training.TrainingEventStakeholders", 
+        "training.TrainingEvents", 
+        "training.TrainingEventProjectCodes", 
+        "training.TrainingEventGroups", 
+        "training.TrainingEventGroupMembers", 
+        "training.TrainingEventLocations", 
+        "training.TrainingEventAttachmentTypes", 
+        "training.TrainingEventAttachments", 
+		"training.TrainingEventStudentAttachmentTypes", 
+        "training.TrainingEventStudentAttachments", 
+        "training.TrainingEventApprovalLogs", 
+        "training.ProjectCodes", 
+        "training.TrainingEventGroupMemberTypes", 
+        "training.FundingSources",
+        "training.TrainingEventAuthorizingDocuments",
+		"training.ParticipantsXLSX",
+		
+		
+		// Views
+        "training.TrainingEventAuthorizingDocumentsView",
+		"training.TrainingEventsView",
+		"training.TrainingEventLocationsView",
+		"training.TrainingEventProjectCodesView",
+		"training.TrainingEventUSPartnerAgenciesView",
+		"training.TrainingEventAttachmentsView",
+		"training.TrainingEventStudentAttachmentsView",
+		"training.TrainingEventStakeholdersView",
+		"training.TrainingEventParticipantsView",
+        "training.TrainingEventParticipantsDetailView",
+		"training.TrainingEventInstructorsView",
+		"training.TrainingEventParticipantsXLSXView",
+        "training.TrainingEventStatusLogView",
+		"training.TrainingEventGroupsView",
+		"training.TrainingEventGroupMembersView",
+		"training.TrainingEventCourseDefinitionsView",
+        "training.TrainingEventRosterView",
+        "training.TrainingEventStudentRosterView",
+        "training.TrainingEventInstructorRosterView",
+        "training.TrainingEventAttendanceView",
+		"vetting.PersonsVettingView",
+		"training.TrainingEventVisaCheckListsView",
+		"training.PersonsTrainingEventsView",
+        "training.TrainingEventsDetailView",
+        "training.TrainingEventKeyActivitiesView",
+        "training.TrainingEventParticipantAttachmentsView",
+        "training.ProjectCodesAtBusinessUnitView",
+        "training.TrainingEventTypesAtBusinessUnitView",
+		"training.KeyActivitesAtBusinessUnitView",
+        "training.InterAgencyAgreementsAtBusinessUnitView",
+		"training.USPartnerAgenciesAtBusinessUnitView",
+
+		// Stored Procedures
+		"training.GetTrainingEvent",
+		"training.GetTrainingEvents",
+		"training.GetTrainingEventStakeholders",
+		"training.GetTrainingEventAttachment",
+		"training.GetTrainingEventAttachments",
+		"training.GetTrainingEventStudentAttachment",
+		"training.GetTrainingEventStudentAttachments",
+		"training.GetTrainingEventStudent",
+		"training.GetTrainingEventStudentByPersonIDAndTrainingEventID",
+		"training.GetTrainingEventInstructor",
+		"training.GetTrainingEventInstructorByPersonIDAndTrainingEventID",
+		"training.GetTrainingEventParticipants",
+		"training.SaveTrainingEvent",
+		"training.SaveTrainingEventLocations",
+		"training.SaveTrainingEventUSPartnerAgencies",
+		"training.SaveTrainingEventProjectCodes",
+		"training.SaveTrainingEventStakeholders",
+		"training.SaveTrainingEventProjectCodes",
+		"training.SaveTrainingEventAttachment",
+		"training.SaveTrainingEventStudentAttachment",
+		"training.SaveTrainingEventParticipant",
+        "training.SaveTrainingEventInstructor",
+        "training.GetTrainingEventStatusLogs",
+        "training.InsertTrainingEventStatusLog",
+        "training.GetTrainingEventStatusLog",
+		"training.SaveTrainingEventParticipantsXLSX",
+		"training.SaveTrainingEventParticipantXLSX",
+		"training.DeleteTrainingEventParticipantXLSX",
+		"training.GetTrainingEventGroup",
+		"training.GetTrainingEventGroupMember",
+		"training.GetTrainingEventGroupMembersByTrainingEventGroupID",
+		"training.GetTrainingEventGroupByTrainingEventID",
+		"training.SaveTrainingEventGroup",
+		"training.SaveTrainingEventGroupMember",
+		"training.SaveTrainingEventGroupMembers",
+		"training.DeleteTrainingEventGroupMember",
+        "training.InsertExistingStudentsIntoTrainingEventStudents",
+		"training.RemoveTrainingEventParticipants",
+        "training.SaveTrainingEventStudents",
+        "training.SaveTrainingEventCourseDefinition",
+        "training.SaveTrainingEventCourseDefinitionUploadStatus",
+        "training.GetTrainingEventCourseDefinition",
+		"training.SaveTrainingEventInstructors",
+		"training.MigrateTrainingEventParticipants",
+        "training.GetTrainingEventCourseDefinitionByTrainingEventID",
+        "training.GetTrainingEventRoster",
+        "training.SaveTrainingEventRoster",
+        "training.GetTrainingEventAttendance",
+        "training.SaveTrainingEventAttendance",
+        "training.SaveTrainingEventAttendanceInBulk",
+        "training.GetTrainingEventAttendanceByTrainingEventRosterID",
+        "training.GetTrainingEventInstructorRosterByTrainingEventID",
+        "training.GetTrainingEventStudentRosterByTrainingEventID",
+		"training.GetTrainingEventVisaCheckLists]",
+		"training.SaveTrainingEventVisaCheckLists",
+        "training.GetTrainingEventStudentsByTrainingEventID",
+        "training.GetTrainingEventInstructorsByTrainingEventID",
+		"training.GetPersonsTrainingEvents",
+        "training.GetTrainingEventParticipantByPersonIDAndTrainingEventID",
+        "training.GetTrainingEventParticipantAttachment",
+        "training.GetTrainingEventParticipantAttachments",
+        "training.SaveTrainingEventParticipantAttachment",
+        "training.SaveTrainingEventParticipantValue",
+		"training.UpdateTrainingEventStudentsParticipantFlag",
+		"training.UpdateTypeTrainingEventParticipants"
+	};
+	
+
+    
+	// ##################################
+	// Namespace for generated entities
+	// ##################################
+    var ns = "INL.TrainingService.Data";
+
+
+
+	// ##################################
+	// Database connection details
+	// ##################################
+	dynamic config = JsonConvert.DeserializeObject(
+		File.ReadAllText(this.Host.ResolvePath("__Entities__Config.json"))
+	);
+
+	var databaseName = config["databaseName"].Value;
+	var connectionString = config["connectionString"].Value;
+
+
+#>
+
+using System;
+
+
+namespace <#= ns #>
+{
+  
+<#       
+	var sqlConnection = new SqlConnection(connectionString);
+	var serverConnection = new ServerConnection(sqlConnection);	
+	
+    Server server = new Server(serverConnection);
+    foreach (Table table in server.Databases[databaseName].Tables)
+    { 
+        if (generateTheseEntities.Contains($"{table.Schema}.{table.Name}")) {
+#>
+	public interface I<#= table.Name #>Entity
+	{
+<# foreach (Column col in table.Columns) { #>
+		<#= GetCSharpDataType(col.DataType.Name, col.Nullable) #> <#= col.Name #> { get; set; }
+<# } #>
+
+	}
+
+    public class <#= table.Name #>Entity : I<#= table.Name #>Entity
+    {
+<# foreach (Column col in table.Columns) { #>
+		public <#= GetCSharpDataType(col.DataType.Name, col.Nullable) #> <#= col.Name #> { get; set; }
+<# } #>
+
+    }
+      
+<#   
+        }
+    }
+#>
+
+
+<#   
+    foreach (View view in server.Databases[databaseName].Views)
+    { 
+        if (generateTheseEntities.Contains($"{view.Schema}.{view.Name}")) {
+#>
+	public interface I<#= view.Name #>Entity
+	{
+<# foreach (Column col in view.Columns) { #>
+	    <#= GetCSharpDataType(col.DataType.Name, col.Nullable) #> <#= col.Name #> { get; set; }
+<# } #>
+
+	}
+
+    public class <#= view.Name #>Entity : I<#= view.Name #>Entity
+    {
+<# foreach (Column col in view.Columns) { #>
+		public <#= GetCSharpDataType(col.DataType.Name, col.Nullable) #> <#= col.Name #> { get; set; }
+<# } #>
+
+    }
+      
+<#   
+        }
+    }
+#>
+
+
+
+<#   
+    foreach (StoredProcedure proc in server.Databases[databaseName].StoredProcedures)
+    { 
+        if (generateTheseEntities.Contains($"{proc.Schema}.{proc.Name}")) {
+#>
+	public interface I<#= proc.Name #>Entity
+    {
+<# foreach (StoredProcedureParameter param in proc.Parameters) { #>
+        <#= GetCSharpDataType(param.DataType.Name, true) #> <#= param.Name.Replace("@", "") #> { get; set; }
+<# } #>
+
+    }
+
+    public class <#= proc.Name #>Entity : I<#= proc.Name #>Entity
+    {
+<# foreach (StoredProcedureParameter param in proc.Parameters) { #>
+		public <#= GetCSharpDataType(param.DataType.Name, true) #> <#= param.Name.Replace("@", "") #> { get; set; }
+<# } #>
+
+    }
+      
+<#   
+        }
+    }
+#>
+
+
+
+
+
+}
+
+
+
+<#+
+        public static string GetCSharpDataType(string sqlDataTypeName, bool nullable)
+        {
+			string nullSwitch = nullable ? "?" : "";
+
+            switch (sqlDataTypeName.ToLower())
+            {
+                case "bigint":
+                    return $"long{nullSwitch}";
+                case "binary":
+                case "varbinary":
+                case "image":
+                    return $"byte[]{nullSwitch}";
+                case "bit":
+                    return $"bool{nullSwitch}";
+                case "char":
+                    return $"char{nullSwitch}";
+                case "cursor":
+                    return string.Empty;
+                case "date":
+                case "datetime":
+                case "datetime2":
+                case "smalldatetime":
+                    return $"DateTime{nullSwitch}" ;
+                case "decimal":
+                case "money":
+                case "numeric":
+                    return $"decimal{nullSwitch}";
+                case "float":
+                case "real":
+                    return $"double{nullSwitch}";
+                case "int":
+                case "smallint":
+                    return $"int{nullSwitch}";
+                case "nchar":
+                case "nvarchar":
+                case "varchar":
+                case "text":
+				case "ntext":
+                case "xml":
+                    return "string";
+                case "tinyint":
+                    return $"byte{nullSwitch}";
+              
+                default:
+                    return string.Empty;
+            }
+
+    
+      
+        }
+#>
+

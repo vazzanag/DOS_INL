@@ -1,0 +1,42 @@
+:host /deep/ .panel-group .panel + .panel {
+    margin-top: 0 !important;
+    border-radius: 0 !important;
+}
+
+:host /deep/ .panel {
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+
+:host /deep/ .panel-group {
+    padding: 0 0 0 0 !important;
+}
+
+:host /deep/ .panel-heading {
+    padding: 0 0 0 0 !important;
+    font-weight: bold !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+
+:host /deep/ .panel-title {
+    font-size: 14px !important;
+    padding:8px !important;
+}
+
+:host /deep/ .panel-body {
+    background-color: #fff;
+    font-weight: normal;
+    padding: 0 0 0 0 !important;
+    color: #333;
+}
+
+:host /deep/ .panel-body:matches(:hover) {
+    font-weight: normal;
+    padding: 0 0 0 0 !important;
+    color: #333;
+}
+
+:host /deep/ .btn-link {
+    font-weight: bold !important;
+}

@@ -1,0 +1,51 @@
+<div class="content-wrapper" style="min-height: 857px;">
+    <section class="content-header">
+        <h1>
+            {{ AgencyName }}
+            <span class="pull-right pull-right-margin-right">
+                <button id="AddUnit" type="button" *ngIf="AuthSvc.HasPermission('CREATE UNIT')" class="btn btn-rounded bColorPrimary" (click)=AddUnit()>Add unit</button>&nbsp;
+                <a routerLink="/gtts/unitlibrary/agencies/{{ AgencyID }}/orgchart" class="tooltip-2" style="padding-right:10px">
+                    <i class="fa fa-sitemap color-blue fa-md"></i>
+                    <span class="tooltiptext" style="width:200px; font-size: 15px;right: -30px;bottom: -50px;">Click here to open agency organizational chart</span>
+                </a>
+                <a class="color-blue tooltip-2" style="cursor: pointer" (click)="GenerateUnitLibraryPDF()">
+                    <i class="far fa-file-export color-blue fa-md" style="width:28px; margin: 4px;"></i>
+                    <span class="tooltiptext" style="width:230px; font-size: 15px;right: -30px;bottom: -32px;">Click here to export agencies list</span>
+                </a>
+                <a #PDFDownloadLink name="PDFDownloadLink" href=""></a>
+            </span>
+        </h1>
+    </section>
+
+    <section class="content">
+        <div class="box no-top-border">
+            <div class="box-body no-padding padding-t-5">
+                <div class="table-responsive">
+                    <div id="tPrimary_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="top"></div>
+                        <table id="UnitsTable" #UnitsTable class="table table-hover hide-icon-sort hover dataTable no-footer" role="grid" style="width: 100%;">
+                            <thead>
+                                <tr role="row">
+                                    <th style="width:45px;" class="td-size-16 td-middle text-center">No.</th>
+                                    <th class="td-size-16 td-middle text-center">Acronym</th>
+                                    <th class="td-size-16 td-middle text-center">Unit (English)</th>
+                                    <th class="td-size-16 td-middle text-center">Unit (host nation language)</th>
+                                    <th class="td-size-16 td-middle text-center">Parent</th>
+                                    <th class="td-size-16 td-middle text-center">Unit ID</th>
+                                    <th style="width:90px;" class="td-size-16 td-middle text-center">Activity type</th>
+                                    <th style="width:90px;" class="td-size-16 td-middle text-center">Vetting type</th>
+                                    <th style="width:150px;" class="td-size-16 td-middle text-center">Commander name</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="bottom"></div>
+                        <div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <ng-template #addEditUnitView>
+        <app-unit-form (CloseModal)="CloseModal()" [Unit]="selectedUnit" [IsModal]=true (SaveClick)="SaveClick($event)"></app-unit-form>
+    </ng-template>
+</div>

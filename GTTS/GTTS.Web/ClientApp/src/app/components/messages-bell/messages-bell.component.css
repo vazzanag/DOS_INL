@@ -1,0 +1,38 @@
+.bell {
+    color: #FFFFFF;
+    font-size:20px;
+}
+
+.num-unread-messages-label {
+    position: absolute;
+    top: 8px;
+    right: 1px;
+    padding: 2px 3px 2px 3px;
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 10px;
+}
+
+.no-threads-label {
+    width: 250px;
+    text-align: center;
+    color: #a9a9a9;
+}
+
+.mat-menu-panel.messages-bell-threads {
+    max-width: unset;
+    min-width: unset;
+    margin-top: 10px;
+    border-radius: 10px 0px 20px 20px;
+}
+
+.thread-previews-container {
+    width: 425px;
+    overflow-y: auto;
+    max-height: 500px;    
+}

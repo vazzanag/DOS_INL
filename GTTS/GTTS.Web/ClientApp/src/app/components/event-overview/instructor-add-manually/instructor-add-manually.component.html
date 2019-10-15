@@ -1,0 +1,450 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">Add instructor to database</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="Cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form #instructorForm="ngForm" id="ngForm" (ngSubmit)="SaveTrainingEventInstructor(instructorForm)">
+    <div class="modal-body">        
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="gnControl.touched && gnControl.invalid">
+                    <label for="FirstMiddleNames">*First/middle name(s):</label>
+                    <input name="FirstMiddleNames" class="form-control" [(ngModel)]="Model.FirstMiddleNames" #gnControl="ngModel" placeholder="First/middle name(s)" required />
+                    <span class="help-block" *ngIf="gnControl.touched && gnControl.invalid && false">First/middle name(s) is required</span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="fnControl.touched && fnControl.invalid">
+                    <label for="LastNames">*Last name(s):</label>
+                    <input name="LastNames" class="form-control" [(ngModel)]="Model.LastNames" #fnControl="ngModel" placeholder="Last name(s):" required />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="nidControl.touched && nidControl.invalid">
+                    <label for="NationalID">(*)National ID:</label>
+                    <input name="NationalID" class="form-control" [(ngModel)]="Model.NationalID" #nidControl="ngModel" placeholder="National ID" [required]="IsUSCitizen ? null: 'required'" />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="genControl.touched && genControl.invalid">
+                    <label for="Gender">*Gender:</label>
+                    <div class="col-xs-12 no-padding">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default" (click)="SetGender('M');">
+                                <input type="radio" name="Gender" value="M" [(ngModel)]="Model.Gender" #genControl="ngModel" autocomplete="off" required />
+                                <span class="">Male</span>
+                            </label>
+                            <label class="btn btn-default" (click)="SetGender('F');">
+                                <input type="radio" name="Gender" value="F" [(ngModel)]="Model.Gender" #genControl="ngModel" autocomplete="off" required />
+                                <span class="">Female</span>
+                            </label>
+                        </div>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="usciControl.touched && usciControl.invalid">
+                    <label for="IsUSCitizen">*U.S. citizen?</label>
+                    <div class="col-xs-12 no-padding">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default" (click)="SetUSCitizenship(true)">
+                                <input type="radio" name="IsUSCitizen" value="true" [(ngModel)]="Model.IsUSCitizen" #usciControl="ngModel" required />
+                                <span class="">Yes</span>
+                            </label>
+                            <label class="btn btn-default" (click)="SetUSCitizenship(false)">
+                                <input type="radio" name="IsUSCitizen" value="false" [(ngModel)]="Model.IsUSCitizen" #usciControl="ngModel" required />
+                                <span class="">No</span>
+                            </label>
+                        </div>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="dobControl.touched && dobControl.invalid">
+                    <label for="DateOfBirth">(*)Date of birth</label>
+                    <input name="DateOfBirth" class="form-control" [(ngModel)]="Model.DOB" placeholder="Date of Birth" bsDatepicker
+                           [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY', containerClass: 'theme-default' }" [required]="IsUSCitizen ? null: 'required'" #dobControl="ngModel" />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group" [class.has-error]="pobcounControl.touched && pobcounControl.invalid">
+                            <label for="CountryOfBirth">(*)Country of birth</label>
+                            <select id="CountryOfBirth" placeholder="Country of Birth" [(ngModel)]="Model.POBCountryID" [required]="IsUSCitizen ? null: 'required'"
+                                    name="POBCountryID" class="form-control" #pobcountry #pobcounControl="ngModel" (change)="CountrySelectionChange(pobcountry)">
+                                <option value="">Select Country...</option>
+                                <option *ngFor="let country of BirthCountries" [value]="country.CountryID">{{ country.CountryName }}</option>
+                            </select>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group" [class.has-error]="pobstControl.touched && pobstControl.invalid">
+                            <label for="StateOfBirth">(*)State of birth</label>
+                            <select id="StateOfBirth" placeholder="State of Birth" [(ngModel)]="Model.POBStateID" [required]="IsUSCitizen ? null: 'required'"
+                                    name="POBStateID" class="form-control" #pobstate #pobstControl="ngModel" (change)="CitySelectionChange(pobstate)">
+                                <option *ngFor="let loc of BirthStates" [value]="loc.StateID">{{ loc.StateName }}</option>
+                            </select>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group" [class.has-error]="pobcitControl.touched && pobcitControl.invalid">
+                            <label for="CityOfBirth">(*)City of birth</label>
+                            <select id="CityOfBirth" [(ngModel)]="Model.POBCityID" #pobcitControl="ngModel" placeholder="City of Birth" [required]="IsUSCitizen ? null: 'required'"
+                                    name="POBCityID" class="form-control">
+                                <option *ngFor="let loc of BirthCities" [value]="loc.CityID">{{ loc.CityName }}</option>
+                            </select>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="separator">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="Email">Email</label>
+                    <input name="ContactEmail" class="form-control" [(ngModel)]="Model.ContactEmail" placeholder="Email" />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="Phone">Phone</label>
+                    <input name="ContactPhone" class="form-control" [(ngModel)]="Model.ContactPhone" placeholder="Phone" />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="Languages">Languages</label>
+                    <select class="form-control" multiple placeholder="Languages" name="Languages" [(ngModel)]="Model.Languages" [compareWith]="CompareLanguages">
+                        <option *ngFor="let lang of Languages" [value]="lang">{{ lang.Description }}</option>
+                    </select>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="AddressCountry">Residence country</label>
+                            <select class="form-control" id="AddressCountry" placeholder="Residence country" [(ngModel)]="Model.ResidenceCountryID"
+                                    name="ResidenceCountryID" #rescountry (change)="CountrySelectionChange(rescountry)">
+                                <option *ngFor="let country of AddressCountries" [value]="country.CountryID">{{ country.CountryName }}</option>
+                            </select>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="AddressState">Residence state</label>
+                            <select class="form-control" id="AddressState" placeholder="Residence state" [(ngModel)]="Model.ResidenceStateID"
+                                    name="ResidenceStateID" #resstate (change)="CitySelectionChange(resstate)">
+                                <option *ngFor="let loc of AddressStates" [value]="loc.StateID">{{ loc.StateName }}</option>
+                            </select>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="form-group">
+                            <label for="AddressCity">Residence city</label>
+                            <select class="form-control" id="AddressCity" placeholder="Residence city" [(ngModel)]="Model.ResidenceCityID" name="ResidenceCityID">
+                                <option *ngFor="let loc of AddressCities" [value]="loc.CityID">{{ loc.CityName }}</option>
+                            </select>
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="EnglishLanguageProficiencyID">English language proficiency</label>
+                    <div class="col-xs-12 no-padding">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default" *ngFor="let prof of LanguageProficiencies" (click)="SetEnglishProficiency(prof.LanguageProficiencyID);">
+                                <input type="radio" name="EnglishLanguageProficiencyID" [value]="prof.LanguageProficiencyID" [(ngModel)]="Model.EnglishLanguageProficiencyID" autocomplete="off" />
+                                <span class="">{{ prof.Code }}</span>
+                            </label>
+                        </div>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label for="IsUSCitizen">Highest education</label>
+                    <div class="col-xs-12 no-padding">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default" *ngFor="let el of EducationLevels" (click)="SetHighestEducation(el.EducationLevelID);">
+                                <input type="radio" name="HighestEducationID" [value]="el.EducationLevelID" [(ngModel)]="Model.HighestEducationID" autocomplete="off" />
+                                <span class="">{{ el.Code }}</span>
+                            </label>
+                        </div>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="separator">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group" [class.has-error]="unitControl.touched && unitControl.invalid">
+                    <label for="UnitID">*Unit ID:</label>
+                    <select id="UnitID" placeholder="Unit ID" required name="UnitID" [(ngModel)]="Unit" #unitControl="ngModel" (ngModelChange)="LoadUnitData($event)" class="form-control">
+                        <option *ngFor="let unit of Units" [ngValue]="unit">{{ unit.UnitNameEnglish }}</option>
+                    </select>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="UnitBreakdown">Unit breakdown:</label>
+                    <textarea class="form-control" placeholder="Unit breakdown" readonly="readonly" [value]="UnitBreakdown"></textarea>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="UnitAlias">Unit alias:</label>
+                    <textarea class="form-control" placeholder="Unit Alias" readonly="readonly" [value]="UnitAlias"></textarea>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="leahyControl.touched && leahyControl.invalid">
+                    <label for="IsLeahyVettingReq">*Vetting type</label>
+                    <div class="col-xs-12 no-padding">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default" (click)="SetVettingType(true)">
+                                <input type="radio" name="IsLeahyVettingReq" value="true" [(ngModel)]="Model.IsLeahyVettingReq" #leahyControl="ngModel" autocomplete="off" required />
+                                <span class="">Leahy</span>
+                            </label>
+                            <label class="btn btn-default" (click)="SetVettingType(false)">
+                                <input type="radio" name="IsLeahyVettingReq" value="false" [(ngModel)]="Model.IsLeahyVettingReq" #leahyControl="ngModel" autocomplete="off" required />
+                                <span class="">Courtesy</span>
+                            </label>
+                        </div>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="JobTitle">Job title:</label>
+                    <input name="JobTitle" class="form-control" placeholder="Job Title" [(ngModel)]="Model.JobTitle"
+                           [typeahead]="JobTitles" typeaheadOptionField="JobTitle" />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="Rank">(*)Rank:</label>
+                    <select [(ngModel)]="Rank" id="Rank" placeholder="Rank" [required]="IsUSCitizen ? null: 'required'"
+                            name="Rank" class="form-control">
+                        <option *ngFor="let rank of Ranks" [ngValue]="rank">{{ rank.RankName }}</option>
+                    </select>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="IsUnitCommander">Is unit commander</label>
+                    <div class="col-xs-12 no-padding">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default" (click)="SetUnitCommander(true)">
+                                <input type="radio" name="IsUnitCommander" value="true" [(ngModel)]="Model.IsUnitCommander" autocomplete="off" />
+                                <span class="">YES</span>
+                            </label>
+                            <label class="btn btn-default" (click)="SetUnitCommander(false)">
+                                <input type="radio" name="IsUnitCommander" value="false" [(ngModel)]="Model.IsUnitCommander" autocomplete="off" />
+                                <span class="">NO</span>
+                            </label>
+                        </div>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="YearsInPosition">Years in position:</label>
+                    <input type="text" pattern="\d*" class="form-control" name="YearsInPosition" [(ngModel)]="Model.YearsInPosition" placeholder="Years in Position" />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="PoliceMilSecID">Police/Military/Security ID:</label>
+                    <input class="form-control" name="PoliceMilSecID" [(ngModel)]="Model.PoliceMilSecID" placeholder="Police/Military/Security ID" />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="HostNationPOC">Host nation poc:</label>
+                    <input class="form-control" name="HostNationPOC" [(ngModel)]="Model.HostNationPOC" placeholder="Host nation poc name " />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="HostNationPOCEmail">Host nation poc email:</label>
+                    <input class="form-control" name="HostNationPOCEmail" [(ngModel)]="Model.HostNationPOCEmail" placeholder="Host nation poc email" />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="HasLocalGovTrust">Has host nation vetting?</label>
+                    <div class="col-xs-12 no-padding">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default" (click)="SetHasLocaGovTrust(true)">
+                                <input type="radio" name="HasLocalGovTrust" value="true" [(ngModel)]="Model.HasLocalGovTrust" autocomplete="off" />
+                                <span class="">YES</span>
+                            </label>
+                            <label class="btn btn-default" (click)="SetHasLocaGovTrust(false)">
+                                <input type="radio" name="HasLocalGovTrust" value="false" [(ngModel)]="Model.HasLocalGovTrust" autocomplete="off" />
+                                <span class="">NO</span>
+                            </label>
+                        </div>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <label for="LocalGovTrustCertDate">Host nation vetting date</label>
+                <input class="form-control" name="LocalGovTrustCertDate" [(ngModel)]="Model.LocalGovTrustCertDate" bsDatepicker placeholder="Host nation vetting cert. date"
+                       [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY', containerClass: 'theme-default' }" />
+                <span class="help-block"></span>
+            </div>
+            <div class="col-sm-4"></div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="PassedOtherVetting">Other vetting</label>
+                    <div class="col-xs-12 no-padding">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default" (click)="SetPassedOtherVetting(true)">
+                                <input type="radio" name="PassedOtherVetting" value="true" [(ngModel)]="Model.PassedOtherVetting" autocomplete="off" />
+                                <span class="">YES</span>
+                            </label>
+                            <label class="btn btn-default" (click)="SetPassedOtherVetting(false)">
+                                <input type="radio" name="PassedOtherVetting" value="false" [(ngModel)]="Model.PassedOtherVetting" autocomplete="off" />
+                                <span class="">NO</span>
+                            </label>
+                        </div>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="OtherVettingDate">Other vetting date</label>
+                    <input class="form-control" name="OtherVettingDate" [(ngModel)]="Model.OtherVettingDate" bsDatepicker placeholder="Other vetting date"
+                           [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY', containerClass: 'theme-default' }" />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="OtherVettingDescription">Other vetting type</label>
+                    <input class="form-control" name="OtherVettingDescription" [(ngModel)]="Model.OtherVettingDescription" placeholder="Type of the other vetting" />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </div>
+        <hr class="separator">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="DepartureCountry">Departure country</label>
+                    <select class="form-control" id="DepartureCountry" placeholder="Departure country" [(ngModel)]="Model.DepartureCountryID"
+                            name="DepartureCountryID" #depcountry (change)="CountrySelectionChange(depcountry)">
+                        <option *ngFor="let country of DepartureCountries" [value]="country.CountryID">{{ country.CountryName }}</option>
+                    </select>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="DepartureState">Departure state</label>
+                    <select class="form-control" id="DepartureState" placeholder="Departure state" [(ngModel)]="Model.DepartureStateID"
+                            name="DepartureStateID" #depstate (change)="CitySelectionChange(depstate)">
+                        <option *ngFor="let loc of DepartureStates" [value]="loc.StateID">{{ loc.StateName }}</option>
+                    </select>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="DepartureCity">Departure city</label>
+                    <select class="form-control" id="DepartureCity" placeholder="Departure city" [(ngModel)]="Model.DepartureCityID" name="DepartureCityID">
+                        <option *ngFor="let loc of DepartureCities" [value]="loc.CityID">{{ loc.CityName }}</option>
+                    </select>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="PassportNumber">Passport number</label>
+                    <input class="form-control" name="PassportNumber" [(ngModel)]="Model.PassportNumber" placeholder="Passport number" />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <label for="PassportExpirationDate">Passport expiration</label>
+                <input class="form-control" name="PassportExpirationDate" [(ngModel)]="Model.PassportExpirationDate" bsDatepicker placeholder="Passport expiration date"
+                       [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY', containerClass: 'theme-default' }" />
+                <span class="help-block"></span>
+            </div>
+            <div class="col-sm-4"></div>
+        </div>
+        <hr class="separator">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="Comments">Comments and notes:</label>
+                    <textarea class="form-control" placeholder="Comments" name="Comments" [(ngModel)]="Model.Comments"></textarea>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-6"></div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="Cancel()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="instructorForm.form.invalid">Save</button>
+    </div>
+</form>

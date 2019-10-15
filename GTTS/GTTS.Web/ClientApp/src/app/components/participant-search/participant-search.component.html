@@ -1,0 +1,128 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" (click)="Cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" style="text-align:center;" id="txtTitleParticipant">Search participants</h4>
+</div>
+<div class="modal-body">
+
+    <!-- Participant Search -->
+    <div class="panel panel-default" id="pnlSearchParticipant">
+
+        <div class="panel-body">
+            <!-- Search Controls -->
+            <div class="row">
+                <div class="col-lg-6">
+                    <form #SearchForm="ngForm" (keydown.enter)="$event.preventDefault()" (ngSubmit)="Search()">
+                        <div id="custom-search-input" class="pull-left">
+                            <div class="input-group col-md-12">
+                                <input id="SearchInput" name="SearchInput" [formControl]="SearchInput" type="text" class="search-query form-control" placeholder="Search">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-danger index10" type="submit">
+                                        <span class="fa" [ngClass]="{'fa-search': !IsSearching, 'fa-spinner': IsSearching, 'fa-spin': IsSearching}"></span>
+                                    </button>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div *ngIf="SearchMessage.length > 0" class="col-lg-6 padding-t-5">{{ SearchMessage }}</div>
+            </div>
+
+            <!-- Tab View -->
+            <div class="row">
+                <div class="box no-top-border">
+                    <div class="box-header">
+                        <div class="col-xs-12 text-right no-padding">
+                            <!-- Navigation Tabs -->
+                            <ul class="nav nav-pills" id="tabSearchParticipant">
+                                <li [ngClass]="{active: CurrentTab == TabType.Events}"><a data-toggle="tab" href="#EventsTab" id="liEvents" (click)="TabClick(TabType.Events)">Events</a></li>
+                                <li [ngClass]="{active: CurrentTab == TabType.Participants}"><a href="#ParticipantsTab" data-toggle="tab" id="liParticipants" (click)="TabClick(TabType.Participants)">Participants</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="box-body no-padding">
+                        <div class="tab-content" style="min-height: 200px;">
+
+                            <!-- Events Tab -->
+                            <div id="EventsTab" class="tab-pane fade">
+                                <div class="table-responsive">
+                                    <table id="EventsTable" #EventsTable class="table table-hover hover center-table-header dataTable" style="width:100%;">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:80px;">Section</th>
+                                                <th>Training event</th>
+                                                <th>Location</th>
+                                                <th>Date(s)</th>
+                                                <th style="width:75px;">Participants</th>
+                                                <th>Organizer</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Participants Tab -->
+                            <div id="ParticipantsTab" class="tab-pane active">
+                                <div class="table-responsive">
+                                    <div id="eventSelectedAddBySearch" *ngIf="TrainingEventName != ''">
+                                        <div class="col-sm-6 no-padding event-title-addbysearch">
+                                            <span id="txtEventSection" class="color-orange">{{ TrainingEventSection }} / </span>
+                                            <span id="txtEventName">{{ TrainingEventName }} &nbsp;</span>
+                                            <span id="txtEventLocation" class="event-location-addbysearch">{{ TrainingEventLocations }}</span>
+                                        </div>
+                                        <div class="col-sm-6 no-padding text-right">
+                                            <a *ngIf="Participants?.length != SelectedParticipants?.length" id="addBySearchEventSelectAll" class="color-orange" style="cursor:pointer;" (click)="SelectAll()">Select all participants</a>
+                                            <span *ngIf="Participants?.length != SelectedParticipants?.length && SelectedParticipants?.length > 0"> - </span>
+                                            <a *ngIf="SelectedParticipants?.length > 0" class="color-orange" style="cursor:pointer;" (click)="UnselectAll()">Deselect all participants</a>
+                                        </div>
+                                    </div>
+
+                                    <table id="ParticipantsTable" #ParticipantsTable class="table table-hover hover center-table-header dataTable no-footer" style="width:100%;">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>Name</th>
+                                                <th>Gender</th>
+                                                <th>Agency / Organization</th>
+                                                <th>Unit</th>
+                                                <th>Position / Rank</th>
+                                                <th>Last clearance</th>
+                                                <th>Distinction</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
+                                    <div id="divNewParticipant" style="width: 100%;text-align: center;padding-top: 50px;">
+                                        Can't find the participant you're looking for?
+                                        <a style="cursor: pointer; " id="lnkNewParticipant" (click)="OpenModal(participantForm, 'modal-responsive-md')">
+                                            Create a new participant record.
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- ./contentTabs -->
+                    </div><!-- ./box-body -->
+                </div>
+            </div>
+        </div>
+        <a #SearchTabChange data-toggle="tab"></a>
+    </div>
+
+    <ng-template #participantForm>
+        <app-participant-form (CloseModal)="ParticipantForm_Close($event)"
+                              [RequestedAction]="'Create'"
+                              [TrainingEventID]="TrainingEventID"
+                              [Context]="participantContext.TrainingEvent">
+        </app-participant-form>
+    </ng-template>
+</div>
+
+<div class="modal-footer">
+    <span class="ppr-capture">
+        <!--<button type="button" id="Cancel" [disabled]="IsSaving" class="btn btn-rounded" data-dismiss="modal" (click)="Cancel()">Close</button>-->
+
+        <button type="button" id="AddParticipant" (click)="AddParticipant_Click()" [disabled]="SelectedParticipants.length == 0 || IsSaving" class="btn btn-rounded bColorPrimary">
+            Add Participant
+            <span *ngIf="IsSaving" class="fa" [ngClass]="{'fa-spinner': IsSaving, 'fa-spin': IsSaving}"></span>
+            <span *ngIf="SelectedParticipants.length > 0 && !IsSaving">({{ SelectedParticipants.length }})</span>
+        </button>
+    </span>
+</div>

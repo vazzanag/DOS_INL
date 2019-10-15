@@ -1,0 +1,10 @@
+<div [ngClass]="{'file-upload-zone-dragover': HasDragOver, 'disabled': Disabled}"
+     class="file-upload-zone unoccupied" (click)="Dropzone_Click()">
+</div>
+<input id="fileAttachClick" #fileAttachClick class="attach-input" style="display: none;" value="Attach" type="file" 
+       accept=".xls,.xlsx,.doc,.docx,.ppt,.pptx,.pdf,.jpg,.png,.jpeg,.gif" multiple (change)="onAttachmentInputChange($event.target.files)">
+<div style="padding-left:15px;padding-right:15px;">
+    <ngx-slick class="carousel" #slickModal="slick-modal" [config]="SlideConfig">
+        <app-file-attachment ngxSlickItem *ngFor="let file of Files" [file]="file" (onFileDeleted)="FileAttachment_OnFileDeleted($event)"></app-file-attachment>
+    </ngx-slick>
+</div>

@@ -1,0 +1,41 @@
+<div class="overviewContainer">
+    <div class="overviewHeader">Instructor(s) <button type="button" class="btn btn-xs btn-primary pull-right" (click)="OpenInstructorSearch(instructorSearchModal)"><i class="fa fa-plus"></i> Add Instructor</button></div>
+    <div class="overviewContainerContent">        
+        <table style="width:100%">
+            <thead>
+                <tr class="bottomBorder">
+                    <th>Name</th>
+                    <th>Company</th>
+                    <th>Rating</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let instructor of EventInstructors; let i = index" empty="No training events available" loading="Loading training events..">
+                    <td>{{instructor.GetFullName()}}</td>
+                    <td>{{instructor.UnitParentName}}</td>
+                    <td>{{ instructor.Rating ? instructor.Rating : '' }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<ng-template #instructorSearchModal>
+    <app-instructor-add-by-search (CloseModal)="CloseInstructorSearch()"
+                                  (OpenAddModal)="OpenInstructorAdd(instructorAddModal)"
+                                  (ReloadInstructors)="ReloadInstructors()"
+                                  [TrainingEventID]='TrainingEventID'
+                                  [TrainingEventGroupID]='TrainingEventGroupID'
+                                  >
+    </app-instructor-add-by-search>
+</ng-template>
+
+<ng-template #instructorAddModal>
+    <app-instructor-add-manually (CloseModal)="CloseInstructorAdd()"
+                                 (CloseModalSearch)="CloseInstructorSearch()"
+                                 (ReloadInstructors)="ReloadInstructors()"
+                                 [TrainingEventID]='TrainingEventID'
+                                 [TrainingEventGroupID]='TrainingEventGroupID'
+                                 >
+    </app-instructor-add-manually>
+</ng-template>

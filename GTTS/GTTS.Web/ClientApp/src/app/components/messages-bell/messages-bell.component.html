@@ -1,0 +1,23 @@
+<div>
+    <span mat-button [matMenuTriggerFor]="threadsList" (menuOpened)="onThreadsListOpened()">
+        <i class="far fa-comment " style="font-size: 20px;"></i>
+        <span class="label-warning num-unread-messages-label" [hidden]="numUnreadMessages == 0">{{numUnreadMessages}}</span>
+    </span>
+    <mat-menu #threadsList="matMenu" class="messages-bell-threads">
+        <div class="no-threads-label" *ngIf="threadPreviewsUI.length == 0">No threads to show</div>        
+        <div class="thread-previews-container" [hidden]="threadPreviewsUI.length == 0" (scroll)="onThreadsScroll($event.target)">
+            <table id="tMenuChat" class="table table-hover dataTable no-footer" role="grid">
+                <tbody>
+                    <tr *ngFor="let preview of threadPreviewsUI" role="row" [class.fully-read-thread-preview-container]="preview.numUnreadMessages == 0" (click)="onThreadClick(preview.threadID, preview.title)">
+                        <td class="td-icon"><div class="circle-chat" [hidden]="preview.numUnreadMessages == 0"><label>{{preview.numUnreadMessages}}</label></div></td>
+                        <td>
+                            <label [innerHtml]="preview.title"></label>
+                            <p *ngIf="preview.lastMessageSenderName != null"><b>{{preview.lastMessageSenderName}}:</b> {{preview.lastMessageContent}} </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div style="height:5px;" [hidden]="threadPreviewsUI.length == 0"><!--TODO See all messages--></div>
+    </mat-menu>
+</div>

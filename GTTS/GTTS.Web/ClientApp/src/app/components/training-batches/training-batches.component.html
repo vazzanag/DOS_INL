@@ -1,0 +1,62 @@
+<div class='content-wrapper' style="padding-bottom:25px;">
+    <section class="content-header">
+        <h1>
+            <span class="color-orange">BATCH VIEW / </span> {{TrainingEvent.Name}}
+            <span class="pull-right"><a routerLink="/gtts/training/{{ TrainingEventID }}/participants" title="Back" style="font-size: 14px;" class="color-orange"> Return to Participants View</a></span>
+        </h1>
+    </section>
+    <section class="content">
+        <div class="box">
+            <div class="box-body">
+                <!-- Event Information -->
+                <app-participant-header [TrainingEvent]="TrainingEvent"></app-participant-header>
+                <a #FileDownloadLink name="FileDownloadLink" href=""></a>
+                <div class="col-md-12 text-right" *ngIf="hasRemovedParticipants">
+                    <a id="linkShow" class="color-orange clickbale-link" (click)="ShowRemovedLinkClicked($event)">{{shownRemovedParticipants ? 'Hide' : 'Show'}} removed participants</a>
+                </div>
+                <div class="table-responsive no-overflow-x" style="overflow-y:hidden !important">
+                    <div id="tblVettingBatchViewMain_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="top"></div>
+                        <table #tblVettingBatchViewMain id="tblVettingBatchViewMain" class="table table-hover hide-icon-sort hover text-center no-margin-top dataTable no-footer no-highlight" role="grid" style="width: 1593px;">
+                            <thead>
+                                <tr role="row">
+                                    <th class="show-details sorting_asc" tabindex="0" aria-controls="tblVettingBatchViewMain" rowspan="1" colspan="1" aria-label=": activate to sort column descending" style="width: 28px;" aria-sort="ascending"></th>
+                                    <th class="show-details sorting" tabindex="0" aria-controls="tblVettingBatchViewMain" rowspan="1" colspan="1" aria-label="Batch no.: activate to sort column ascending" style="width: 90px;">Batch no.</th>
+                                    <th class="show-details sorting" tabindex="0" aria-controls="tblVettingBatchViewMain" rowspan="1" colspan="1" aria-label="Tracking no.: activate to sort column ascending" style="width: 390px;">Tracking no.</th>
+                                    <th class="show-details sorting" tabindex="0" aria-controls="tblVettingBatchViewMain" rowspan="1" colspan="1" aria-label="Submission date: activate to sort column ascending" style="width: 196px;">Submission date</th>
+                                    <th class="show-details sorting" tabindex="0" aria-controls="tblVettingBatchViewMain" rowspan="1" colspan="1" aria-label="Need-by date: activate to sort column ascending" style="width: 160px;">Need-by date</th>
+                                    <th class="show-details sorting" tabindex="0" aria-controls="tblVettingBatchViewMain" rowspan="1" colspan="1" aria-label="Leahy / Courtesy: activate to sort column ascending" style="width: 198px;">Leahy / Courtesy</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tblVettingBatchViewMain" rowspan="1" colspan="1" aria-label="No. participants: activate to sort column ascending" style="width: 193px;">No. participants</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tblVettingBatchViewMain" rowspan="1" colspan="1" aria-label="Message: activate to sort column ascending" style="width: 108px;">Message</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tblVettingBatchViewMain" rowspan="1" colspan="1" aria-label="Result: activate to sort column ascending" style="width: 86px;">Result</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tblVettingBatchViewMain" rowspan="1" colspan="1" aria-label="Submission date: activate to sort column ascending">Submission date (yyyy/MM/dd)</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tblVettingBatchViewMain" rowspan="1" colspan="1" aria-label="Need-by date: activate to sort column ascending">Need-by date (yyyy/MM/dd)</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tblVettingBatchViewMain" rowspan="1" colspan="1" aria-label="Event start: activate to sort column ascending">Tracking no. part1</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tblVettingBatchViewMain" rowspan="1" colspan="1" aria-label="Event start: activate to sort column ascending">Tracking no. part2</th>
+                                    <th class="sorting" tabindex="0" aria-controls="tblVettingBatchViewMain" rowspan="1" colspan="1" aria-label="Event start: activate to sort column ascending">Tracking no. part3</th>
+
+
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ng-template #participantFormModal>
+            <app-participant-form (CloseModal)="ParticipantForm_Close($event)"
+                                  [RequestedAction]="'Update'"
+                                  [TrainingEventID]="TrainingEventID"
+                                  [PersonID]="PersonID"
+                                  [Context]="participantContext.TrainingEvent">
+            </app-participant-form>
+        </ng-template>
+        <!--<ng-template #documentsModal>
+            <app-files-modal [Files]="participantFileAttachments"
+                             (OnFileDrop)="Documents_OnFileDrop($event)"
+                             (OnFileDeleted)="Documents_OnFileDeleted($event)"
+                             (Close)="FilesModal_Close($event)">
+            </app-files-modal>
+        </ng-template>-->
+    </section>
+</div>

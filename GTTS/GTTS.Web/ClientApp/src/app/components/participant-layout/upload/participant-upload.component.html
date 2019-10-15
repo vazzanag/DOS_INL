@@ -1,0 +1,197 @@
+<input type="file" #file style="display: none" (change)="OnUploadParticipantsXLXS()" />
+<style>
+    td.mat-cell, td.mat-footer-cell, th.mat-header-cell {
+        text-align: center;
+    }
+
+    .listCell[_ngcontent-c11] {
+        font-size: 14px;
+        text-align: center;
+        padding-right: 5px;
+    }
+</style>
+
+<div class='container-fluid'>
+    <div class='row'>
+        <section class="col-xs-12 content-header">
+            <div class="col-sm-9 col-xs-12 no-padding content-header">
+                <h1 class="header-padding-top font-16">
+                    Review all participant data carefully. Click on participant to edit his/her data or remove from import. If all data is correct, click “Import participants” to add these participants to your event.
+                </h1>
+            </div>
+            <div class="col-sm-3 col-xs-12 no-padding">
+                <span class="pull-right">
+                    <button class="btn btn-rounded btn-default" (click)="AddFile()">Select XLS</button>&nbsp;
+                    <button *ngIf="Participants && Participants.length > 0" class="btn btn-rounded bColorPrimary" (click)="Import()">Import participants</button>
+                </span>
+            </div>
+
+        </section>
+    </div>
+    <div style="padding:5px; background-color:white; margin-top: 5px;">
+        <div class="row">
+            <div class="col-sm-12">
+                <table mat-table [dataSource]="Participants" class="table dataTable table-hover hide-icon-sort hover no-footer" style="width:100%;">
+                    <!-- Type Column -->
+                    <ng-container matColumnDef="ParticipantXLSXID">
+                        <th *matHeaderCellDef class="valign-middle sorting" style="width:54px;"> </th>
+                        <td class="listCell" mat-cell *matCellDef="let participant">
+                            <a class="far fa-trash-alt fa-2x color-blue" (click)="onDeleteParticipantClick(participant)"></a>
+                        </td>
+                    </ng-container>
+
+                    <!-- Type Column -->
+                    <ng-container matColumnDef="Type">
+                        <th *matHeaderCellDef class="valign-middle sorting" style="width:54px;"> Type </th>
+                        <td class="listCell" mat-cell *matCellDef="let participant"
+                            (click)="onParticipantClick(participant)"
+                            style="cursor: pointer"
+                            [ngClass]="{'approvedVetting' : participant.IsApprovedVettingValidByEventStartDate,'rejectedVetting' : participant.LastVettingStatusCode === 'Rejected','suspendedVetting' : participant.LastVettingStatusCode === 'Suspended' }">
+                            {{participant.ParticipantStatus}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Full Name Column -->
+                    <ng-container matColumnDef="Name">
+                        <th *matHeaderCellDef class="valign-middle sorting" style="width: 175px;"> Name </th>
+                        <td class="listCell" mat-cell *matCellDef="let participant" [matTooltip]="ToolTip(participant.NameValidationMessage)"
+                            [ngClass]="{'approvedVetting' : participant.IsApprovedVettingValidByEventStartDate,'rejectedVetting' : participant.LastVettingStatusCode === 'Rejected','suspendedVetting' : participant.LastVettingStatusCode === 'Suspended' }"
+                            [ngStyle]="{'color': IsValidPropertyValue(participant.IsNameValid)}">
+                            <a *ngIf="participant.PersonID && participant.PersonID > 0; else noPersonIdContent" (click)="ShowPersonView(participant.PersonID, participant.FirstMiddleName + ' ' + participant.LastName)" [ngStyle]="{'color': IsValidPropertyValue(participant.IsNameValid)}">
+                                {{ participant.FirstMiddleName + ' ' + participant.LastName }}
+                            </a>
+                            <ng-template #noPersonIdContent>{{participant.FirstMiddleName + ' ' + participant.LastName}}</ng-template>
+                        </td>
+                    </ng-container>
+
+
+                    <!-- NationalID Column -->
+                    <ng-container matColumnDef="NationalID">
+                        <th *matHeaderCellDef class="valign-middle sorting" style="width: 139px;"> National ID </th>
+                        <td class="listCell" mat-cell *matCellDef="let participant" [matTooltip]="ToolTip(participant.NationalIDValidationMessage)"
+                            (click)="onParticipantClick(participant)"
+                            style="cursor: pointer"
+                            [ngClass]="{'approvedVetting' : participant.IsApprovedVettingValidByEventStartDate,'rejectedVetting' : participant.LastVettingStatusCode === 'Rejected','suspendedVetting' : participant.LastVettingStatusCode === 'Suspended' }"
+                            [ngStyle]="{'color': IsValidPropertyValue(participant.IsNationalIDValid)}">
+                            {{participant.NationalID}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Date of Birth Column -->
+                    <ng-container matColumnDef="DOB">
+                        <th *matHeaderCellDef class="valign-middle sorting" style="width: 66px;"> DOB </th>
+                        <td class="listCell" mat-cell *matCellDef="let participant" [matTooltip]="ToolTip(participant.DOBValidationMessage)"
+                            (click)="onParticipantClick(participant)"
+                            style="cursor: pointer"
+                            [ngClass]="{'approvedVetting' : participant.IsApprovedVettingValidByEventStartDate,'rejectedVetting' : participant.LastVettingStatusCode === 'Rejected','suspendedVetting' : participant.LastVettingStatusCode === 'Suspended' }"
+                            [ngStyle]="{'color': IsValidPropertyValue(participant.IsDOBValid)}">
+                            {{participant.DOB | date: 'MM/dd/yyyy'}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Gender Column -->
+                    <ng-container matColumnDef="Gender">
+                        <th *matHeaderCellDef class="valign-middle sorting" style="width: 46px;"> Gender </th>
+                        <td class="listCell" mat-cell *matCellDef="let participant" [matTooltip]="ToolTip(participant.GenderValidationMessage)"
+                            (click)="onParticipantClick(participant)"
+                            style="cursor: pointer"
+                            [ngClass]="{'approvedVetting' : participant.IsApprovedVettingValidByEventStartDate,'rejectedVetting' : participant.LastVettingStatusCode === 'Rejected','suspendedVetting' : participant.LastVettingStatusCode === 'Suspended' }"
+                            [ngStyle]="{'color': IsValidPropertyValue(participant.IsGenderValid)}">
+                            {{participant.Gender}}
+                        </td>
+                    </ng-container>
+
+                    <!-- POB Column -->
+                    <ng-container matColumnDef="POB">
+                        <th *matHeaderCellDef class="valign-middle sorting" style="width: 81px;"> POB</th>
+                        <td class="listCell" mat-cell *matCellDef="let participant" [matTooltip]="ToolTip(participant.POBValidationMessage)"
+                            (click)="onParticipantClick(participant)"
+                            style="cursor: pointer"
+                            [ngClass]="{'approvedVetting' : participant.IsApprovedVettingValidByEventStartDate,'rejectedVetting' : participant.LastVettingStatusCode === 'Rejected','suspendedVetting' : participant.LastVettingStatusCode === 'Suspended' }"
+                            [ngStyle]="{'color': IsValidPropertyValue(participant.IsPOBValid)}">
+                            {{participant.POBCity + ','}} <br /> {{ participant.POBState + ',' }} <br /> {{ participant.POBCountry}}
+                        </td>
+                    </ng-container>
+
+                    <!-- UnitGenID Column -->
+                    <ng-container matColumnDef="UnitGenID">
+                        <th *matHeaderCellDef class="valign-middle sorting" style="width: 77px;">Unit ID </th>
+                        <td class="listCell" mat-cell *matCellDef="let participant" [matTooltip]="ToolTip(participant.UnitGenIDValidationMessage)"
+                            (click)="onParticipantClick(participant)"
+                            style="cursor: pointer"
+                            [ngStyle]="{'color': IsValidPropertyValue(participant.IsUnitGenIDValid)}">
+                            {{participant.UnitGenID}}
+                        </td>
+                    </ng-container>
+
+                    <!-- UnitBreakdown Column -->
+                    <ng-container matColumnDef="Unit">
+                        <th *matHeaderCellDef class="valign-middle sorting" style="width: 447px;"> Unit </th>
+                        <td class="listCell" mat-cell *matCellDef="let participant" [matTooltip]="ToolTip(participant.UnitValidationMessage)"
+                            (click)="onParticipantClick(participant)"
+                            style="cursor: pointer"
+                            [ngStyle]="{'color': IsValidPropertyValue(participant.IsUnitValid)}">
+                            <b>{{ participant.UnitName }} </b>  {{ participant.UnitParents }}
+                        </td>
+                    </ng-container>
+
+                    <!-- Rank / Position Column -->
+                    <ng-container matColumnDef="Rank">
+                        <th *matHeaderCellDef class="valign-middle sorting" style="width: 90px;"> Position/<br />Rank</th>
+                        <td class="listCell" mat-cell *matCellDef="let participant" [matTooltip]="ToolTip(participant.RankValidationMessage)"
+                            (click)="onParticipantClick(participant)"
+                            style="cursor: pointer"
+                            [ngClass]="{'approvedVetting' : participant.IsApprovedVettingValidByEventStartDate, 'rejectedVetting' : participant.LastVettingStatusCode === 'Rejected','suspendedVetting' : participant.LastVettingStatusCode === 'Suspended' }"
+                            [ngStyle]="{'color': IsValidPropertyValue(participant.IsRankValid)}">
+                            {{participant.JobTitle}} <br />{{participant.Rank}}
+                        </td>
+                    </ng-container>
+
+                    <!-- IsUnitCommander Column -->
+                    <ng-container matColumnDef="IsUnitCommander">
+                        <th *matHeaderCellDef class="valign-middle sorting" style="width: 75px;"> Unit <br />Commander</th>
+                        <td (click)="onParticipantClick(participant)"
+                            style="cursor: pointer"
+                            class="listCell" mat-cell *matCellDef="let participant" [ngClass]="{'approvedVetting' : participant.IsApprovedVettingValidByEventStartDate,'rejectedVetting' : participant.LastVettingStatusCode === 'Rejected','suspendedVetting' : participant.LastVettingStatusCode === 'Suspended' }">
+                            {{participant.IsUnitCommander}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="VettingType">
+                        <th *matHeaderCellDef class="valign-middle sorting" style="width: 56px;"> Leahy/<br />Courtesy </th>
+                        <td (click)="onParticipantClick(participant)"
+                            style="cursor: pointer"
+                            class="listCell" style="text-align:center;max-width:100px;" mat-cell *matCellDef="let participant" [ngClass]="{'approvedVetting' : participant.IsApprovedVettingValidByEventStartDate,'rejectedVetting' : participant.LastVettingStatusCode === 'Rejected','suspendedVetting' : participant.LastVettingStatusCode === 'Suspended' }">
+                            {{participant.VettingType}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="LastClearance">
+                        <th *matHeaderCellDef class="valign-middle sorting" style="width:115px;"> Last Vetting Result </th>
+                        <td (click)="onParticipantClick(participant)"
+                            style="cursor: pointer"
+                            class="listCell" mat-cell *matCellDef="let participant" [ngClass]="{'approvedVetting' : participant.IsApprovedVettingValidByEventStartDate,'rejectedVetting' : participant.LastVettingStatusCode === 'Rejected','suspendedVetting' : participant.LastVettingStatusCode === 'Suspended' }">
+                            {{participant.LastVettingTypeCode + ' ' + participant.LastVettingStatusCode}}<br />{{participant.LastVettingExpirationExpression}}
+                        </td>
+                    </ng-container> -->
+
+                    <tr mat-header-row *matHeaderRowDef="DisplayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: DisplayedColumns;" style="border-bottom:1px solid #707070;height:35px;text-align:center;"></tr>
+                </table>
+                <br />
+            </div>
+        </div>
+    </div>
+    <ng-template #personview>
+        <app-person-view-layout (CloseModal)="CloseModal()" [PersonID]="SelectedPersonID" [PersonName]="SelectedPersonName" [ShowOnlyHistory]="ShowOnlyHistory"></app-person-view-layout>
+    </ng-template>
+    <ng-template #participantEditForm>
+        <app-participant-form (CloseModal)="CloseModal()"
+                              [TrainingEventID]="TrainingEventID"
+                              [ParticipantXLSXID]="selectedParticipantXLSXID"
+                              [RequestedAction]="'Update'"
+                              [Context]="participantContext">
+        </app-participant-form>
+    </ng-template>
+</div>
+

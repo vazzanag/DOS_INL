@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 126 42">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #699228;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        font-size: 12px;
+        font-family: SegoeUI-Bold, Segoe UI;
+        font-weight: 700;
+      }
+
+      .cls-4 {
+        filter: url(#Rectangle_1577);
+      }
+    </style>
+    <filter id="Rectangle_1577" x="0" y="0" width="126" height="42" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.161"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_168" data-name="Group 168" transform="translate(-5341 81)">
+    <g class="cls-4" transform="matrix(1, 0, 0, 1, 5341, -81)">
+      <rect id="Rectangle_1577-2" data-name="Rectangle 1577" class="cls-1" width="108" height="24" rx="5" transform="translate(9 6)"/>
+    </g>
+    <g id="Group_67" data-name="Group 67" transform="translate(4072 -174.333)">
+      <text id="EDIT_STATUS" data-name="EDIT STATUS" class="cls-2" transform="translate(1305 116)"><tspan x="0" y="0">EDIT STATUS</tspan></text>
+    </g>
+    <path id="pencil-alt" class="cls-3" d="M.509,4.961,2.095,6.547a.413.413,0,0,0,.585,0L6.5,2.728a.413.413,0,0,0,0-.585L4.912.557a1.655,1.655,0,0,0-2.336,0L.509,2.625A1.649,1.649,0,0,0,.509,4.961ZM7.86,3.506l9.034,9.034.729,4.18a.827.827,0,0,1-.956.956l-4.18-.733L3.453,7.909a.413.413,0,0,1,0-.585L7.272,3.506a.417.417,0,0,1,.588,0Zm5.508,8.26a.48.48,0,0,0,0-.681l-5.3-5.3a.482.482,0,1,0-.681.681l5.3,5.3a.48.48,0,0,0,.681,0Zm1.242,2.893H12.958v1.249l2.219.389,1.07-1.07-.389-2.219H14.61Z" transform="translate(5355.012 -73.021)"/>
+  </g>
+</svg>

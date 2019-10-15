@@ -1,0 +1,283 @@
+<div class="content-wrapper" style="min-height: 838px;">
+
+
+    <section class="content-header">
+        <h1 class="header-blue">
+            <span class="color-orange"> {{model.TrainingEventBusinessUnitAcronym}} /</span> {{model.VettingBatchName}} (Batch {{model.VettingBatchOrdinal}})
+            <span class="vetting-sec-title" *ngIf="dataLoaded">
+                {{trainingEventLocation.EventStartDate | date:'MM/dd/yyyy'}} - {{trainingEventLocation.EventEndDate | date:'MM/dd/yyyy'}},  {{trainingEventLocation.CityName}}, {{trainingEventLocation.StateName}}, {{trainingEventLocation.CountryName}}
+            </span>
+            <span class="pull-right">
+                <span class="vetting-poc-title">
+                    Request POC: <a href="#" class="color-blue">{{ model.SubmittedAppUserName }}</a>
+                </span>
+            </span>
+        </h1>
+    </section>
+    <section class="content">
+        <div class="box no-top-border rounded">
+            <div class="box-header no-padding-sides no-padding-bottom">
+                <div class="col-md-12 no-padding-right no-padding no-overflow-y" *ngIf="dataLoaded">
+                    <table class="table table-responsive plain-table hide-icon-sort dataTable no-padding-right no-footer text-center no-margin-bottom" style="padding-right: 0px !important" role="grid">
+                        <thead>
+                            <tr role="row">
+                                <th>Tracking no.</th>
+                                <th>Leahy / Courtesy</th>
+                                <th>Funding source</th>
+                                <th>Authorizing law</th>
+                                <th>Assigned to</th>
+                                <th>Date submitted</th>
+                                <th [class.hiddenCol]="courtesyVetter">Need-by date</th>
+                                <th>Status</th>
+                                <th [class.hiddenCol]="courtesyVetter">Message</th>
+                                <th>Comments</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td width="12.12%">{{model.GTTSTrackingNumber}}</td>
+                                <td width="12.12%">{{model.VettingBatchType}}</td>
+                                <td width="12.12%">{{model.VettingFundingSource}}</td>
+                                <td width="12.12%">{{model.AuthorizingLaw}}</td>
+                                <td width="12.12%">
+                                    <select class="form-control" style="padding: 0px 0px !important" name="AssignedUser" [(ngModel)]="model.AssignedToAppUserID" (change)="AssignUserChange($event)">
+                                        <option value="null"></option>
+                                        <option *ngFor="let user of AssignableAppUsers" [value]="user.AppUserID">{{user.First}} {{user.Last}}</option>
+                                    </select>
+                                </td>
+                                <td width="12.12%">{{model.DateSubmitted | date:'MM/dd/yyyy'}}</td>
+                                <td width="12.12%" [class.hiddenCol]="courtesyVetter">{{model.DateVettingResultsNeededBy | date:'MM/dd/yyyy'}}</td>
+                                <td width="12.12%">{{model.VettingBatchStatusDisplay}}</td>
+                                <td [class.hiddenCol]="courtesyVetter">
+                                    <a *ngIf="hasMessages && !courtesyVetter" class="fa fa-comment fa-comment-size pointer" (click)="VettingBatchMessageClick()">
+                                        <span class="tooltiptext" style="width:200px; font-family: Source Sans Pro,Helvetica Neue,Helvetica,Arial,sans-serif; font-size:14px; top:-5px; right:105%">Click to send message re: {{model.GTTSTrackingNumber}}</span>
+                                    </a>
+                                    <a *ngIf="!hasMessages && !courtesyVetter" class="fa fa-comment-o fa-comment-size pointer" (click)="VettingBatchMessageClick()">
+                                        <span class="tooltiptext" style="width:200px; font-family: Source Sans Pro,Helvetica Neue,Helvetica,Arial,sans-serif; font-size:14px; top:-5px; right:105%">Click to send message re: {{model.GTTSTrackingNumber}}</span>
+                                    </a>
+                                </td>
+                                <td rowspan="2"><textarea name="Comments" style="min-width:250px; min-height:105px;" class="textarea-datatable" [disabled]="model.CommentsDisabled" [(ngModel)]="model.Comments" (change)="SaveComment()">{{model.Comments}}</textarea></td>
+                            </tr>
+
+                            <tr class="no-border">
+                                <td colspan="8">
+                                    <div>
+                                        <span class="pull-left" *ngIf="model.VettingBatchStatus.toUpperCase() == 'SUBMITTED'">
+                                            <button class="btn btn-adjust btn-md rounded bColorSecondary pull-left margin-l-15" data-toggle="modal" data-target="#genericModal" (click)="OpenModal(vettingRejectForm, 'modal-md')">Reject</button>
+                                        </span>
+
+                                        <span class="pull-left" *ngIf="model.VettingBatchStatus.toUpperCase() == 'SUBMITTED' && ShowAcceptButton">
+                                            <button class="btn btn-adjust btn-md rounded bColorPrimary pull-left margin-l-15" (click)="AcceptVettingBatch($event)">Accept</button>
+                                        </span>
+
+                                        <span class="pull-left" *ngIf="(model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatus.toUpperCase() == 'ACCEPTED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO COURTESY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED TO COURTESY')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'COURTESY COMPLETED' && model.VettingBatchStatus.toUpperCase() == 'COURTESY COMPLETED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED TO LEAHY' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO LEAHY')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'LEAHY COMPLETED' && model.VettingBatchStatus.toUpperCase() == 'LEAHY RESULTS RETURNED') ">
+                                            <button class="btn btn-md rounded bColorPrimary btn-adjust pull-left margin-l-15" (click)="GenerateLeahySpreadsheetClick()">Generate Leahy XLS</button>
+                                            <br><span *ngIf="model.DateLeahyFileGenerated !== null">{{model.DateLeahyFileGenerated | date: 'MM/dd/yyyy'}}</span>
+                                        </span>
+
+                                        <span class="pull-left" *ngIf="(model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatus.toUpperCase() == 'ACCEPTED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO COURTESY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED TO COURTESY')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'COURTESY COMPLETED' && model.VettingBatchStatus.toUpperCase() == 'COURTESY COMPLETED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED TO LEAHY' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO LEAHY')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'LEAHY COMPLETED' && model.VettingBatchStatus.toUpperCase() == 'LEAHY RESULTS RETURNED') ">
+                                            <input type="text" name="LEAHYTrackingNumber" [(ngModel)]="model.LeahyTrackingNumber" (change)="SaveLeahyTrackingNumber()" class="pull-left margin-l-15" />
+                                            <a #InvestDownloadLink name="InvestDownloadLink" href=""></a>
+                                        </span>
+
+                                        <span class="pull-left" *ngIf="(model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatus.toUpperCase() == 'ACCEPTED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatus.toUpperCase() == 'ACCEPTED' && model.DateLeahyFileGenerated !== null)
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO COURTESY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED TO COURTESY')
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatusDisplay == 'Courtesy Completed' && model.VettingBatchStatus.toUpperCase() == 'COURTESY COMPLETED')
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatus.toUpperCase() == 'CLOSED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO COURTESY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED TO COURTESY')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'Vetting complete' && !model.IsSubmitted)
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'Vetting complete' && model.IsSubmitted)
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'Results submitted')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'COURTESY COMPLETED' && model.VettingBatchStatus.toUpperCase() == 'COURTESY COMPLETED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED TO LEAHY' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO LEAHY')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'LEAHY COMPLETED' && model.VettingBatchStatus.toUpperCase() == 'LEAHY RESULTS RETURNED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'RESULTS NOTIFIED' && model.VettingBatchStatus.toUpperCase() == 'CLOSED') ">
+                                            <button class="btn btn-md rounded bColorPrimary btn-adjust pull-left margin-l-15" (click)="SubmitToCourtesy($event)" [disabled]="model.VettingBatchStatus.toUpperCase() != 'ACCEPTED'">Submit to Courtesy</button>
+                                            <br><span *ngIf="model.VettingBatchStatus.toUpperCase() != 'ACCEPTED'">{{model.DateSentToCourtesy | date: 'MM/dd/yyyy'}}</span>
+                                        </span>
+
+                                        <span class="pull-left" *ngIf="(model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'COURTESY COMPLETED' && model.VettingBatchStatus.toUpperCase() == 'COURTESY COMPLETED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED TO LEAHY' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO LEAHY')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'LEAHY COMPLETED' && model.VettingBatchStatus.toUpperCase() == 'LEAHY RESULTS RETURNED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'RESULTS NOTIFIED' && model.VettingBatchStatus.toUpperCase() == 'CLOSED') ">
+                                            <button class="btn btn-md rounded bColorPrimary btn-adjust pull-left margin-l-15" (click)="SubmitToLeahy($event)" [disabled]="model.DateSentToLeahy !== null">Submit to Leahy</button>
+                                            <br><span *ngIf="model.DateSentToLeahy !== null">{{model.DateSentToLeahy | date: 'MM/dd/yyyy'}}</span>
+                                        </span>
+
+                                        <span class="pull-left" *ngIf="model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED TO LEAHY' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO LEAHY'">
+                                            <label class="btn btn-md rounded bColorPrimary btn-adjust pull-left margin-l-15" title="Attach file">
+                                                Upload Leahy Results
+                                                <input id="fileAttachOther" class="attach-input pull-left margin-l-15" style="display: none;" value="Attach" type="file" accept=".xls,.xlsx" (change)="onAttachmentInputChange($event.target.files[0])">
+                                            </label>
+                                        </span>
+                                        <span class="pull-left" *ngIf="(model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'LEAHY COMPLETED' && model.VettingBatchStatus.toUpperCase() == 'LEAHY RESULTS RETURNED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'RESULTS NOTIFIED' && model.VettingBatchStatus.toUpperCase() == 'CLOSED') ">
+                                            <button class="btn btn-md rounded bColorPrimary btn-adjust pull-left margin-l-15" disabled>Upload Leahy Results</button>
+                                            <br><span>{{model.DateLeahyResultsReceived | date: 'MM/dd/yyyy'}}</span>
+                                            <span *ngIf="model.VettingBatchStatusDisplay.toUpperCase() == 'LEAHY COMPLETED'" class="pull-left" style="padding-left:5px"><img src="../../../assets/images/excel-icon.png" style="height:50%; margin-top:0px;" (click)="LeahyDownload()" /></span>
+                                            <a #LeahyDownloadLink name="InvestDownloadLink" href="" visible="false"></a>
+                                        </span>
+
+                                        <span class="pull-left" *ngIf="(model.VettingBatchType.toUpperCase() == 'COURTESY' && consularVetter &&  model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO COURTESY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED')
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && consularVetter && model.VettingBatchStatusDisplay == 'In progress')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'Submitted' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO COURTESY' && courtesyVetter)
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'In progress' && courtesyVetter) ">
+                                            <button class="btn btn-md rounded bColorPrimary btn-adjust pull-left margin-l-15" (click)="GenerateINKFile($event)">Generate INK File</button>
+                                        </span>
+
+                                        <span class="pull-left" *ngIf="(model.VettingBatchType.toUpperCase() == 'COURTESY' && consularVetter &&  model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO COURTESY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED')
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && consularVetter && model.VettingBatchStatusDisplay == 'In progress')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'Submitted' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO COURTESY' && courtesyVetter)
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'In progress' && courtesyVetter) ">
+                                            <input type="text" name="INKTrackingNumber" [(ngModel)]="model.INKTrackingNumber" (change)="SaveINKTrackingNumber()" class="pull-left margin-l-15" />
+                                            <a #INKDownloadLink name="INKDownloadLink" href=""></a>
+                                        </span>
+
+                                        <span class="pull-left" *ngIf="(model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatusDisplay == 'Vetting complete' && !model.IsSubmitted)
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'Vetting complete' && !model.IsSubmitted)
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatusDisplay == 'Vetting complete' && model.IsSubmitted)
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' &&  model.VettingBatchStatusDisplay == 'Results submitted' && model.VettingBatchStatus.toUpperCase() == 'COURTESY COMPLETED')
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatusDisplay == 'Results submitted' && model.VettingBatchStatus.toUpperCase() == 'CLOSED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'Vetting complete' && model.IsSubmitted)
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'Results submitted') ">
+                                            <button class="btn btn-md rounded bColorPrimary btn-adjust pull-left margin-l-15" (click)="SubmitResults($event)" [disabled]="model.CourtesyBatch.ResultsSubmittedDate !== null">Submit results</button>
+                                            <br><span *ngIf="model.CourtesyBatch.ResultsSubmittedDate !== null">{{model.CourtesyBatch.ResultsSubmittedDate | date: 'MM/dd/yyyy'}}</span>
+                                        </span>
+
+                                        <span class="pull-left" *ngIf="(model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatusDisplay == 'Courtesy Completed' && model.VettingBatchStatus.toUpperCase() == 'COURTESY COMPLETED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'LEAHY COMPLETED' && model.VettingBatchStatus.toUpperCase() == 'LEAHY RESULTS RETURNED')
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatus.toUpperCase() == 'CLOSED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'RESULTS NOTIFIED' && model.VettingBatchStatus.toUpperCase() == 'CLOSED') ">
+                                            <button class="btn btn-md rounded bColorPrimary btn-adjust pull-left margin-l-15" (click)="NotifyResults($event)" [disabled]="model.DateVettingResultsNotified !== null">Notify results</button>
+                                            <br><span *ngIf="model.DateVettingResultsNotified !== null">{{model.DateVettingResultsNotified | date: 'MM/dd/yyyy'}}</span>
+                                        </span>
+
+                                        <span class="pull-left" *ngIf="(model.VettingBatchStatus.toUpperCase() == 'SUBMITTED' && ShowAcceptButton)
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatus.toUpperCase() == 'ACCEPTED')
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO COURTESY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED TO COURTESY')
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && !consularVetter &&  model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO COURTESY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED')
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && consularVetter &&  model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO COURTESY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED')
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && consularVetter && model.VettingBatchStatusDisplay == 'In progress')
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatusDisplay == 'Vetting complete' && !model.IsSubmitted)
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatusDisplay == 'Vetting complete' && model.IsSubmitted)
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' &&  model.VettingBatchStatusDisplay == 'Results submitted' && model.VettingBatchStatus.toUpperCase() == 'COURTESY COMPLETED')
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatusDisplay == 'Results submitted' && model.VettingBatchStatus.toUpperCase() == 'CLOSED')
+                                                || (model.VettingBatchType.toUpperCase() == 'COURTESY' && model.VettingBatchStatusDisplay == 'Courtesy Completed' && model.VettingBatchStatus.toUpperCase() == 'COURTESY COMPLETED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatus.toUpperCase() == 'ACCEPTED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO COURTESY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED TO COURTESY')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'Submitted' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO COURTESY' && courtesyVetter)
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'In progress' && courtesyVetter)
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'Vetting complete' && !model.IsSubmitted)
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'Vetting complete' && model.IsSubmitted)
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay == 'Results submitted')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'COURTESY COMPLETED' && model.VettingBatchStatus.toUpperCase() == 'COURTESY COMPLETED')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'SUBMITTED TO LEAHY' && model.VettingBatchStatus.toUpperCase() == 'SUBMITTED TO LEAHY')
+                                                || (model.VettingBatchType.toUpperCase() == 'LEAHY' && model.VettingBatchStatusDisplay.toUpperCase() == 'LEAHY COMPLETED' && model.VettingBatchStatus.toUpperCase() == 'LEAHY RESULTS RETURNED') ">
+                                            <button class="btn btn-md rounded bColorPrimary btn-adjust pull-left margin-l-15" (click)="ExportVettingBatch($event)">Export Batch</button>
+                                            <a #ExportBatchLink name="ExportBatchLink" href=""></a>
+                                        </span>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-md-12 margin-t-10 box-body no-padding">
+                    <div class="table-responsive no-overflow-x" style="overflow-y:hidden">
+                        <div id="tPrimary_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer no-overflow-y">
+                            <div class="top"></div>
+                            <table #tPrimary id="tPrimary" class="table table-hover hover no-footer  hide-icon-sort no-margin-top" role="grid">
+                                <thead>
+                                    <tr role="row">
+                                        <th class="sorting_asc" tabindex="0" aria-controls="tPrimary" rowspan="1" colspan="1" aria-sort="ascending" aria-label="No.: activate to sort column descending" style="width: 3%">No.</th>
+                                        <th style="width:17%;" class="sorting" tabindex="0" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Name: activate to sort column ascending">Name</th>
+                                        <th class="sorting" tabindex="0" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Unit: activate to sort column ascending" style="width: 27%;">Unit</th>
+                                        <th style="width:17%;" class="sorting" tabindex="0" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Last vetting result: activate to sort column ascending">Last vetting result</th>
+                                        <th class="sorting" tabindex="0" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="POL: activate to sort column ascending" style="width: 5%;">POL</th>
+                                        <th class="sorting" tabindex="0" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="DEA: activate to sort column ascending" style="width: 5%;">DEA</th>
+                                        <th class="sorting" tabindex="0" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="DAO: activate to sort column ascending" style="width: 5%;">DAO</th>
+                                        <th class="sorting" tabindex="0" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="INL: activate to sort column ascending" style="width: 5%;">INL</th>
+                                        <th class="sorting" tabindex="0" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="RSO: activate to sort column ascending" style="width: 5%;">RSO</th>
+                                        <th class="sorting" tabindex="0" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="CONS: activate to sort column ascending" style="width: 5%;">CONS</th>
+                                        <th class="sorting" tabindex="0" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="LEAHY: activate to sort column ascending" style="width: 5%;">LEAHY</th>
+                                        <th style="width:5%;" class="text-right sorting" tabindex="0" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Message: activate to sort column ascending">Message</th>
+                                        <th style="width:10%;" tabindex="0" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Action: activate to sort column ascending">Action</th>
+                                    </tr>
+                                </thead>
+                                <tfoot>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th><a *ngIf="personsVettingExists" class="color-orange" style="cursor:pointer;" (click)="ClearRest('POL')">Clear rest</a></th>
+                                        <th><a *ngIf="courtesyVetter && personsVettingExists" class="color-orange" style="cursor:pointer;" (click)="ClearRest('DEA')">Clear rest</a></th>
+                                        <th><a *ngIf="courtesyVetter && personsVettingExists" class="color-orange" style="cursor:pointer;" (click)="ClearRest('DAO')">Clear rest</a></th>
+                                        <th><a *ngIf="courtesyVetter && personsVettingExists" class="color-orange" style="cursor:pointer;" (click)="ClearRest('INL')">Clear rest</a></th>
+                                        <th><a *ngIf="courtesyVetter && personsVettingExists" class="color-orange" style="cursor:pointer;" (click)="ClearRest('RSO')">Clear rest</a></th>
+                                        <th><a *ngIf="courtesyVetter && personsVettingExists" class="color-orange" style="cursor:pointer;" (click)="ClearRest('CONS')">Clear rest</a></th>
+                                        <th><a *ngIf="personsVettingExists" class="color-orange" style="cursor:pointer;" (click)="ClearRestLeahy()">Clear rest</a></th>
+                                        <th></th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<ng-template #persondetail>
+    <app-batch-request-person (CloseModal)="CloseDetail($event)" [participant]="participantToDisplay"></app-batch-request-person>
+</ng-template>
+<ng-template #participantEditForm>
+    <app-participant-edit-vetter (CloseModal)="CloseModal()" (SaveModal)="SaveModal()"
+                                 [TrainingEventID]="trainingEventID"
+                                 [DOB]="selectedPersonDOB"
+                                 [PersonName]="selectedPersonName"
+                                 [PersonVettingID]="selectedPersonVettingID"
+                                 [PersonID]="selectedPersonID"
+                                 [ShowEdit]="ShowEditParticipant" [LeahyGenerated]="model.DateLeahyFileGenerated">
+    </app-participant-edit-vetter>
+</ng-template>
+<ng-template #vettingSkipForm>
+    <app-vetting-skip-courtesy (CloseModal)="CloseModal()"
+                               [ReadOnly]="modalReadOnly"
+                               [PersonVettingID]="selectedPersonVettingID"
+                               [VettingTypeID]="selectedVettingTypeID">
+    </app-vetting-skip-courtesy>
+</ng-template>
+<ng-template #vettingRejectForm>
+    <app-batch-reject (CloseModal)="CloseModal()" [vettingBatchItem]="model" (VettingBatchRejected)="RejectVettingBatch($event)">
+    </app-batch-reject>
+</ng-template>
+<ng-template #courtesyHitForm>
+    <app-vetting-hit-form (CloseModal)="CloseModal()" [PersonVettingID]="selectedPersonVettingID" (SaveModal)="SaveModal($event)"
+                          [VettingTypeID]="selectedVettingTypeID" [VettingType]="selectedVettingType"
+                          [RequestPOC]="model.SubmittedAppUserName" [ConsularVetter]="consularVetter"
+                          [DOB]="selectedPersonDOB"
+                          [PersonName]="selectedPersonName"
+                          [ReadOnly]="modalReadOnly"></app-vetting-hit-form>
+</ng-template>
+<ng-template #leahyHitForm>
+    <app-leahy-vetting-form (CloseModal)="CloseModal()"
+                            [PersonVettingID]="selectedPersonVettingID"
+                            [DOB]="selectedPersonDOB"
+                            [PersonName]="selectedPersonName"
+                            [ReadOnly]="modalReadOnly"
+                            [ReadOnlyNotes]="modalReadOnlyNotes"
+                            (SaveModal)="SaveModal($event)"></app-leahy-vetting-form>
+</ng-template>

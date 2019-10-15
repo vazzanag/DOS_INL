@@ -1,0 +1,59 @@
+<div class="modal-content">
+    <div class="modal-header no-border">
+
+        <div class="col-md-12">
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <h4 class="modal-title text-center">Visa Checklist</h4>
+            </div>
+
+            <div class="col-md-3">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="position: absolute;right: -13px;" (click)="Cancel()"><span aria-hidden="true">×</span></button>
+                <div id="custom-search-input">
+                    <div class="input-group col-md-12">
+                        <input #searchDynamic name="q" type="text" class="search-query form-control" placeholder="Search">
+                        <span class="input-group-btn">
+                            <button name="search" id="search-btn" class="btn btn-danger index10" type="button" (click)="searchVisaCheckList($event);">
+                                <span class=" fa fa-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-body no-padding-top-bottom">
+        <div class="table-responsive no-padding-left no-overflow-x row">
+            <div id="tblParticipantVisaChecklistMain_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                <div class="top"></div>
+                <table #tblParticipantVisaChecklistMain class="table table-hover hide-icon-sort hover no-footer table-responsive dataTable" role="grid" style="width: 100%; margin-top: 0px !important; font-size: 12px;">
+                    <caption></caption>
+                    <thead>
+                        <tr>
+                            <th class="valign-middle">No.</th>
+                            <th class="valign-middle">Name</th>
+                            <th class="valign-middle">Agency</th>
+                            <th class="valign-middle">Vetting</th>
+                            <th class="valign-middle" width="6%">Host nation correspondence</th>
+                            <th class="valign-middle" width="6%">USG correspondence</th>
+                            <th class="valign-middle" width="6%">Application complete</th>
+                            <th class="valign-middle" width="6%">Passport / photos</th>
+                            <th class="valign-middle">Application submitted</th>
+                            <th class="valign-middle">Visa status</th>
+                            <th class="valign-middle">ID</th>
+                            <th class="valign-middle">Comments</th>
+                        </tr>
+                    </thead>
+
+                </table>
+                <div class="bottom"></div><div class="clear"></div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-rounded" style="" (click)="Cancel()">Close</button>
+        <button type="button" class="btn btn-rounded btn-primary" id="btnSave" (click)="SaveVisaCheckList($event)">Save</button>
+    </div>
+</div>

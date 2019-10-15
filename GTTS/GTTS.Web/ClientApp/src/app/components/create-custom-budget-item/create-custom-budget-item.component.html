@@ -1,0 +1,33 @@
+
+<div class="modal-header">
+    <button type="button" class="close" (click)="onCancelClick()" style="min-width: 0; padding: 0" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" style="vertical-align: middle !important;">
+        Add cost
+    </h4>
+</div>
+<div class="modal-body no-overflow-x color-general-body">
+    <div class="panel panel-default" style="margin-bottom: 0px;">
+
+        <div class="panel-body">
+            <div class="form-group">
+                <label class="color-darkgray">Cost name / description:</label>
+                <input #nameInput autofocus type="text" class="form-control" [(ngModel)]="model.item.name" />
+            </div>
+            <div class="form-group">
+                <label class="color-darkgray">Estimated cost:</label>
+                <input type="number" min="0" class="form-control" [(ngModel)]="model.item.cost" />
+            </div>
+            <div class="form-group">
+                <label class="color-darkgray">Select cost configuration:</label>
+                <select id="cOption" class="form-control" (change)="onSupportsChange($event.target.value)">
+                    <option value="0" selected>Cost * pax</option>
+                    <option value="1">Cost * days</option>
+                    <option value="2">Cost * pax * days</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="form-group text-right" style="height: 48px">
+    <button type="button" style="float: right" class="btn btn-rounded btn-primary" [disabled]="!model.item.name || !model.item.cost || model.item.cost < 0" (click)="onDoneClick()" data-dismiss="modal">Create</button>
+</div>

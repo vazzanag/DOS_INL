@@ -1,0 +1,99 @@
+<div id="tabPersonalInformation" class="tab-pane active in" *ngIf="IsDataLoaded === true">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Date of birth</label>
+                        <div class="input-group date">
+                            <input type="text" class="form-control" value="{{PersonViewResult.DOB | date:'MM/dd/yyyy'}}" [disabled]="!isEdit" />
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="txtNationalId">National ID</label>
+                        <input type="text" class="form-control" id="txtNationalId" value={{PersonViewResult.NationalID}} [disabled]="!isEdit" />
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="rdoGender">Gender</label>
+                        <input type="text" class="form-control" id="txtGender" value={{PersonViewResult.Gender}} [disabled]="!isEdit" />
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Is US citizen?</label>
+                        <input type="text" class="form-control" value={{IsCitizen}} [disabled]="!isEdit" />
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label>Place of birth</label>
+                        <input type="text" class="form-control" id="txtPlaceBirth" value={{PersonViewResult.PlaceOfBirth}} [disabled]="!isEdit" />
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label>Place of residence</label>
+                        <input type="text" class="form-control" id="txtPlaceResidence" value={{PersonViewResult.PlaceOfResidence}} [disabled]="!isEdit" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Language(s)</label>
+                        <input type="text" class="form-control" id="txtLanguage" value={{Languages}} [disabled]="!isEdit" *ngIf="!isEdit; else selectBlock" />
+                        <ng-template #selectBlock></ng-template>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Education level</label>
+                        <input type="text" class="form-control" id="txtEducation" value={{PersonViewResult.EducationLevel}} [disabled]="!isEdit" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="text" class="form-control" id="txtEmail" value={{PersonViewResult.ContactEmail}} [disabled]="!isEdit" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Telephone</label>
+                        <input type="text" class="form-control" id="txtTelephone" value={{PersonViewResult.ContactPhone}} [disabled]="!isEdit" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>National ID document(s)</label>
+                        <div>
+                            <div *ngFor="let document of nationalIDDocuments; let i = index">
+                                <div class="col-md-1" [ngClass]="{'left-style': i%2 != 0, 'right-style': i%2 === 0 }">
+                                    <app-file-attachment [file]="MapPersonAttachmentToFileAttachment(document)"
+                                                         [ShowFileName]="false">
+                                    </app-file-attachment>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

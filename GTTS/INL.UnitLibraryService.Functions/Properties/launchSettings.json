@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "INL.UnitLibraryService.Functions": {
+      "commandName": "Project",
+      "commandLineArgs": "host start --pause-on-error --nodeDebugPort 5881"
+    }
+  }
+}

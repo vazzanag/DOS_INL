@@ -1,0 +1,7 @@
+.box{
+    margin-bottom: 0;
+}
+.box-body {
+    max-height: calc(100vh - 315px) !important;
+    overflow-y: auto !important;
+}

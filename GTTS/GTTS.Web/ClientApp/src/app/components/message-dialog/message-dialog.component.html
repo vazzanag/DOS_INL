@@ -1,0 +1,28 @@
+<div class="modal-header" style="padding: 6px;">
+    <span style="float: left; margin: 4px; font-size: x-large">
+        <label *ngIf="model.type === type.Warning" class="fal fa-exclamation-triangle color-alert"></label>
+        <label *ngIf="model.type === type.Error" class="fal fa-times-circle color-error"></label>
+    </span>
+    <h4 class="modal-title" style="vertical-align: middle !important; margin: 8px; margin-left: 40px;">
+        {{model.title}}
+    </h4>
+</div>
+<div class="no-overflow-x color-general-body">
+    <div style="background-color: #FFFFFF; border-bottom-color: #F4F4F4; border-bottom: 1px solid #e5e5e5;">
+        <div class="panel-body">
+            <span *ngIf="!model.isHTML">{{ model.message }}</span>
+            <div *ngIf="model.isHTML" [innerHTML]="model.message"></div>
+            <div *ngIf="model.list && model.list.length > 0">
+                <br>
+                <mat-selection-list #list>
+                    <mat-list-option *ngFor="let listItem of model.list"> *  {{ listItem}} <br /></mat-list-option>
+                </mat-selection-list>
+            </div>
+        </div>
+    </div>
+</div>
+<div style="height: 48px;">
+    <button *ngIf="model.positiveLabel" class="secondary-button" style="float: right" (click)="onPositiveClick()">{{model.positiveLabel}}</button>
+    <button *ngIf="model.neutralLabel" class="secondary-button" style="float: right" (click)="onNeutralClick()">{{model.neutralLabel}}</button>
+    <button *ngIf="model.negativeLabel" class="secondary-button" style="float: right" (click)="onNegativeClick()">{{model.negativeLabel}}</button>
+</div>

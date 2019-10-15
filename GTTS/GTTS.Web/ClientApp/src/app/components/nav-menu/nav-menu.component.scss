@@ -1,0 +1,48 @@
+
+#ulNotifications li {
+    list-style-type: none;
+}
+
+.speech-bubble {
+    position: relative;
+    background: var(--alert-color);
+    border-radius: .4em;
+}
+
+.speech-bubble:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 12%;
+    width: 0;
+    height: 0;
+    border: 0.7em solid transparent;
+    border-bottom-color: var(--alert-color);
+    border-top: 0;
+    margin-left: -0.7em;
+    margin-top: -0.7em;
+}
+
+#tNotification td {
+    border: 0px;
+}
+
+.speech-bubble-left {
+    position: relative;
+    background: var(--alert-color);
+    border-radius: .4em;
+}
+
+.speech-bubble-left:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 15px solid transparent;
+    border-right-color: var(--alert-color);
+    border-left: 0;
+    margin-top: -15px;
+    margin-left: -15px;
+}

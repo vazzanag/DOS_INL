@@ -1,0 +1,15 @@
+<div style="text-align:center;" [ngClass]="{'wrapper-padding': showFileName}">
+    <div style="width:100%; display: flex; justify-content: center;padding-top:20px;">
+        <a *ngIf="canDelete" name="DeleteLink" class="fa fa-times remove-button file-icon" title="Delete" (click)="DeleteFile()"
+           style="position: relative;left: 30px;top: -13px;cursor: pointer;color: rgb(151, 151, 151);z-index: 10;" aria-hidden="true"></a>
+        <a name="DownloadFile" download="{{ File.FileName }}" (click)="DownloadFile()" style="cursor:pointer;">
+            <img src="../../../assets/images/{{ GetFileImage() }}" style="height:30px;align-content:center;" [title]="File.FileName" />
+        </a>
+    </div>
+    <div *ngIf="showFileName" style="width:100%;display: flex; justify-content: center;">
+        <a name="DownloadFile" download="{{ File.FileName }}"  (click)="DownloadFile()"  style="cursor:pointer;">
+            <p class="filename">{{ File.FileName }}</p>
+        </a>
+    </div>
+    <a #DownloadLink name="DownloadLink" download="{{ File.FileName }}" href=""></a>
+</div>

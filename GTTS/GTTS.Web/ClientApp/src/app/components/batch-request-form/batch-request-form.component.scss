@@ -1,0 +1,28 @@
+no-overflow-y{
+    overflow-y:hidden
+}
+
+:host /deep/ .table-responsive:not(.plain-table) tr:not(.no-highlight):hover td:not(.highlight) {
+    background-color: #e8f5ff !important;
+    cursor: pointer;
+}
+
+:host /deep/ .table-responsive:not(.plain-table) tr:not(.no-highlight):hover td.bg-color-lightyellow {
+    background-color: #FFFFCC !important;
+    cursor: pointer;
+}
+
+:host /deep/ .table-responsive:not(.plain-table) tr:not(.no-highlight):hover td.bg-color-lightred {
+    background-color: #F2D7D5 !important;
+    cursor: pointer;
+}
+
+:host /deep/ .table-responsive:not(.plain-table) tr:not(.no-highlight):hover td.bg-color-lightgreen {
+    background-color: #e6ffe6 !important;
+    cursor: pointer;
+}
+
+.hiddenCol{
+    display:none;
+}
+

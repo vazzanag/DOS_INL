@@ -1,0 +1,11 @@
+﻿<div class="flipContainer" style="" [@flipLoad]='flip'>
+    <div class="flipSide flipFront">
+        Loading
+    </div>
+    <div class="flipSide flipBack">
+        <div class="overviewArrangementsHeader" style="margin-bottom:0;vertical-align:bottom;text-align:center;min-height:40px;">{{ Value }}</div>
+        <div [ngStyle]="{'background-color': this.Color}" class="overviewArrangementsStatus" style="width:100%;">
+            {{ Status }}
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+﻿.editVetting {
+    background-color: RGBA(59,134,255,.17);
+    text-align: center;
+}
+
+.editVetting a:hover {
+    cursor: pointer;
+}
+
+tbody tr.even:hover {
+    cursor: pointer;
+}
+
+tr.even:hover td.sorting_1 {
+    cursor: pointer;
+}
+
+.datepicker-inline-table {
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    border: 0 !important;
+    border-style: none !important;
+    color: #3c8dbc;
+    padding: 0 0 -2.5pt 0;
+    space: 0 !important;
+    margin: 0 !important;
+    align-content: center;
+    text-align: center;
+    line-height: 10pt !important;
+    background-color:transparent;
+    box-shadow:none !important;
+}
+
+.datepicker-inline-table:hover {
+    cursor: pointer;
+    background-color: #FFF;
+}

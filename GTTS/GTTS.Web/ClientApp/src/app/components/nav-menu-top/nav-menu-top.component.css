@@ -1,0 +1,45 @@
+.messages-bell{
+    cursor: pointer;
+}
+
+.user-menu .fa-user-circle {
+    font-size:20px;
+}
+
+.dropdown-menu.sign-out {
+    margin-top: 0px;
+    position:absolute;
+    top:50px;
+}
+
+.dropdown-menu.sign-out a {
+    color: #fff;
+    line-height: 25px;
+    text-align: right;
+}
+
+.dropdown-menu > li > a:hover {
+    background-color: transparent !important;
+    text-decoration: underline;
+    cursor:pointer;
+}
+
+.navbar-nav a:focus,
+.navbar-nav a:hover {
+    background-color: transparent !important;
+}
+
+.navbar-nav>li>a{
+    padding-bottom: initial;
+}
+
+/* Decrease modal (specifically #navMenuModal) to adjust to its content without to many gaps to allow clicking outside to close menu */
+#navMenuModal .modal-dialog {
+    position: absolute;
+    width: unset;
+    margin-top: 60px;    
+}
+
+#navMenuModal .panel-body, #navMenuModal .modal-body {
+    padding: 0;
+}

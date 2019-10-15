@@ -1,0 +1,208 @@
+<div class="modal-header no-border" *ngIf="dataLoaded">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="Cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title text-center"><span class="color-orange">{{VettingType}} / </span>{{PersonName}} - {{DOB | date: 'MM/dd/yyyy'}}</h4>
+</div>
+<form #vettingHitForm="ngForm" (ngSubmit)="SaveVettingHitClick()">
+    <div class="modal-body no-padding-top-bottom" *ngIf="dataLoaded">
+
+        <div class="box no-top-border">
+            <div class="box-header no-padding-top-bottom">
+                <div class="col-xs-12 text-right no-padding">
+                    <ul class="nav nav-pills">
+                        <li class="hitC" [class.active]="hit.VettingHitID == selectedHit.VettingHitID" *ngFor="let hit of  personVettingHits; let i = index"><a data-toggle="tab" (click)="LoadTab(hit.VettingHitID)">Hit {{i+1}}</a></li>
+                        <li class="hitC" [class.active]="selectedHit.VettingHitID == 0"><a data-toggle="tab" (click)="LoadTab(0)">Hit</a></li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Capture Roster values -->
+            <div *ngIf="selectedHit !== null">
+
+                <div class="box-body">
+                    <div class="tab-content">
+                        <div id="tab1" class="tab-pane active">
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="txtFirstname">First name(s)</label>
+                                        <input type="text" class="form-control" name="FirstMiddleNames" [(ngModel)]="selectedHit.FirstMiddleNames" [readonly]="ReadOnly">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="txtLastname">Last name(s)</label>
+                                        <input type="text" class="form-control" name="LastNames" [(ngModel)]="selectedHit.LastNames" [readonly]="ReadOnly">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Date of birth</label>
+                                        <input class="form-control pull-right" name="DOB" type="text" (change)="DOBChange($event)" (keyup)="removeInvalidChars($event)" [readonly]="ReadOnly" [(ngModel)]="dobHit">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="txtPOB">Place of birth</label>
+                                        <input type="text" class="form-control " name="PlaceOfBirth" [(ngModel)]="selectedHit.PlaceOfBirth" [readonly]="ReadOnly">
+                                    </div>
+                                </div>
+                                <div class="col-md-4" *ngIf="!ConsularVetter && VettingType != 'CONS' ">
+                                    <div class="form-group">
+                                        <label>Unit ID:</label>
+                                        <input type="text" class="form-control " name="HitUnit" [(ngModel)]="selectedHit.HitUnit" [readonly]="ReadOnly">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-divider text-center"><span>Incident</span></div>
+                            <div class="row" *ngIf="ConsularVetter || VettingType == 'CONS'; else nonConsularVetter">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Ref. site</label>
+                                        <ng-select class="form-control" style="padding: 0px 0px !important" name="ReferenceSiteID" [clearable]="false" [(ngModel)]="selectedHit.ReferenceSiteID" [items]="hitReferenceSites" bindLabel="Code" bindValue="ReferenceSiteID" placeholder="Select..." [readonly]="ReadOnly">
+
+                                        </ng-select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="dtpRefDate">Ref. date</label>
+                                        <input type="text" class="form-control pull-right" name="ReferenceDate" (change)="ReferenceDateChange($event)" (keyup)="removeInvalidChars($event)" [readonly]="ReadOnly" [(ngModel)]="dateHit">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="txtID">ID</label>
+                                        <input type="text" class="form-control" name="TrackingID" [(ngModel)]="selectedHit.TrackingID" [readonly]="ReadOnly">
+                                    </div>
+                                </div>
+                            </div>
+                            <ng-template #nonConsularVetter>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtID">ID</label>
+                                            <input type="text" class="form-control" name="TrackingID" [(ngModel)]="selectedHit.TrackingID" [readonly]="ReadOnly">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label for="txtLocation">Location</label>
+                                            <input type="text" class="form-control disabled" name="HitLocation" [(ngModel)]="selectedHit.HitLocation" [readonly]="ReadOnly">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label>Date</label>
+                                            <input type="text" class="form-control pull-right" name="ReferenceDate" (change)="ReferenceDateChange($event)" (keyup)="removeInvalidChars($event)" [(ngModel)]="dateHit" [readonly]="ReadOnly" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <b>Violation type</b>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="btn-group btn-group-justified radios" data-toggle="buttons">
+                                                    <label class="btn btn-default rounded" *ngFor="let violationType of hitViolationTypes" (click)="selectedHit.ViolationTypeID = violationType.ViolationTypeID" [class.disabled]="ReadOnly" [class.active]="selectedHit.ViolationTypeID == violationType.ViolationTypeID">
+                                                        <input name="ViolationType" type="radio" [disabled]="ReadOnly">
+                                                        <span>{{violationType.Code}}</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <b>Credibility</b>
+                                            </div>
+                                            <div class="col-sm-8">
+                                                <div class="btn-group btn-group-justified radios" data-toggle="buttons">
+                                                    <label class="btn btn-default rounded" *ngFor="let credibilityLevel of hitCredibilityLevels" (click)="selectedHit.CredibilityLevelID = credibilityLevel.CredibilityLevelID" [class.disabled]="ReadOnly" [class.active]="selectedHit.CredibilityLevelID == credibilityLevel.CredibilityLevelID">
+                                                        <input name="Credibility" type="radio" [disabled]="ReadOnly">
+                                                        <span>{{credibilityLevel.Code}}</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-template>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Hit details</label>
+                                        <textarea class="form-control" rows="4" [(ngModel)]="selectedHit.HitDetails" name="HitDetails" [readonly]="ReadOnly"> </textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Notes</label>
+                                        <textarea class="form-control" rows="4" [(ngModel)]="selectedHit.Notes" name="Notes" [readonly]="ReadOnly"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-7">
+                                    <label class="btn rounded  fileAttacher pull-left" title="Attach file" [class.disabled]="ReadOnly" *ngIf="!ReadOnly">
+                                        <i class="fa fa-paperclip"></i>
+                                        <input id="fileAttachOther" class="attach-input" style="display: none;" value="Attach" type="file" accept=".xls,.xlsx,.doc,.docx,.ppt,.pptx,.pdf,.jpg,.png,.jpeg,.gif" multiple (change)="onAttachmentInputChange($event.target.files)">
+                                    </label>
+                                    <div style="display:flex; flex-direction:row; overflow-x:auto">
+                                        <app-file-attachment ngxSlickItem *ngFor="let file of attachedFiles" [file]="file"></app-file-attachment>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <button type="button" class="btn rounded bColorPrimary pull-right addHit" *ngIf="!ReadOnly" (click)="AddAnotherHit()" [disabled]="ReadOnly">Add another hit</button>
+                                    <button type="button" *ngIf="selectedHit.VettingHitID > 0 && !ReadOnly" class="btn rounded bColorPrimary pull-right  addHit" (click)="RemoveHit()" style="margin-right:5px" [disabled]="ReadOnly">Remove hit</button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+            <div class="box-footer no-padding-bottom">
+                <div class="row">
+                    <div class="col-md-3">
+                        <b>Result</b>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="btn-group btn-group-justified radios" data-toggle="buttons">
+                            <label class="btn btn-default rounded" *ngFor="let hitResult of hitResults" (click)="personVettingHitResult.HitResultID = hitResult.HitResultID" [class.disabled]="ReadOnly" [class.active]="personVettingHitResult.HitResultID == hitResult.HitResultID">
+                                <input name="Result" type="radio" [disabled]="ReadOnly">
+                                <span>{{hitResult.Code}}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12 no-margin-bottom">
+                        <div class="form-group">
+                            <label>Result details</label>
+                            <textarea class="form-control" rows="4" name="HitResultDetails" [(ngModel)]="personVettingHitResult.HitResultDetails" [readonly]="ReadOnly"> </textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        </div>
+        <div class="modal-footer" *ngIf="dataLoaded">
+            <div class="text-left color-blue text-bold col-md-6" style="font-style: italic; padding-top: 10px;" *ngIf="selectedHit.VettingHitID > 0 ">
+                Created by
+                {{selectedHit.First !== null ? selectedHit.First: '' }} {{ selectedHit.Middle !== null ? selectedHit.Middle : '' }} {{ selectedHit.Last !== null ? selectedHit.Last: '' }} on
+                {{ selectedHit.VettingHitDate | date: 'MM/dd/yyyy' }}
+            </div>
+            <button type="button" class="btn btn-rounded" data-dismiss="modal" (click)="Cancel()">Cancel</button>
+            <button type="submit" class="btn btn-rounded bColorPrimary" [disabled]="ReadOnly">Save</button>
+        </div>
+</form>
+

@@ -1,0 +1,92 @@
+
+.file {
+    padding: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+    height: 78px;
+    overflow: hidden;
+    background-color: #FFFFFF;
+    color: black;
+    border: solid 1px #000000;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.file .file-icon {
+    display: block;
+    background-image: url("../../../assets/images/file-alt.png");
+    width: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.file .word-icon {
+    display: block;
+    height: 40%;
+    background-image: url("../../../assets/images/word-icon.png");
+    width: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    float: left;
+}
+
+.file .excel-icon {
+    background-image: url("../../../assets/images/excel-icon.png");
+    width: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.file .powerpoint-icon {
+    display: block;
+    height: 40%;
+    background-image: url("../../../assets/images/ppt-icon.png");
+    width: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    float: left;
+}
+
+.file .pdf-icon {
+    display: block;
+    height: 40%;
+    background-image: url("../../../assets/images/pdf-icon.png");
+    width: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    float: left;
+}
+
+.file .file-name {
+    padding-left: 35px;
+    text-align: left;
+    vertical-align: bottom;
+    font-size: 0.8em;
+    height: 55px;
+}
+
+.file .file-size {
+    text-align: right;
+    vertical-align: bottom;
+    font-size: 0.8em;
+    height: 18px;
+}
+
+.file a {
+    display:none;
+}
+
+.filename {
+    word-wrap: break-word;
+    max-width: 115px;
+    color:#333333;
+    font-size:12px;
+    font-weight:700;
+}
+
+.wrapper-padding
+{
+    width:125px;
+    padding-right:10px;
+
+}

@@ -1,0 +1,41 @@
+.file-upload-zone {
+    background-repeat: no-repeat;
+    width: 100%;
+    background-position: center;
+    min-height: 107px;
+    padding-top: 48px;
+    padding-bottom: 5px;
+    background-color: #d4d9dd;
+    color: #535E64;
+    border-color: #979797;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+
+.file-upload-zone.occupied {
+    font-size: 0.9em;
+    padding-top: 5px;
+}
+
+.file-upload-zone.unoccupied {
+    background-image: url(../../../assets/images/upload.png);
+    font-size: 0.9em;
+    padding-top: 5px;
+}
+
+.file-upload-zone.disabled:not(.occupied) {
+    visibility: hidden;
+}
+
+.file-upload-zone:not(.disabled).file-upload-zone-dragover {
+    background-color: #255ba5;
+    border: dashed 2px #d4d9dd;
+    color: #FFFFFF;
+}
+
+.file-upload-zone .carousel {
+    margin-top: 5px;
+    height: 76px;
+}

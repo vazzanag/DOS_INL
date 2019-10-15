@@ -1,0 +1,97 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="onCloseClick()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title text-center">Matching Participants</h4>
+</div>
+
+    <div class="row" style="margin-top:15px;">
+        <div class="col-sm-12">
+            {{warningMessage}}
+        </div>
+    </div>
+    <div class="row" style="margin-top:15px;">
+        <div class="col-sm-12" style="max-height:400px; overflow-y:auto; overflow-x:hidden">
+            <table id="ParticipantTable" name="ParticipantTable" mat-table matSort [(dataSource)]="DataSource" class="table table-hover hover center-table-header dataTable no-footer" style="width:100%;">
+
+                <!-- First Name Column -->
+                <ng-container matColumnDef="FirstMiddleNames">
+                    <th class="tableHeader"
+                        [ngClass]="{tableHeaderBlue: IsBlue, tableHeaderGreen: IsGreen, tableHeaderGray: IsGray, tableHeaderPurple: IsPurple, tableHeaderPurpleLight: IsPurpleLight}"
+                        [ngStyle]="{'border-top-left-radius': View == 'Batch' ? '10px' : '0'}"
+                        style="text-align:center;width: 80px;" *matHeaderCellDef mat-sort-header>
+                        First Name(s)
+                    </th>
+                    <td class="listCell" style="" mat-cell *matCellDef="let participant"> {{ participant.FirstMiddleNames }} </td>
+                </ng-container>
+
+                <!-- Last Name Column -->
+                <ng-container matColumnDef="LastNames">
+                    <th class="tableHeader"
+                        [ngClass]="{tableHeaderBlue: IsBlue, tableHeaderGreen: IsGreen, tableHeaderGray: IsGray, tableHeaderPurple: IsPurple, tableHeaderPurpleLight: IsPurpleLight}"
+                        style="text-align:center;width: 80px;" *matHeaderCellDef mat-sort-header>
+                        Last Name
+                    </th>
+                    <td class="listCell" style="" mat-cell *matCellDef="let participant"> {{participant.LastNames}} </td>
+                </ng-container>
+
+                <!-- Date of Birth Column -->
+                <ng-container matColumnDef="DOB">
+                    <th class="tableHeader"
+                        [ngClass]="{tableHeaderBlue: IsBlue, tableHeaderGreen: IsGreen, tableHeaderGray: IsGray, tableHeaderPurple: IsPurple, tableHeaderPurpleLight: IsPurpleLight}"
+                        style="text-align:center;width: 80px" *matHeaderCellDef mat-sort-header>
+                        Date of Birth
+                    </th>
+                    <td class="listCell" style="" mat-cell *matCellDef="let participant"> {{participant.DOB | date: 'MM/dd/yy'}} </td>
+                </ng-container>
+
+                <!-- Gender Column -->
+                <ng-container matColumnDef="Gender">
+                    <th class="tableHeader"
+                        [ngClass]="{tableHeaderBlue: IsBlue, tableHeaderGreen: IsGreen, tableHeaderGray: IsGray, tableHeaderPurple: IsPurple, tableHeaderPurpleLight: IsPurpleLight}"
+                        *matHeaderCellDef mat-sort-header>
+                        Gender
+                    </th>
+                    <td class="listCell" style="text-align:center;" mat-cell *matCellDef="let participant"> {{participant.Gender}} </td>
+                </ng-container>
+
+                <!-- NationalID Column -->
+                <ng-container matColumnDef="NationalID">
+                    <th class="tableHeader"
+                        [ngClass]="{tableHeaderBlue: IsBlue, tableHeaderGreen: IsGreen, tableHeaderGray: IsGray, tableHeaderPurple: IsPurple, tableHeaderPurpleLight: IsPurpleLight}"
+                        *matHeaderCellDef mat-sort-header style="width: 80px">
+                        National ID
+                    </th>
+                    <td class="listCell" style="text-align:center;" mat-cell *matCellDef="let participant"> {{participant.NationalID}} </td>
+                </ng-container>
+
+                <!-- POB Column -->
+                <ng-container matColumnDef="POB">
+                    <th class="tableHeader"
+                        [ngClass]="{tableHeaderBlue: IsBlue, tableHeaderGreen: IsGreen, tableHeaderGray: IsGray, tableHeaderPurple: IsPurple, tableHeaderPurpleLight: IsPurpleLight}"
+                        *matHeaderCellDef mat-sort-header>
+                        Place of birth
+                    </th>
+                    <td class="listCell" style="text-align:center;" mat-cell *matCellDef="let participant"> {{participant.POB}} </td>
+                </ng-container>
+
+                <ng-container matColumnDef="SelectParticipant">
+                    <th class="participantHeader" *matHeaderCellDef>  </th>
+                    <td mat-cell *matCellDef="let participant">
+                        <button class="btn btn-rounded-md bColorPrimary ng-tns-c19-16 ng-star-inserted" color="primary" (click)="SelectMatchingParticipant(participant)" *ngIf="CanSelect(participant)"> Select</button>
+                        <label *ngIf="!CanSelect(participant)">Exists in this training event</label>
+                    </td>
+                </ng-container>
+
+                <tr mat-header-row *matHeaderRowDef="DisplayedColumns" style="height:30px;text-align:center;"></tr>
+                <tr mat-row *matRowDef="let row; columns: DisplayedColumns;" class="hoverable listRow" style="height:35px;text-align:center;"></tr>
+
+            </table>
+
+            <br />
+
+        </div>
+    </div>
+
+    <div class="row" style="padding-top:20px; float:right">
+        <button id="close-button" class="btn btn-rounded-md bColorPrimary ng-tns-c19-16 ng-star-inserted margin-r-15" (click)="onCloseClick()">Make Changes</button>
+        <button id="continue-button" class="btn btn-rounded-md bColorPrimary ng-tns-c19-16 ng-star-inserted" (click)="onContinueClick()" *ngIf="showContinueButton">Continue</button>
+    </div>

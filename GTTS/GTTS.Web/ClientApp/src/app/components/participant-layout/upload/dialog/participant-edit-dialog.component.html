@@ -1,0 +1,73 @@
+<div>
+    <div class="modalHeader" style="border-top-left-radius:2px; border-top-right-radius:4px;">
+        <div style="padding-left:20px;">
+            Edit Uploaded Participant
+        </div>
+    </div>
+    <div id="edit-content">
+        <div id="edit-form-container">
+            <form #RejectForm="ngForm">
+                <div id="edit-form-card">
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="Participant.ParticipantStatus" placeholder="Participant Status" required name="ParticipantStatus">
+                                    <mat-option value="P">Participant</mat-option>
+                                    <mat-option value="A">Alternate</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input name="FirstMiddleName" [(ngModel)]="Participant.FirstMiddleName" matInput placeholder="First Name" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input name="LastName" [(ngModel)]="Participant.LastName" matInput placeholder="Last Name" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <input name="NationalID" [(ngModel)]="Participant.NationalID" matInput placeholder="NationalID" />
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <mat-select [(ngModel)]="Participant.Gender" placeholder="Gender" required name="Gender">
+                                    <mat-option value="M">Male</mat-option>
+                                    <mat-option value="F">Female</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row" style="padding-top:10px;">
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                <mat-select placeholder="State of Birth:" required [(ngModel)]="Participant.POBState" name="POBState">
+                                    <mat-option *ngFor="let state of States" [value]="state.StateName">{{ state.StateName }}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+
+                    <div class="row" style="padding-top:20px; float:right">
+                        <button id="cancel-button" class="cancelButton" (click)="onCancelClick()"></button>
+                        <button id="save-button" type="submit" class="saveButton"
+                                (click)="onOkClick()"></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+

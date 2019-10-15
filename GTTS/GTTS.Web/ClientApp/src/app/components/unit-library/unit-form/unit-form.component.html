@@ -1,0 +1,186 @@
+
+
+    <div class="modal-content">
+        <form #unitForm="ngForm" (ngSubmit)="SaveUnit(unitForm)">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="Cancel()"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" style="vertical-align: middle !important;">
+                    <span id="spnTitle">{{Action == 0 ? 'Add' : 'Edit'}} {{View}}</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="col-xs-12">
+                    <div class="form-group required">
+                        <label class="color-darkgray control-label">{{View}} name <span>*</span></label>
+                        <input #UnitName type="text" name="UnitName" class="form-control" [(ngModel)]="Model.UnitName" required value="{{Model.UnitName}}" autofocus>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group required">
+                        <label class="color-darkgray control-label">{{ View }} English name <span>*</span></label>
+                        <input type="text" name="UnitNameEnglish" class="form-control" value="{{Model.UnitNameEnglish}}" [(ngModel)]="Model.UnitNameEnglish" required>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group" [class.required]="isUnit">
+                        <label class="color-darkgray control-label">Parent {{ View }} Name <span *ngIf="View == 'Unit'">*</span></label>
+                        <ng-select class="form-control" style="padding: 0px 0px !important" name="UnitParentID" [clearable]="false" [(ngModel)]="Model.UnitParentID"
+                                   [required]="View == 'Unit' ? 'required': null" [items]="UnitParents" bindLabel="UnitName" bindValue="UnitID" placeholder="Select..." (change)="ParentUnitChange($event)">
+
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group required">
+                        <label class="color-darkgray control-label">{{ View }} Type <span>*</span></label>
+                        <ng-select class="form-control" style="padding: 0px 0px !important" name="UnitTypeID" [clearable]="false" required [(ngModel)]="Model.UnitTypeID" [items]="AgencyTypes"
+                                   bindLabel="Name" bindValue="UnitTypeID" placeholder="Select..." (change)="AgencyTypeChange($event)">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group required">
+                        <label class="color-darkgray control-label">Level <span>*</span></label>
+                        <ng-select name="GovtLevelID" class="form-control" style="padding: 0px 0px !important" [(ngModel)]="Model.GovtLevelID" required (change)="LevelSelectionChange($event)"
+                                   [items]="GovernmentLevels" bindLabel="Name" bindValue="GovtLevelID" placeholder="Select...">
+                        </ng-select>
+                    </div>
+                </div>
+
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="color-darkgray">State <span *ngIf="StateRequired">*</span></label>
+                        <ng-select class="form-control" style="padding: 0px 0px !important" name="StateID" [clearable]="false" [(ngModel)]="Model.UnitLocation.StateID" (change)="StateSelectionChange($event)"
+                                   [disabled]="StateDisable" [required]="StateRequired ?  'required' : null" [items]="LocationStates" bindLabel="StateName" bindValue="StateID" placeholder="Select...">
+
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="color-darkgray">City / Municipality <span *ngIf="CityRequired">*</span></label>
+                        <ng-select class="form-control" style="padding: 0px 0px !important" name="LocationCity" [clearable]="false" [(ngModel)]="Model.UnitLocation.CityID" [disabled]="CityDisable"
+                                   [required]="CityRequired ? 'required' : null" [items]="LocationCities" bindLabel="CityName" bindValue="CityID" placeholder="Select...">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group required">
+                        <label class="color-darkgray control-label">Acronym <span >*</span></label>
+                        <input type="text" name="UnitAcronym" class="form-control" [(ngModel)]="Model.UnitAcronym" required (change)="AcronymChange($event)">
+                    </div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="form-group required">
+                        <label class="color-darkgray control-label">{{ View == 'Unit' ? 'Unit' : 'Agency unit' }} ID <span>*</span></label>
+                        <input type="text" name="UnitGenID" class="form-control" [(ngModel)]="Model.UnitGenID" required value="{{Model.UnitGenID}}" (change)="UnitGenIDChange($event)" pattern="[a-zA-Z0-9 ]*">
+                    </div>
+                </div>
+
+                <div class="col-xs-4">
+                    <div class="form-group required">
+                        <label class="color-darkgray control-label">Activity type <span>*</span></label>
+                        <ng-select class="form-control" style="padding: 0px 0px !important" [clearable]="false" required name="VettingActivityTypeID" [(ngModel)]="Model.VettingActivityTypeID"
+                                   [items]="VettingActivityTypes" bindLabel="Name" bindValue="VettingActivityTypeID" placeholder="Select..." (change)="VettingActivityTypeChange($event)">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group required">
+                        <label class="color-darkgray control-label">Vetting type <span>*</span></label>
+                        <ng-select class="form-control" style="padding: 0px 0px !important" [clearable]="false" required name="VettingBatchTypeID" [(ngModel)]="Model.VettingBatchTypeID" [items]="VettingBatchTypes"
+                                   bindLabel="Code" bindValue="VettingBatchTypeID" placeholder="Select...">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="color-darkgray">Reporting type</label>
+                        <ng-select class="form-control" style="padding: 0px 0px !important" name="ReportingTypeID" [clearable]="false" [(ngModel)]="Model.ReportingTypeID" [items]="ReportingTypes" bindLabel="Name" bindValue="ReportingTypeID" placeholder="Select...">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="color-darkgray">{{View}} alias</label>
+                        <mat-chip-list #chipList>
+                            <mat-chip *ngFor="let alias of Model.UnitAlias" [selectable]="false"
+                                      [removable]="true" (removed)="UnitAlias_Remove(alias)">
+                                {{alias.UnitAlias}}
+                                <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+                            </mat-chip>
+                            <input type="text" class="form-control" name="UnitAlias"  id="UnitAlias" [matChipInputFor]="chipList" [(ngModel)]="Model.UnitAliasPlaceHolder"
+                                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                   [matChipInputAddOnBlur]="false"
+                                   (matChipInputTokenEnd)="UnitAlias_Add($event)">
+                        </mat-chip-list>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="color-darkgray">Consular district</label>
+                        <ng-select #ConsularDistrictID id="ConsularDistrictID" [clearable]="false" style="padding: 0px 0px !important" class="form-control" name="ConsularDistrictID" [(ngModel)]="Model.ConsularDistrictID" [items]="Posts" bindLabel="Name" bindValue="PostID" placeholder="Select...">
+                        </ng-select>
+                    </div>
+                </div>
+
+                <div class="col-xs-12">
+                    <div class="form-group">
+                        <label class="color-darkgray">Address</label>
+                        <input type="text" class="form-control" [(ngModel)]="Model.UnitLocation.AddressLine1" name="LocationAddress" value="{{Model.UnitLocation.AddressLine1}}">
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="color-darkgray">Commander name</label>
+                        <input type="text" class="form-control" name="CommanderAutoComplete" id="CommanderAutoComplete" autocomplete="off" role="listbox" [(ngModel)]="CommanderName"
+                               aria-label="FundingSource" matInput [matAutocomplete]="autoCommander"
+                               (ngModelChange)="Commander_Change(CommanderName)" (blur)="Commander_Blur(CommanderName)" />
+                        <mat-autocomplete id="CommanderNameAuto" name="CommanderNameAuto" #autoCommander="matAutocomplete"
+                                          (optionSelected)="CommanderNameAuto_OptionSelected($event.option.value)">
+                            <mat-option *ngFor="let person of DisplayCommanderPersons" [value]="person">
+                                {{ FormatCommanderName(person) }}
+                            </mat-option>
+                        </mat-autocomplete>
+
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="color-darkgray">Gender</label>
+                        <ng-select class="form-control" style="padding: 0px 0px !important" [clearable]="false" #selectGender name="Gender" [(ngModel)]="Model.UnitHeadGender" [items]="gender" bindLabel="Label" bindValue="Code" placeholder="Select..." [required]="GenderRequired ? 'required' : null">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="color-darkgray">Commander position</label>
+                        <input type="text" class="form-control" name="UnitHeadJobTitle" [(ngModel)]="Model.UnitHeadJobTitle" value={{Model.UnitHeadJobTitle}}>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label class="color-darkgray">Commander rank</label>
+                        <ng-select class="form-control" style="padding: 0px 0px !important" name="RankName" [clearable]="false" [(ngModel)]="Model.UnitHeadRankID" [items]="Ranks" bindLabel="RankName" bindValue="RankID" placeholder="Select...">
+                        </ng-select>
+                    </div>
+                </div>
+                <div class="col-xs-12">
+                    <div class="form-group-label" id="divRdoI1">
+                        <div class="btn-group radios">
+                            <button name="Deactivate" type="button" class="btn btn-default btn-rounded" [class.active]="!DeactivateUnit" (click)="ActivationChange('Activate')">Activate agency</button>
+                            <button name="Deactivate" class="btn btn-default btn-rounded" [class.active]="DeactivateUnit" type="button" (click)="ActivationChange('Deactivate')">Deactivate agency</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="modal-footer">
+                <div class="right-float"><button type="submit" *ngIf="AuthSvc.HasAnyPermission(['UPDATE UNIT', 'CREATE UNIT'])" class="btn btn-rounded btn-primary" [ngClass]="{buttonDisabled: !unitForm.valid, buttonGreen : unitForm.valid}" [disabled]="!unitForm.valid" style="width:110px;">Save</button></div>
+                <div class="right-float"><button type="button" class="btn btn-rounded" data-dismiss="modal" (click)="Cancel()">Cancel</button></div>
+            </div>
+        </form>
+    </div>

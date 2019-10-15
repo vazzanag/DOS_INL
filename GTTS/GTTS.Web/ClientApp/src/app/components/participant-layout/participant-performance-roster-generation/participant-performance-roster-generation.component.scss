@@ -1,0 +1,14 @@
+﻿/* Modal windows */
+@media (min-width: 768px) {
+    .modal-no-limit {
+        min-width: 600px;
+        width: 85%;
+    }
+}
+
+@media (min-width: 992px) {
+    .modal-no-limit {
+        min-width: 900px;
+        width: 85%;
+    }
+}

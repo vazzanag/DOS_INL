@@ -1,0 +1,86 @@
+<div class="content-wrapper">
+
+    <section class="content-header">
+        <h1 *ngIf="vetter == 'Vetting Coordinator'; else CourtesyVetterHeader">
+            Vetting requests
+        </h1>
+        <ng-template #CourtesyVetterHeader>
+            <h1 *ngIf="dataLoaded">
+                <span class="color-orange">{{selectedCourtesy}} / </span> requests
+
+                <span class="pull-right text-center" *ngIf="PostVettingTypes.length > 1" >
+                    <a *ngFor="let postvettingType of PostVettingTypes" class="btn btn-rounded-md btn-default" routerLink="../../{{postvettingType.Code}}/batches">{{postvettingType.Code}}</a>
+                </span>
+
+            </h1>
+        </ng-template>
+    </section>
+    <section class="content">
+        <div class="box no-top-border">
+            <div class="box-header no-padding-bottom">
+                <div class="col-xs-12 text-right no-padding">
+
+                    <ul class="nav nav-pills" *ngIf="vetter == 'Vetting Coordinator'">
+                        <li [class.active]="filterButton === 'All requests'"><a (click)="FilterData($event)">All requests</a></li>
+                        <li [class.active]="filterButton === 'Submitted'"><a (click)="FilterData($event)">Submitted</a></li>
+                        <li [class.active]="filterButton === 'Accepted'"><a (click)="FilterData($event)">Accepted</a></li>
+                        <li [class.active]="filterButton === 'Submitted to Courtesy'"><a (click)="FilterData($event)">Submitted to Courtesy</a></li>
+                        <li [class.active]="filterButton === 'Courtesy complete'"><a (click)="FilterData($event)">Courtesy complete</a></li>
+                        <li [class.active]="filterButton === 'Hits'"><a (click)="FilterData($event)">Hits</a></li>
+                        <li [class.active]="filterButton === 'Submitted to Leahy'"><a (click)="FilterData($event)">Submitted to Leahy</a></li>
+                        <li [class.active]="filterButton === 'Leahy complete'"><a (click)="FilterData($event)">Leahy complete</a></li>
+                        <li [class.active]="filterButton === 'Results notified'"><a (click)="FilterData($event)">Results notified</a></li>
+                        <li class="pull-right">
+                            <span class="batch-tab-totals pull-left" style="font-weight: normal;">No. batches: {{NumBatches}} </span><br>
+                            <span class="batch-tab-totals pull-left" style="font-weight: normal;">Total no. participants:{{NumParticipants}}</span>
+                        </li>
+                    </ul>
+                    <ul class="nav nav-pills" *ngIf="vetter != 'Vetting Coordinator'">
+                        <li [class.active]="filterButton === 'All requests'"><a (click)="FilterData($event)">All requests</a></li>
+                        <li [class.active]="filterButton === 'Submitted'"><a (click)="FilterData($event)">Submitted</a></li>
+                        <li [class.active]="filterButton === 'In progress'"><a (click)="FilterData($event)">In progress</a></li>
+                        <li [class.active]="filterButton === 'Vetting complete'"><a (click)="FilterData($event)">Vetting complete</a></li>
+                        <li [class.active]="filterButton === 'Results submitted'"><a (click)="FilterData($event)">Results submitted</a></li>
+                        <li class="pull-right">
+                            <span class="batch-tab-totals pull-left" style="font-weight: normal;">No. batches: {{NumBatches}} </span><br>
+                            <span class="batch-tab-totals pull-left" style="font-weight: normal;">Total no. participants:{{NumParticipants}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="box-body no-padding" style="padding-top:8px !important">
+                <div id="tabAll" class="tab-pane active">
+                    <div>
+                        <div class="top"></div>
+                        <div id="table_processing" class="dataTables_processing" style="display: none;">Processing...</div>
+                        <table #tPrimary id="tPrimary" class="table table-hover hide-icon-sort hover no-footer" role="grid">
+                            <thead>
+                                <tr role="row">
+                                    <th class="dt-body-center" tabindex="0" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Section: activate to sort column descending" aria-sort="ascending" style="width: 3%;">Section</th>
+                                    <th style="width: 16%;" class="dt-body-center" tabindex="1" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Event name: activate to sort column ascending">Event name</th>
+                                    <th style="width: 8%;" class="dt-body-center" tabindex="2" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Tracking no.: activate to sort column ascending">Tracking no.</th>
+                                    <th style="width: 6%" class="dt-body-center" tabindex="3" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Leahy/Courtesy: activate to sort column ascending">Leahy/Courtesy</th>
+                                    <th style="width: 6%;" class="dt-body-center" tabindex="4" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="No. participants: activate to sort column ascending">No. participants</th>
+                                    <th style="width: 9%;" class="dt-body-center" tabindex="5" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Assigned to: activate to sort column ascending">Assigned to</th>
+                                    <th style="width: 8%;" class="dt-body-center" tabindex="6" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Submission date: activate to sort column ascending">Submission date</th>
+                                    <th style="width: 8%;" class="dt-body-center" tabindex="7" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Need-by date: activate to sort column ascending">Need-by date</th>
+                                    <th style="width: 8%;" class="dt-body-center" tabindex="8" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Event start: activate to sort column ascending">Event start</th>
+                                    <th style="width: 8%;" class="dt-body-center" tabindex="9" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending">Status</th>
+                                    <th style="width: 6%;" class="dt-body-center" tabindex="10" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Message: activate to sort column ascending">Message</th>
+                                    <th style="width: 8%;" class="dt-body-center" tabindex="11" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Submission date: activate to sort column ascending">Submission date (yyyy/MM/dd)</th>
+                                    <th style="width: 8%;" class="dt-body-center" tabindex="12" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Need-by date: activate to sort column ascending">Need-by date (yyyy/MM/dd)</th>
+                                    <th style="width: 8%;" class="dt-body-center" tabindex="13" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Event start: activate to sort column ascending">Event start (yyyy/MM/dd)</th>
+                                    <th style="width: 8%;" class="dt-body-center" tabindex="14" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Event start: activate to sort column ascending">Tracking no. part1</th>
+                                    <th style="width: 8%;" class="dt-body-center" tabindex="15" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Event start: activate to sort column ascending">Tracking no. part2</th>
+                                    <th style="width: 8%;" class="dt-body-center" tabindex="16" aria-controls="tPrimary" rowspan="1" colspan="1" aria-label="Event start: activate to sort column ascending">Tracking no. part3</th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <div class="bottom"></div><div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

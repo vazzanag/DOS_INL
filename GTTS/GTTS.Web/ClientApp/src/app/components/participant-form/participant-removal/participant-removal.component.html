@@ -1,0 +1,64 @@
+﻿<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" (click)="Cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title pr-title text-center" id="txtTitleParticipant">Select reason for participant removal</h4>
+</div>
+<div class="modal-body">
+    <div class="col-md-12" id="pnlDeleteParticipant">
+        <div class="col-md-12 no-padding" id="pnlDelete">
+            <div class="row">
+                <div class="bulk-remove-selected">
+                    <div class="row no-padding" style="height: 20px;">
+                        <div *ngIf="removalCausesForList.length > 0" class="col-xs-offset-8 col-xs-4 color-darkgray optional">*Optional </div>
+                    </div>
+                    <div class="row padding-b-5">
+                        <div class="row" style="margin-left: 20px; margin-right: 20px;">
+                            <div class="col-xs-8 no-padding-right">
+                                <div class="btn-radio-group radios" data-toggle="buttons">
+                                    <div class="col-xs-6">
+                                        <!--<span *ngFor="let reason of removalReasons; let i=index" class="padding-b-5">-->
+                                            <label *ngFor="let reason of removalReasonsLeft"  class="btn btn-default btn-block"
+                                                   (click)="RemovalReasons_Change(reason.RemovalReasonID)">
+                                                <input name="rdoCause" class="radio-label" type="radio" [value]="reason.RemovalReasonID">
+                                                <span>{{ reason.Description}}</span>
+                                            </label>
+                                        <!--</span>-->
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label *ngFor="let reason of removalReasonsRight" class="btn btn-default btn-block"
+                                               (click)="RemovalReasons_Change(reason.RemovalReasonID)">
+                                            <input name="rdoCause" class="radio-label" type="radio" [value]="reason.RemovalReasonID">
+                                            <span>{{ reason.Description}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-4">
+                                <div *ngIf="removalCausesForList.length > 0" class="btn-radio-group radios optional" data-toggle="buttons">
+                                    <label *ngFor="let cause of removalCausesForList" class="btn btn-default btn-block"
+                                           (click)="RemovalCauses_Change(cause.RemovalCauseID)">
+                                        <input name="rdoOptional" class="radio-label" type="radio" value="{{ cause.RemovalCauseID}}">
+                                        <span>{{ cause.Description}}</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <span class="ppr-capture">
+        <button type="button" (click)="SaveRemove()" id="RemoveParticipant" [disabled]="removalReasonID == -1" 
+                class="btn btn-primary btn-rounded btn-right pull-right pull-right-margin-right">
+            Remove participant
+            <span *ngIf="isSaving || isLoading" class="fa fa-spinner fa-spin"></span>
+        </button>
+
+        <button type="button" id="Cancel" [disabled]="isSaving" (click)="Cancel()" 
+                class="btn btn-default btn-rounded btn-right pull-right pull-right-margin-right">Close</button>
+    </span>
+</div>

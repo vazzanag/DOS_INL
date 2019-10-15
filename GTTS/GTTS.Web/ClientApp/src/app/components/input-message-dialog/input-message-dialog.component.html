@@ -1,0 +1,17 @@
+<div class="modal-header">
+    <span (click)="onNegativeClick()" class="bootbox-close-button close btn-rounded-md" aria-hidden="true">x</span>
+    <h4 class="modal-title">
+        <span class="header-instructions">{{inputModel.title}}</span>
+    </h4>
+</div>
+<div class="modal-body">
+    <div class="bootbox-body">
+        <form class="bootbox-form">
+            <input class="bootbox-input bootbox-input-text form-control" name="inputValue" #inputVal autocomplete="off" type="text" placeholder="{{inputModel.placeHolder}}" [(ngModel)]="inputValue" />
+        </form>
+    </div>
+</div>
+<div class="modal-footer">
+    <button data-bb-handler="cancel" type="button" class="btn btn-default btn-rounded-md" (click)="onNegativeClick()">{{inputModel.negativeActionLabel}}</button>
+    <button data-bb-handler="confirm" type="button" class="btn btn-primary btn-rounded-md" (click)="onPositiveClick()" [disabled]="!inputValue">{{inputModel.positiveActionLabel}}</button>
+</div>

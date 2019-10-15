@@ -1,0 +1,229 @@
+<div class="row box-ov">
+    <div class="box-ov-title col-sm-12 margin-b-10" routerLink="/gtts/training/{{ trainingEventID }}/participants" style="margin-bottom: 6px;cursor:pointer;">
+        Participants
+    </div>
+    <div class="box-ov-body col-sm-12" routerLink="/gtts/training/{{ trainingEventID }}/participants" style="cursor:pointer;">
+        <!-- Participant Counts -->
+        <div class="row">
+            <div class="col-xs-3 no-padding-right">
+                <div class="ov-pax-card">
+                    <div class="ov-pax-box" [ngClass]="{'no-data': participantOverview.StudentCount == 0}">
+                        <p class="text-center no-margin"><i class="gtts2-student" style="font-size:35px; line-height: 0;"></i></p>
+                        <span class="ov-pax-count">{{ participantOverview.StudentCount }}</span>
+                    </div>
+                    <div class="ov-pax-title">
+                        <span class="ov-pax-text">Students</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-3 no-padding-right">
+                <div class="ov-pax-card">
+                    <div class="ov-pax-box" [ngClass]="{'no-data': participantOverview.InstructorCount == 0}">
+                        <p class="text-center no-margin"><i class="gtts2-instructor" style="font-size:35px; line-height: 0;"></i></p>
+                        <span class="ov-pax-count">{{ participantOverview.InstructorCount}}</span>
+                    </div>
+                    <div class="ov-pax-title">
+                        <span class="ov-pax-text">Instructors</span> <!--<span class="info-box-number">650</span>-->
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-3 no-padding-right">
+                <div class="ov-pax-card">
+                    <div class="ov-pax-box" [ngClass]="{'no-data': participantOverview.AlternateCount == 0}">
+                        <p class="text-center no-margin"><i class="gtts2-alternate" style="font-size:35px; line-height: 0;"></i></p>
+                        <p class="text-center no-margin ov-pax-count">{{ participantOverview.AlternateCount }}</p>
+                    </div>
+                    <div class="ov-pax-title">
+                        <span class="ov-pax-text">Alternates</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-3">
+                <div class="ov-pax-card">
+                    <div class="ov-pax-box" [ngClass]="{'no-data': participantOverview.ParticipantCount == 0 || participantOverview.PlannedParticipantCount == 0}">
+                        <p class="text-center no-margin"><i class="fa fa-users fa-2x margin-t-5"></i></p>
+                        <p class="text-center no-margin ov-pax-count margin-t-5">
+                            {{ participantOverview.ParticipantCount }}
+                            <small>/{{ participantOverview.PlannedParticipantCount  }}</small>
+                        </p>
+                    </div>
+                    <div class="ov-pax-title">
+                        <span class="ov-pax-text"><small>Total / Planned</small></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Vetting -->
+        <div class="row no-padding">
+            <div class="col-xs-12">
+                <div class="text-center">
+                    <label class="small-box-title color-blue no-margin" style="position:relative; top:10px;">Vetting</label>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <!-- Vetting Types -->
+                <div style="box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);border: 1px solid rgba(0, 0, 0, 0.15);background-color: white; margin-top: 30px;">
+                    <table class="table no-margin">
+                        <tbody>
+                            <tr style="display:none;">
+                                <th>Status</th>
+                                <th>Count</th>
+                            </tr>
+                            <tr>
+                                <td>Leahy</td>
+                                <td class="text-right"><span class="color-blue">{{ participantOverview.LeahyCount }}</span></td>
+                            </tr>
+                            <tr>
+                                <td>Courtesy</td>
+                                <td class="text-right"><span class="color-blue">{{ participantOverview.CourtesyCount }}</span></td>
+                            </tr>
+                            <tr>
+                                <td>N/A</td>
+                                <td class="text-right"><span class="color-blue">{{ participantOverview.NACount }}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-sm-6" style="padding-top:7px;">
+                <!-- Vetting Status Circle chart -->
+                <div id="myfirstchart" style="height: 175px;align-items:center;">
+
+                    <svg *ngIf="selectedSlice != 'na' && selectedSlice != 'loading'" id="DonutChart" #DonutChart width="90%" height="90%" viewBox="0 0 42 42" class="donut">
+                        <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle>
+                        <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#d2d3d4" stroke-width="3"></circle>
+
+                        <svg:circle cx="21" cy="21" r="15.91549430918954" fill="transparent"
+                                    [ngClass]="{'chart-rejected-selected': selectedSlice == 'rejected','chart-rejected': selectedSlice != 'rejected'}"
+                                    [attr.stroke-dasharray]="participantOverview.RejectedDashArray"
+                                    [attr.stroke-dashoffset]="participantOverview.RejectedDashOffset" (mouseover)="DonutChart_Mouseover('rejected')"></svg:circle>
+                        <svg:circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#fff" stroke-width="3" stroke-dasharray="1 99"
+                                    [attr.stroke-dashoffset]="participantOverview.RejectedSeperatorDashOffset"></svg:circle>
+
+                        <svg:circle cx="21" cy="21" r="15.91549430918954" fill="transparent"
+                                    [ngClass]="{'chart-approved-selected': selectedSlice == 'approved','chart-approved': selectedSlice != 'approved'}"
+                                    [attr.stroke-dasharray]="participantOverview.ApprovedDashArray"
+                                    [attr.stroke-dashoffset]="participantOverview.ApprovedDashOffset" (mouseover)="DonutChart_Mouseover('approved')"></svg:circle>
+                        <svg:circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#fff" stroke-width="3" stroke-dasharray="1 99"
+                                    [attr.stroke-dashoffset]="participantOverview.ApprovedSeperatorDashOffset"></svg:circle>
+
+                        <svg:circle cx="21" cy="21" r="15.91549430918954" fill="transparent"
+                                    [ngClass]="{'chart-inprogress-selected': selectedSlice == 'inprogress','chart-inprogress': selectedSlice != 'inprogress'}"
+                                    [attr.stroke-dasharray]="participantOverview.InProgressDashArray"
+                                    [attr.stroke-dashoffset]="participantOverview.InProgressDashOffset" (mouseover)="DonutChart_Mouseover('inprogress')"></svg:circle>
+                        <svg:circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#fff" stroke-width="3" stroke-dasharray="1 99"
+                                    [attr.stroke-dashoffset]="participantOverview.InProgressSeperatorDashOffset"></svg:circle>
+
+                        <svg:circle cx="21" cy="21" r="15.91549430918954" fill="transparent"
+                                    [ngClass]="{'chart-suspended-selected': selectedSlice == 'suspended','chart-suspended': selectedSlice != 'suspended'}"
+                                    [attr.stroke-dasharray]="participantOverview.SuspendedDashArray"
+                                    [attr.stroke-dashoffset]="participantOverview.SuspendedDashOffset" (mouseover)="DonutChart_Mouseover('suspended')"></svg:circle>
+                        <svg:circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#fff" stroke-width="3" stroke-dasharray="1 99"
+                                    [attr.stroke-dashoffset]="participantOverview.SuspendedSeperatorDashOffset"></svg:circle>
+
+                        <svg:circle cx="21" cy="21" r="15.91549430918954" fill="transparent"
+                                    [ngClass]="{'chart-canceled-selected': selectedSlice == 'canceled','chart-canceled': selectedSlice != 'canceled'}"
+                                    [attr.stroke-dasharray]="participantOverview.CanceledDashArray"
+                                    [attr.stroke-dashoffset]="participantOverview.CanceledDashOffset" (mouseover)="DonutChart_Mouseover('canceled')"></svg:circle>
+                        <svg:circle cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#fff" stroke-width="3" stroke-dasharray="1 99"
+                                    [attr.stroke-dashoffset]="participantOverview.CanceledSeperatorDashOffset"></svg:circle>
+
+                        <g class="chart-text">
+                            <text x="50%" y="50%" class="chart-label"
+                                  [ngStyle]="{'font-size': (selectedSlice == 'inprogress' || selectedSlice == 'suspended') ? '0.3em' : '0.35em' }">
+                                {{ chartTitle }}
+                            </text>
+                            <text x="50%" y="50%" class="chart-number">{{ chartNumber }}</text>
+                        </g>
+                    </svg>
+
+                    <svg *ngIf="selectedSlice == 'na'" width="90%" height="90%" viewBox="0 0 42 42" class="donut">
+                        <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle>
+                        <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#ddd" stroke-width="3"></circle>
+                        <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#ddd" stroke-width="3"></circle>
+                        <g class="chart-text">
+                            <text x="50%" y="50%" class="chart-label">N/A</text>
+                            <text x="50%" y="50%" class="chart-number">--</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performace -->
+        <div class="row no-padding">
+            <div class="col-xs-12">
+                <div class="text-center margin-b-5">
+                    <label class="small-box-title color-blue no-margin">Performance</label>
+                </div>
+            </div>
+            <div class="col-sm-3 no-padding-right">
+                <div class="ov-pax-card">
+                    <div class="ov-pax-box" [ngClass]="{'no-data': !participantOverview.HasUploadedRoster}">
+                        <p class="text-center no-margin"><i class="fal fa-file-certificate fa-2x padding-t-5"></i></p>
+                        <span class="ov-pax-count">{{ participantOverview.HasUploadedRoster ? participantOverview.AverageFinalGradePercentage : 'N/A'}}</span>
+                    </div>
+                    <div class="ov-pax-title">
+                        <span class="ov-pax-text">Avg. final grade</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3 no-padding-right">
+                <div class="ov-pax-card">
+                    <div class="ov-pax-box" [ngClass]="{'no-data': !participantOverview.HasUploadedRoster}">
+                        <p class="text-center no-margin"><i class="fal fa-shield-check fa-2x padding-t-5"></i></p>
+                        <span class="ov-pax-count">{{ participantOverview.HasUploadedRoster ? participantOverview.CompleteCertificatePercentage+ '%' : 'N/A'}}</span>
+                    </div>
+                    <div class="ov-pax-title">
+                        <span class="ov-pax-text">Complete / Certificate</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 padding-r-10">
+                <div style="box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.15);border: 1px solid rgba(0, 0, 0, 0.15);background-color: white;">
+                    <table class="table no-margin">
+                        <tbody>
+                            <tr>
+                                <td style="padding-right: 0px;">Students in roster</td>
+                                <td class="text-right">
+                                    <span [ngClass]="{'color-blue': participantOverview.HasUploadedRoster, 'color-darkgray': !participantOverview.HasUploadedRoster}">
+                                    {{ participantOverview.HasUploadedRoster ? participantOverview.StudentsInRosterCount : 'N/A'}}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Key participants</td>
+                                <td class="text-right">
+                                    <span [ngClass]="{'color-blue': participantOverview.HasUploadedRoster, 'color-darkgray': !participantOverview.HasUploadedRoster}">
+                                        {{ participantOverview.HasUploadedRoster ? participantOverview.KeyParticipantsCount : 'N/A'}}
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Unsatisfactory</td>
+                                <td class="text-right">
+                                    <span [ngClass]="{'color-blue': participantOverview.HasUploadedRoster, 'color-darkgray': !participantOverview.HasUploadedRoster}">
+                                        {{ participantOverview.HasUploadedRoster ? participantOverview.UnsatisfactoryCount : 'N/A'}}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Roster Download -->
+    <div class="col-sm-12 box-ov-footer padding-t-5 padding-b-5">
+        <div class="row">
+            <div class="col-sm-6"></div>
+            <div class="col-sm-6">
+                <a *ngIf="participantOverview.HasUploadedRoster" class="color-orange pull-right" 
+                   style="cursor:pointer;" (click)="DownloadRoster()">View student roster</a>
+            </div>
+        </div>
+    </div>
+</div>
+<a #DownloadLink></a>

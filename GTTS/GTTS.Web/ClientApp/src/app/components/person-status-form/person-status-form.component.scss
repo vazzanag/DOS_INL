@@ -1,0 +1,17 @@
+.bulk-h1 {
+    min-height: 190px !important;
+    max-height: calc(100vh - 315px) !important;
+    overflow-y: auto !important;
+}
+.bulk-h2 {
+    max-height: calc(100vh - 425px) !important;
+    overflow-y: auto !important;
+}
+.bulk-h3 {
+    max-height: calc(100vh - 500px) !important;
+    overflow-y: auto !important;
+}
+.bulk-h4 {
+    max-height: calc(100vh - 570px) !important;
+    overflow-y: auto !important;
+}

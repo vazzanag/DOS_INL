@@ -1,0 +1,40 @@
+﻿CREATE VIEW [persons].[MatchingPersonsView]
+	AS 
+		SELECT     p.PersonID,  
+				   FirstMiddleNames,
+				   LastNames,
+				   DOB,
+				   POBCityID,
+				   Gender,
+				   NationalID,
+				   IsUSCitizen,
+				   ResidenceLocationID,
+				   ContactEmail,
+				   ContactPhone,
+				   HighestEducationID,
+				   EnglishLanguageProficiencyID,
+				   PassportNumber,
+				   PassportExpirationDate,
+				   PassportIssuingCountryID,
+				   MatchCompletely = 1,
+				   p.POBCityName,
+				   p.POBStateName,
+				   p.POBCountryName,
+				   PersonLanguagesJSON,
+				   u.UnitID,
+				   pui.RankID,
+				   u.UnitMainAgencyID,
+				   IsLeahyVettingReq,
+				   IsVettingReq,
+				   IsValidated,
+				   HostNationPOCEmail,
+				   HostNationPOCName,
+				   PoliceMilSecID,
+				   JobTitle,
+				   YearsInPosition,
+				   MedicalClearanceStatus,
+				   IsUnitCommander
+		   
+	  FROM [persons].PersonsView p 
+		INNER JOIN [persons].PersonsUnitLibraryInfo pui ON p.PersonID = pui.PersonID and pui.IsActive = 1
+		INNER JOIN [unitlibrary].Units u ON pui.UnitID = u.UnitID

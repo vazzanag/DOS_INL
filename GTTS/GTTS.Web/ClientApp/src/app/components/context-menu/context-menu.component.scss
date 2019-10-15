@@ -1,0 +1,16 @@
+.contextmenu {
+    position: absolute;
+    z-index: 999;
+    background-color: #fff;
+    opacity: 1;
+}
+.contextmenu-item {
+    display: table;
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+}
+.contextmenu-item:hover {
+    background-color: #F0F0F5;
+}

@@ -1,0 +1,40 @@
+div{
+    font-weight:600;
+}
+.vettingContainer {
+    border-radius: 10px;
+    box-shadow: 0 0 1px  #707070;
+}
+
+.background{
+    background-color:#FFFFFF;
+}
+.altBackground {
+    background-color: #FFF3CF;
+}
+
+.error-input {
+    border: 1px solid #B31717 !important;
+    /*border: 1px solid #B31717;*/
+}
+
+error-input-pills {
+    border: 1px solid #B31717 !important;
+}
+
+.left-style {
+    float: left;
+    width: 45%;
+}
+
+.right-style {
+    float: right;
+    width: 45%;
+}
+
+.toggle-disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+    opacity: 0.65;
+}

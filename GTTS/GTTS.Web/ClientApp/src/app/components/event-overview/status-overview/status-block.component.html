@@ -1,0 +1,15 @@
+﻿<div class="flipContainer" style="max-width:162px;" [@flipLoad]='flip'>
+    <div class="flipSide flipFront">
+        Loading
+    </div>
+    <div class="flipSide flipBack" style="">
+        <div [ngStyle]="{'background-color': this.Color}" style="color:white;text-align:center;border-top-left-radius:10px;border-top-right-radius:10px;">{{ HeaderText }}</div>
+        <div style="background-color:white;text-align:center;border-bottom-left-radius:10px;border-bottom-right-radius:10px;">
+            <div>{{ Person }}</div>
+            <div>
+                <img src='../../../../assets/images/{{ ImageName }}' style="height:15px;" alt="{{ ImageAlt }}" />
+            </div>
+            <div [ngStyle]="{'color': this.Color}">{{ Status }} </div>
+        </div>
+    </div>
+</div>

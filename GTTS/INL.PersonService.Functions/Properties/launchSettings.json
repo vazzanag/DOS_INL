@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "INL.PersonService.Functions": {
+      "commandName": "Project",
+      "commandLineArgs": "host start --pause-on-error --nodeDebugPort 5871"
+    }
+  }
+}

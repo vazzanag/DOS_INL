@@ -1,0 +1,844 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>INLDB</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{38472b57-4807-4330-b481-754cf8f5d4c6}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.SqlAzureV12DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>INL</RootNamespace>
+    <AssemblyName>INL</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+    <TargetFrameworkProfile />
+    <DacApplicationName>inldb</DacApplicationName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <!-- Default to the v11.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'inl-dev|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'inl-test|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'inl-uat|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'inl-production|AnyCPU' ">
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo" />
+    <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="dbo\Views" />
+    <Folder Include="files" />
+    <Folder Include="files\PostDeployments" />
+    <Folder Include="files\Tables" />
+    <Folder Include="location" />
+    <Folder Include="location\PostDeployments" />
+    <Folder Include="location\Tables" />
+    <Folder Include="messaging" />
+    <Folder Include="messaging\PostDeployments" />
+    <Folder Include="messaging\Tables" />
+    <Folder Include="persons" />
+    <Folder Include="persons\PostDeployments" />
+    <Folder Include="persons\Tables" />
+    <Folder Include="schemas" />
+    <Folder Include="scripts" />
+    <Folder Include="training" />
+    <Folder Include="training\PostDeployments" />
+    <Folder Include="training\Stored Procedures" />
+    <Folder Include="training\Tables" />
+    <Folder Include="training\Views" />
+    <Folder Include="unitlibrary" />
+    <Folder Include="unitlibrary\PostDeployments" />
+    <Folder Include="unitlibrary\Tables" />
+    <Folder Include="users" />
+    <Folder Include="users\Functions" />
+    <Folder Include="users\PostDeployments" />
+    <Folder Include="users\Stored Procedures" />
+    <Folder Include="users\Tables" />
+    <Folder Include="users\Views" />
+    <Folder Include="location\Views" />
+    <Folder Include="location\Stored Procedures" />
+    <Folder Include="files\Stored Procedures" />
+    <Folder Include="files\Views" />
+    <Folder Include="persons\Views" />
+    <Folder Include="persons\Stored Procedures" />
+    <Folder Include="unitlibrary\Functions" />
+    <Folder Include="vetting" />
+    <Folder Include="vetting\PostDeployments" />
+    <Folder Include="vetting\Stored Procedures" />
+    <Folder Include="vetting\Tables" />
+    <Folder Include="vetting\Views" />
+    <Folder Include="unitlibrary\Functions" />
+    <Folder Include="unitlibrary\Stored Procedures" />
+    <Folder Include="unitlibrary\Views" />
+    <Folder Include="search" />
+    <Folder Include="search\Views" />
+    <Folder Include="search\Stored Procedures" />
+    <Folder Include="messaging\Views" />
+    <Folder Include="messaging\Stored Procedures" />
+    <Folder Include="dbo\Functions" />
+    <Folder Include="training\Functions" />
+    <Folder Include="search\Functions" />
+    <Folder Include="budgets" />
+    <Folder Include="budgets\Tables" />
+    <Folder Include="budgets\PostDeployments" />
+    <Folder Include="migration\" />
+    <Folder Include="migration\Tables\" />
+    <Folder Include="budgets\Stored Procedures" />
+    <Folder Include="budgets\Views" />
+    <Folder Include="migration\StoredProcedures\" />
+    <Folder Include="migration\Functions" />
+    <Folder Include="vetting\Functions" />
+    <Folder Include="TemplateFiles" />
+    <Folder Include="TemplateFiles\Training Events Template Files" />
+    <Folder Include="TemplateFiles\Unit Library Template Files" />
+    <Folder Include="TemplateFiles\New Post Onboarding Template Files" />
+    <Folder Include="scripts\stories" />
+    <Folder Include="OnboardingProcessFilesAndCode" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Stored Procedures\PROTOTYPE_JSON.sql" />
+    <Build Include="dbo\Views\PROTOTYPE_JSON_Relational_Data_as_JSON.sql" />
+    <None Include="files\PostDeployments\FileTypes_Load.sql" />
+    <Build Include="files\Tables\Files.sql" />
+    <Build Include="files\Tables\FileTypes.sql" />
+    <None Include="location\PostDeployments\Countries_Load.sql" />
+    <None Include="location\PostDeployments\LanguageProficiencies_Load.sql" />
+    <None Include="location\PostDeployments\Languages_Load.sql" />
+    <Build Include="location\Tables\Cities.sql" />
+    <Build Include="location\Tables\Countries.sql" />
+    <Build Include="location\Tables\LanguageProficiencies.sql" />
+    <Build Include="location\Tables\Languages.sql" />
+    <Build Include="location\Tables\Locations.sql" />
+    <Build Include="location\Tables\States.sql" />
+    <None Include="messaging\PostDeployments\ThreadContextTypes_Load.sql" />
+    <Build Include="messaging\Tables\MessageThreadMessages.sql" />
+    <Build Include="messaging\Tables\MessageThreadParticipants.sql" />
+    <Build Include="messaging\Tables\MessageThreads.sql" />
+    <Build Include="messaging\Tables\ThreadContextTypes.sql" />
+    <None Include="persons\PostDeployments\EducationLevels_Load.sql" />
+    <None Include="persons\PostDeployments\JobTitles_Load.sql" />
+    <None Include="persons\PostDeployments\PersonAttachmentTypes_Load.sql" />
+    <Build Include="persons\Tables\EducationLevels.sql" />
+    <Build Include="persons\Tables\JobTitles.sql" />
+    <Build Include="persons\Tables\PersonAttachments.sql" />
+    <Build Include="persons\Tables\PersonAttachmentTypes.sql" />
+    <Build Include="persons\Tables\PersonLanguages.sql" />
+    <Build Include="persons\Tables\Persons.sql" />
+    <Build Include="schemas\files.sql" />
+    <Build Include="schemas\location.sql" />
+    <Build Include="schemas\messaging.sql" />
+    <Build Include="schemas\persons.sql" />
+    <Build Include="schemas\training.sql" />
+    <Build Include="schemas\unitlibrary.sql" />
+    <Build Include="schemas\users.sql" />
+    <Build Include="schemas\vetting.sql" />
+    <PostDeploy Include="scripts\PostDeployment.sql" />
+    <None Include="scripts\PreDeployment.sql" />
+    <None Include="training\PostDeployments\ApprovalEventTypes_Load.sql" />
+    <None Include="training\PostDeployments\TrainingEventGroupMemberTypes_Load.sql" />
+    <None Include="training\PostDeployments\TrainingEventAttachmentTypes_Load.sql" />
+    <None Include="training\PostDeployments\TrainingEventStatuses_Load.sql" />
+    <None Include="training\PostDeployments\TrainingEventTypes_Load.sql" />
+    <Build Include="training\Tables\ApprovalChainLinkApprovers.sql" />
+    <Build Include="training\Tables\ApprovalChainLinks.sql" />
+    <Build Include="training\Tables\ApprovalEventTypes.sql" />
+    <Build Include="training\Tables\ProjectCodes.sql" />
+    <Build Include="training\Tables\TrainingEventApprovalLogs.sql" />
+    <Build Include="training\Tables\TrainingEventAttachments.sql" />
+    <Build Include="training\Tables\TrainingEventAttachmentTypes.sql" />
+    <Build Include="training\Tables\TrainingEventLocations.sql" />
+    <Build Include="training\Tables\TrainingEventProjectCodes.sql" />
+    <Build Include="training\Tables\TrainingEvents.sql" />
+    <Build Include="training\Tables\TrainingEventStakeholders.sql" />
+    <Build Include="training\Tables\TrainingEventStatuses.sql" />
+    <Build Include="training\Tables\TrainingEventStatusLog.sql" />
+    <Build Include="training\Tables\TrainingEventTypes.sql" />
+    <Build Include="training\Tables\TrainingEventUSPartnerAgencies.sql" />
+    <None Include="unitlibrary\PostDeployments\USPartnerAgencies_Load.sql" />
+    <Build Include="unitlibrary\Tables\Units.sql" />
+    <Build Include="unitlibrary\Tables\USPartnerAgencies.sql" />
+    <None Include="users\PostDeployments\AppUsers_Load.sql" />
+    <Build Include="users\Tables\AppPermissions.sql" />
+    <Build Include="users\Tables\AppRolePermissions.sql" />
+    <Build Include="users\Tables\AppRoles.sql" />
+    <Build Include="users\Tables\AppUserRoles.sql" />
+    <Build Include="users\Tables\AppUsers.sql" />
+    <Build Include="users\Tables\BusinessUnits.sql" />
+    <Build Include="users\Tables\StaffTypes.sql" />
+    <Build Include="users\Tables\AppUserBusinessUnits.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEvent.sql" />
+    <Build Include="training\Tables\KeyActivities.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventLocations.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventUSPartnerAgencies.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventProjectCodes.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEvent.sql" />
+    <Build Include="training\Views\TrainingEventsView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventLocations.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventProjectCodes.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventUSPartnerAgencies.sql" />
+    <Build Include="training\Views\TrainingEventLocationsView.sql" />
+    <Build Include="training\Views\TrainingEventProjectCodesView.sql" />
+    <Build Include="training\Views\TrainingEventUSPartnerAgenciesView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventReferences.sql" />
+    <Build Include="location\Views\LocationsView.sql" />
+    <Build Include="users\Views\AppUsersView.sql" />
+    <Build Include="users\Functions\FullName.sql" />
+    <Build Include="location\Stored Procedures\GetLocationsByCountryID.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEvents.sql" />
+    <Build Include="training\Views\TrainingEventAuthorizingDocumentsView.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventAuthorizingDocuments.sql" />
+    <Build Include="training\Tables\InterAgencyAgreements.sql" />
+    <Build Include="location\Tables\GeoRegions.sql" />
+    <None Include="location\PostDeployments\GeoRegions_Load.sql" />
+    <Build Include="location\Tables\DOSBureaus.sql" />
+    <Build Include="location\Tables\MissionTypes.sql" />
+    <Build Include="location\Tables\PostTypes.sql" />
+    <Build Include="location\Tables\Posts.sql" />
+    <Build Include="location\Tables\Missions.sql" />
+    <None Include="location\PostDeployments\DOSBureaus_Load.sql" />
+    <None Include="location\PostDeployments\MissionTypes_Load.sql" />
+    <None Include="location\PostDeployments\Missions_Load.sql" />
+    <None Include="location\PostDeployments\PostTypes_Load.sql" />
+    <None Include="location\PostDeployments\Posts_Load.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventAttachment.sql" />
+    <Build Include="files\Stored Procedures\SaveFile.sql" />
+    <Build Include="training\Views\TrainingEventAttachmentsView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventAttachments.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventAttachment.sql" />
+    <Build Include="files\Views\FilesView.sql" />
+    <Build Include="files\Stored Procedures\GetFile.sql" />
+    <Build Include="files\Stored Procedures\GetFiles.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventParticipants.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventParticipant.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventParticipantByPersonIDAndTrainingEventID.sql" />
+    <Build Include="persons\Tables\PersonsUnitLibraryInfo.sql" />
+    <Build Include="persons\Tables\Ranks.sql" />
+    <Build Include="location\Tables\NameFormats.sql" />
+    <Build Include="location\Tables\NationalIDFormats.sql" />
+    <None Include="location\PostDeployments\NameFormats_Load.sql" />
+    <None Include="location\PostDeployments\NationalIDFormats_Load.sql" />
+    <Build Include="files\Stored Procedures\GetFiles.sql" />
+    <Build Include="persons\Views\PersonLanguagesView.sql" />
+    <Build Include="training\Tables\TrainingEventsXLSX.sql" />
+    <Build Include="training\Tables\TrainingEventLocationsXLSX.sql" />
+    <Build Include="training\Tables\ParticipantsXLSX.sql" />
+    <Build Include="training\Tables\InstructorsXLSX.sql" />
+    <Build Include="persons\Views\PersonsUnitLibraryInfoView.sql" />
+    <Build Include="persons\Views\PersonsView.sql" />
+    <Build Include="persons\Stored Procedures\SavePerson.sql" />
+    <Build Include="dbo\Stored Procedures\GetReferenceTables.sql" />
+    <Build Include="location\Stored Procedures\GetStatesByCountryID.sql" />
+    <Build Include="location\Stored Procedures\GetCitiesByStateID.sql" />
+    <Build Include="unitlibrary\Functions\UnitBreakdown.sql" />
+    <Build Include="persons\Stored Procedures\GetPerson.sql" />
+    <Build Include="persons\Stored Procedures\SavePerson.sql" />
+    <Build Include="persons\Views\PersonLanguagesView.sql" />
+    <Build Include="persons\Stored Procedures\SavePersonLanguages.sql" />
+    <Build Include="location\Stored Procedures\FindOrCreateLocation.sql" />
+    <Build Include="persons\Stored Procedures\SavePersonsUnitLibraryInfo.sql" />
+    <Build Include="persons\Views\PersonsUnitLibraryInfoView.sql" />
+    <Build Include="vetting\Tables\PostVettingConfiguration.sql" />
+    <Build Include="vetting\Views\PostVettingConfigurationView.sql" />
+    <Build Include="vetting\Stored Procedures\GetPostVettingConfiguration.sql" />
+    <None Include="vetting\PostDeployments\PostVettingConfiguration_Load.sql" />
+    <Build Include="unitlibrary\Tables\UnitTypes.sql" />
+    <Build Include="unitlibrary\Tables\UnitLevels.sql" />
+    <Build Include="vetting\Tables\PersonsVetting.sql" />
+    <Build Include="vetting\Tables\PostVettingTypes.sql" />
+    <Build Include="vetting\Tables\VettingAttachmentTypes.sql" />
+    <Build Include="vetting\Tables\VettingBatches.sql" />
+    <Build Include="vetting\Tables\VettingFileAttachments.sql" />
+    <Build Include="vetting\Tables\VettingBatchTypes.sql" />
+    <Build Include="vetting\Tables\VettingHits.sql" />
+    <Build Include="vetting\Tables\VettingPersonStatuses.sql" />
+    <Build Include="vetting\Tables\VettingTypes.sql" />
+    <None Include="vetting\PostDeployments\VettingAttachmentTypes_Load.sql" />
+    <None Include="vetting\PostDeployments\VettingBatchTypes_Load.sql" />
+    <None Include="vetting\PostDeployments\VettingPersonStatuses_Load.sql" />
+    <None Include="vetting\PostDeployments\VettingTypes_Load.sql" />
+    <Build Include="vetting\Tables\AuthorizingLaws.sql" />
+    <Build Include="vetting\Tables\VettingFundingSources.sql" />
+    <None Include="vetting\PostDeployments\AuthorizingLaws_Load.sql" />
+    <None Include="unitlibrary\PostDeployments\GovtLevels_Load.sql" />
+    <None Include="unitlibrary\PostDeployments\ReportingTypes_Load.sql" />
+    <None Include="unitlibrary\PostDeployments\UnitLevels_Load.sql" />
+    <None Include="unitlibrary\PostDeployments\UnitTypes_Load.sql" />
+    <Build Include="unitlibrary\Tables\GovtLevels.sql" />
+    <Build Include="unitlibrary\Tables\ReportingTypes.sql" />
+    <Build Include="persons\Views\PersonsWithUnitLibraryInfoView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventParticiantsPersonIdAsJSON.sql" />
+    <Build Include="persons\Stored Procedures\GetPersonsFromJSON.sql" />
+    <Build Include="training\Tables\InstructorsXLSX.sql" />
+    <Build Include="training\Tables\ParticipantsXLSX.sql" />
+    <Build Include="training\Tables\TrainingEventLocationsXLSX.sql" />
+    <Build Include="training\Tables\TrainingEventsXLSX.sql" />
+    <Build Include="training\Views\TrainingEventParticipantsXLSXView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventParticipantsXLSX.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventParticipantsXLSX.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventParticipantsAvailableForSubmission.sql" />
+    <Build Include="unitlibrary\Tables\UnitLevels.sql" />
+    <Build Include="unitlibrary\Tables\UnitTypes.sql" />
+    <None Include="vetting\PostDeployments\VettingActivityTypes_Load.sql" />
+    <Build Include="vetting\Tables\VettingActivityTypes.sql" />
+    <Build Include="vetting\Tables\AgencyAtPostVettingFundingSources.sql" />
+    <Build Include="vetting\Tables\AgencyAtPostAuthorizingLaws.sql" />
+    <Build Include="vetting\Tables\VettingBatchStatuses.sql" />
+    <None Include="vetting\PostDeployments\VettingBatchStatuses_Load.sql" />
+    <None Include="scripts\DeleteAllData.sql" />
+    <Build Include="vetting\Stored Procedures\SaveVettingBatch.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventParticipantsXLSX.sql" />
+    <Build Include="training\Views\TrainingEventParticipantsXLSXView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventParticipantsXLSX.sql" />
+    <Build Include="vetting\Views\VettingBatchesDetailView.sql" />
+    <Build Include="training\Stored Procedures\DeleteTrainingEventParticipantXLSX.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventParticipantXLSX.sql" />
+    <Build Include="training\Stored Procedures\ImportTrainingEventParticipantsXLSX.sql" />
+    <Build Include="vetting\Views\PersonsVettingView.sql" />
+    <Build Include="vetting\Views\AgencyAtPostAuthorizingLawsView.sql" />
+    <Build Include="vetting\Views\AgencyAtPostVettingFundingSourcesView.sql" />
+    <Build Include="training\Tables\VisaStatuses.sql" />
+    <Build Include="unitlibrary\Functions\UnitBreakdown.sql" />
+    <Build Include="unitlibrary\Stored Procedures\GetUnit.sql" />
+    <Build Include="unitlibrary\Stored Procedures\GetUnitsPaged.sql" />
+    <Build Include="unitlibrary\Views\UnitsView.sql" />
+    <Build Include="training\Stored Procedures\InsertTrainingEventStatusLog.sql" />
+    <Build Include="training\Views\TrainingEventStatusLogView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventStatusLogs.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventStatusLog.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventPreviousStatusLog.sql" />
+    <Build Include="vetting\Stored Procedures\GetVettingBatchDetail.sql" />
+    <Build Include="location\Stored Procedures\GetCitiesByCountryID.sql" />
+    <Build Include="location\Views\CitiesView.sql" />
+    <Build Include="location\Views\StatesView.sql" />
+    <Build Include="training\Tables\AgencyAtPostProjectCodes.sql" />
+    <Build Include="vetting\Stored Procedures\GetVettingBatchesByCountryID.sql" />
+    <Build Include="vetting\Stored Procedures\GetNextBatchNumber.sql" />
+    <Build Include="vetting\Stored Procedures\GenerateGTTSTrackingNumber.sql" />
+    <Build Include="vetting\Stored Procedures\RejectVettingBatch.sql" />
+    <Build Include="vetting\Stored Procedures\UpdateVettingBatchStatus.sql" />
+    <Build Include="users\Stored Procedures\GetAppUserProfileByADOID.sql" />
+    <Build Include="vetting\Stored Procedures\GetVettingBatchesByTrainingEventID.sql" />
+    <Build Include="vetting\Stored Procedures\AssignVettingBatch.sql" />
+    <Build Include="training\Tables\TrainingEventStudentAttachments.sql" />
+    <Build Include="training\Tables\TrainingEventStudentAttachmentTypes.sql" />
+    <Build Include="training\Tables\TrainingEventInstructorAttachmentTypes.sql" />
+    <Build Include="training\Tables\TrainingEventInstructorAttachments.sql" />
+    <None Include="training\PostDeployments\TrainingEventStudentAttachmentTypes_Load.sql" />
+    <None Include="training\PostDeployments\TrainingEventInstructorAttachmentTypes_Load.sql" />
+    <Build Include="training\Views\TrainingEventStudentAttachmentsView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventStudentAttachments.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventStudentAttachment.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventStudentAttachment.sql" />
+    <Build Include="unitlibrary\Stored Procedures\GetNextUnitGenID.sql" />
+    <Build Include="unitlibrary\Stored Procedures\SaveUnit.sql" />
+    <Build Include="unitlibrary\Stored Procedures\SaveUnitAliases.sql" />
+    <Build Include="unitlibrary\Tables\UnitAliases.sql" />
+    <Build Include="persons\Stored Procedures\GetPersonsWithUnitLibraryInfoByCountryID.sql" />
+    <Build Include="unitlibrary\Stored Procedures\UpdateUnitParent.sql" />
+    <Build Include="users\Views\AppUsersDetailView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventsByCountryID.sql" />
+    <Build Include="training\Tables\TrainingEventGroupMembers.sql" />
+    <Build Include="training\Tables\TrainingEventGroupMemberTypes.sql" />
+    <Build Include="training\Tables\TrainingEventGroups.sql" />
+    <Build Include="training\Tables\RemovalCauses.sql" />
+    <Build Include="training\Tables\RemovalReasons.sql" />
+    <None Include="training\PostDeployments\RemovalReasons_Load.sql" />
+    <None Include="training\PostDeployments\RemovalCauses_Load.sql" />
+    <Build Include="training\Views\TrainingEventInstructorsView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventInstructorsByTrainingEventID.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventInstructor.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventInstructorByPersonIDAndTrainingEventID.sql" />
+    <Build Include="training\Views\TrainingEventGroupsView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventGroup.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventGroupsByTrainingEventID.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventGroup.sql" />
+    <Build Include="training\Views\TrainingEventGroupMembersView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventGroupMember.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventGroupMembersByTrainingEventGroupID.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventGroupMember.sql" />
+    <Build Include="training\Stored Procedures\DeleteTrainingEventGroupMember.sql" />
+    <Build Include="persons\Stored Procedures\GetPersonsUnitLibraryInfo.sql" />
+    <Build Include="unitlibrary\Stored Procedures\UpdateUnitActiveFlag.sql" />
+    <Build Include="persons\Stored Procedures\GetPersonByNationalID.sql" />
+    <Build Include="persons\Stored Procedures\GetPersonByMatchingFields.sql" />
+    <Build Include="schemas\search.sql" />
+    <Build Include="search\Stored Procedures\InstructorSearch.sql" />
+    <Build Include="scripts\FullTextCatalog.sql" />
+    <Build Include="search\Views\StudentsView.sql" />
+    <Build Include="search\Stored Procedures\StudentSearch.sql" />
+    <Build Include="search\Views\PersonsView.sql" />
+    <Build Include="search\Stored Procedures\PersonSearch.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventStudents.sql" />
+    <Build Include="messaging\Views\MessageThreadsView.sql" />
+    <Build Include="messaging\Stored Procedures\SaveMessageThread.sql" />
+    <Build Include="messaging\Stored Procedures\GetMessageThreadsByContextTypeAndContextTypeID.sql" />
+    <Build Include="messaging\Views\MessageThreadParticipantsView.sql" />
+    <Build Include="messaging\Stored Procedures\SaveMessageThreadParticipant.sql" />
+    <Build Include="messaging\Stored Procedures\GetMessageThreadParticipantsByMessageThreadID.sql" />
+    <Build Include="messaging\Views\MessageThreadMessagesView.sql" />
+    <Build Include="messaging\Stored Procedures\GetMessageThreadMessagesByMessageTheadID.sql" />
+    <Build Include="messaging\Stored Procedures\SaveMessageThreadMessage.sql" />
+    <Build Include="messaging\Stored Procedures\GetMesageThreadMessageByID.sql" />
+    <Build Include="messaging\Stored Procedures\GetMessageThreadByID.sql" />
+    <Build Include="messaging\Stored Procedures\GetMessageThreadParticipantByMessageThreadIDAndAppUserID.sql" />
+    <Build Include="vetting\Stored Procedures\GetInvestBatchDetailByBatchID.sql" />
+    <Build Include="vetting\Views\InvestBatchDetailView.sql" />
+    <Build Include="training\Tables\CourseDefinitionPrograms.sql" />
+    <Build Include="training\Tables\CourseDefinitions.sql" />
+    <Build Include="training\Tables\NonAttendanceCauses.sql" />
+    <Build Include="training\Tables\NonAttendanceReasons.sql" />
+    <Build Include="training\Tables\TrainingEventAttendance.sql" />
+    <Build Include="training\Tables\TrainingEventCourseDefinitions.sql" />
+    <Build Include="training\Tables\TrainingEventRosterDistinctions.sql" />
+    <Build Include="training\Tables\TrainingEventRosters.sql" />
+    <Build Include="training\Views\TrainingEventCourseDefinitionsView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventCourseDefinitionByTrainingEventID.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventCourseDefinition.sql" />
+    <None Include="scripts\Basic Data Load.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventGroupMembers.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventInstructors.sql" />
+    <Build Include="training\Stored Procedures\DeleteTrainingEventGroup.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventAttendance.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventAttendance.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventRoster.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventRoster.sql" />
+    <Build Include="training\Views\TrainingEventAttendanceView.sql" />
+    <Build Include="training\Views\TrainingEventStudentRosterView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventAttendanceByTrainingEventRosterID.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventStudentRosterByTrainingEventID.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventAttendanceInBulk.sql" />
+    <Build Include="training\Views\TrainingEventInstructorRosterView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventInstructorRosterByTrainingEventID.sql" />
+    <Build Include="training\Views\TrainingEventRosterView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventRosterByTrainingEventID.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventAttendanceInBulk.sql" />
+    <Build Include="vetting\Tables\VettingHitViolationTypes.sql" />
+    <Build Include="vetting\Tables\VettingHitResults.sql" />
+    <Build Include="vetting\Tables\VettingHitReferenceSites.sql" />
+    <Build Include="vetting\Tables\VettingHitFileAttachments.sql" />
+    <Build Include="vetting\Tables\VettingHitCredibilityLevels.sql" />
+    <None Include="vetting\PostDeployments\VettingHitCredibilityLevels_Load.sql" />
+    <None Include="vetting\PostDeployments\VettingHitReferenceSites_Load.sql" />
+    <None Include="vetting\PostDeployments\VettingHitResults_Load.sql" />
+    <None Include="vetting\PostDeployments\VettingHitViolationTypes_Load.sql" />
+    <Build Include="vetting\Tables\PersonsVettingVettingTypes.sql" />
+    <Build Include="vetting\Tables\VettingLeahyHitResults.sql" />
+    <Build Include="vetting\Tables\VettingLeahyHitAppliesTo.sql" />
+    <Build Include="vetting\Tables\LeahyVettingHits.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventCourseDefinitionUploadStatus.sql" />
+    <Build Include="persons\Views\ParticipantsView.sql" />
+    <Build Include="persons\Stored Procedures\GetAllParticipants.sql" />
+    <Build Include="training\Tables\TrainingEventKeyActivities.sql" />
+    <Build Include="training\Tables\TrainingEventAuthorizingDocuments.sql" />
+    <Build Include="migration\Tables\NewPostImportLog.sql" />
+    <Build Include="schemas\migration.sql" />
+    <Build Include="migration\Tables\NewPostImportExceptions.sql" />
+    <Build Include="migration\Tables\ImportTrainingEventVertical.sql" />
+    <Build Include="migration\Tables\NewPostTrainingEvents.sql" />
+    <Build Include="migration\Tables\NewPostLocations.sql" />
+    <Build Include="migration\Tables\NewPostParticipants.sql" />
+    <Build Include="migration\Tables\NewPostInstructors.sql" />
+    <Build Include="migration\Tables\ImportLocations.sql" />
+    <Build Include="migration\Tables\ImportParticipants.sql" />
+    <Build Include="migration\Tables\ImportInstructors.sql" />
+    <Build Include="training\Tables\TrainingEventVisaCheckLists.sql" />
+    <Build Include="training\Views\TrainingEventVisaCheckListView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventVisaCheckLists.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventVisaCheckLists.sql" />
+    <Build Include="dbo\Functions\StripPunctionsFromString.sql" />
+    <Build Include="unitlibrary\Stored Procedures\CheckForDuplicateUnit.sql" />
+    <Build Include="vetting\Stored Procedures\GetPersonVettingVettingType.sql" />
+    <Build Include="vetting\Views\PersonsVettingVettingTypesView.sql" />
+    <Build Include="vetting\Stored Procedures\SavePersonVettingVettingType.sql" />
+    <Build Include="search\Views\ParticipantsAndPersonsView.sql" />
+    <Build Include="search\Stored Procedures\ParticipantSearch.sql" />
+    <Build Include="search\Stored Procedures\ParticipantAndPersonSearch.sql" />
+    <Build Include="training\Functions\GetParticipantCount.sql" />
+    <Build Include="search\Stored Procedures\TrainingEventSearch.sql" />
+    <Build Include="search\Views\TrainingEventsView.sql" />
+    <Build Include="search\Functions\BuildFullTextSearchStringForAnd.sql" />
+    <Build Include="search\Views\ParticipantsView.sql" />
+    <Build Include="search\Views\LocationsView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventStudentsByTrainingEventID.sql" />
+    <Build Include="vetting\Views\PostVettingTypesView.sql" />
+    <Build Include="vetting\Stored Procedures\GetPostVettingTypes.sql" />
+    <Build Include="search\Views\VettingBatchesView.sql" />
+    <Build Include="search\Stored Procedures\VettingBatchesSearch.sql" />
+    <Build Include="search\Functions\BuildFullTextSearchStringForOr.sql" />
+    <Build Include="messaging\Stored Procedures\GetMessageThreadParticipantsByAppUserID.sql" />
+    <Build Include="messaging\Stored Procedures\GetNumUnreadMessageThreadMessagesByAppUserID.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventInstructor.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventStudent.sql" />
+    <Build Include="vetting\Stored Procedures\SaveLeahyVettingHit.sql" />
+    <Build Include="vetting\Stored Procedures\GetLeahyVettingHitByPersonsVettingID.sql" />
+    <Build Include="vetting\Views\LeahyVettingHitsView.sql" />
+    <Build Include="budgets\Tables\BudgetCategories.sql" />
+    <Build Include="schemas\budgets.sql" />
+    <Build Include="persons\Stored Procedures\GetPersonsUnit.sql" />
+    <Build Include="persons\Views\PersonsUnitView.sql" />
+    <Build Include="training\Views\PersonsTrainingEventsView.sql" />
+    <Build Include="training\Stored Procedures\GetPersonsTrainingEvents.sql" />
+    <Build Include="vetting\Stored Procedures\GetPersonVettings.sql" />
+    <Build Include="search\Views\VettingBatchesView.sql" />
+    <Build Include="search\Stored Procedures\VettingBatchesSearch.sql" />
+    <Build Include="unitlibrary\Functions\ChildUnits.sql" />
+    <Build Include="budgets\Tables\BudgetItemTypes.sql" />
+    <Build Include="budgets\Tables\CustomBudgetCategories.sql" />
+    <Build Include="budgets\Tables\BudgetItems.sql" />
+    <Build Include="budgets\Tables\CustomBudgetItems.sql" />
+    <Build Include="budgets\Views\BudgetItemTypesView.sql" />
+    <Build Include="budgets\Stored Procedures\GetBudgetItemTypes.sql" />
+    <Build Include="budgets\Stored Procedures\SaveBudgetItems.sql" />
+    <Build Include="budgets\Views\BudgetItemsView.sql" />
+    <Build Include="budgets\Stored Procedures\GetBudgetItemsByTrainingEventID.sql" />
+    <Build Include="budgets\Views\CustomBudgetCategoriesView.sql" />
+    <Build Include="budgets\Stored Procedures\SaveCustomBudgetCategories.sql" />
+    <Build Include="budgets\Stored Procedures\GetCustomBudgetCategoriesByTrainingEventID.sql" />
+    <Build Include="budgets\Views\CustomBudgetItemsView.sql" />
+    <Build Include="budgets\Stored Procedures\SaveCustomBudgetItems.sql" />
+    <Build Include="budgets\Stored Procedures\GetCustomBudgetItemsByTrainingEventID.sql" />
+    <Build Include="search\Views\VettingBatchesJSONView.sql" />
+    <Build Include="training\Views\TrainingEventsDetailView.sql" />
+    <Build Include="training\Views\TrainingEventKeyActivitiesView.sql" />
+    <Build Include="search\Views\TrainingEventsJSONView.sql" />
+    <Build Include="persons\Views\RanksView.sql" />
+    <Build Include="persons\Stored Procedures\GetRanksByCountryID.sql" />
+    <Build Include="migration\Tables\ImportPackageRunControlLog.sql" />
+    <Build Include="migration\StoredProcedures\WriteToImportPackageRunControlLog.sql" />
+    <Build Include="migration\StoredProcedures\MasterImportProcess.sql" />
+    <Build Include="vetting\Stored Procedures\GetVettingBatchesFromJson.sql" />
+    <Build Include="persons\Stored Procedures\GetMatchingPersons.sql" />
+    <Build Include="persons\Views\MatchingPersonsView.sql" />
+    <Build Include="training\Stored Procedures\DeleteTrainingEventParticipant.sql" />
+    <Build Include="training\Views\TrainingEventInstructorAttachmentsView.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventParticipantAttachments.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventParticipantAttachment.sql" />
+    <Build Include="training\Views\TrainingEventParticipantAttachmentsView.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventParticipantAttachment.sql" />
+    <Build Include="vetting\Stored Procedures\GetPersonVettingVettingTypes.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventParticipantValue.sql" />
+    <Build Include="training\Views\TrainingEventParticipantsDetailView.sql" />
+    <Build Include="location\Stored Procedures\FindCityByCityNameStateNameAndCountryName.sql" />
+    <Build Include="location\Stored Procedures\FindCityByCityNameStateNameAndCountryID.sql" />
+    <Build Include="unitlibrary\Stored Procedures\FindUnitByNameAndCountryID.sql" />
+    <Build Include="migration\Tables\ImportTrainingEventHorizontal.sql" />
+    <Build Include="migration\StoredProcedures\CreateNewPostInstructorsRecords.sql" />
+    <Build Include="migration\StoredProcedures\CreateNewPostLocationsRecords.sql" />
+    <Build Include="migration\StoredProcedures\CreateNewPostTrainingEventRecord.sql" />
+    <Build Include="migration\StoredProcedures\CreateNewPostParticipantsRecords.sql" />
+    <Build Include="unitlibrary\Functions\UnitBreakdownLocalLang.sql" />
+    <Build Include="vetting\Stored Procedures\GetPersonsVettingHits.sql" />
+    <Build Include="vetting\Stored Procedures\GetVettingHitFileAttachment.sql" />
+    <Build Include="vetting\Stored Procedures\SaveVettingHit.sql" />
+    <Build Include="vetting\Stored Procedures\SaveVettingHitAttachment.sql" />
+    <Build Include="vetting\Views\PersonVettingHitsView.sql" />
+    <Build Include="vetting\Views\VettingHitAttachmentView.sql" />
+    <Build Include="vetting\Views\VettingHitsView.sql" />
+    <Build Include="vetting\Stored Procedures\InsertPersonsVettingVettingType.sql" />
+    <Build Include="vetting\Stored Procedures\UpdateVettingBatch.sql" />
+    <Build Include="vetting\Stored Procedures\SavePersonsVettingStatus.sql" />
+    <Build Include="vetting\Stored Procedures\UpdateVettingBatchLeahyFile.sql" />
+    <Build Include="vetting\Stored Procedures\GetPersonsHistoricalVettingHits.sql" />
+    <Build Include="migration\StoredProcedures\DeleteAllNULLRecordsFromImportTables.sql" />
+    <Build Include="migration\StoredProcedures\GetImportTableCounts.sql" />
+    <Build Include="migration\StoredProcedures\ReverseLookupTrainingEventValues.sql" />
+    <Build Include="migration\StoredProcedures\ReverseLookupLocationValues.sql" />
+    <Build Include="migration\StoredProcedures\ReverseLookupParticipantValues.sql" />
+    <Build Include="unitlibrary\Functions\FindUnitIDFromParticipantUpload.sql" />
+    <Build Include="migration\StoredProcedures\ReverseLookupInstructorValues.sql" />
+    <Build Include="migration\StoredProcedures\SaveTrainingEventData.sql" />
+    <Build Include="location\Views\CountriesView.sql" />
+    <Build Include="location\Stored Procedures\GetCountries.sql" />
+    <None Include="users\PostDeployments\AppPermissions_Load.sql" />
+    <None Include="users\PostDeployments\AppRolePermissions_Load.sql" />
+    <Build Include="unitlibrary\Functions\NewUnitGenID.sql" />
+    <Build Include="users\Stored Procedures\GetAppUsers.sql" />
+    <Build Include="users\Stored Procedures\SaveAppUserProfile.sql" />
+    <Build Include="users\Stored Procedures\SaveAppUserRoles.sql" />
+    <Build Include="users\Stored Procedures\SaveAppUserBusinessUnits.sql" />
+    <Build Include="users\Stored Procedures\GetAppUserProfileByAppUserID.sql" />
+    <Build Include="unitlibrary\Stored Procedures\GetUnitAndChildren.sql" />
+    <Build Include="unitlibrary\Views\ReportingTypesView.sql" />
+    <Build Include="unitlibrary\Stored Procedures\GetReportingTypes.sql" />
+    <Build Include="training\Stored Procedures\SaveTrainingEventKeyActivities.sql" />
+    <Build Include="messaging\Tables\Notifications.sql" />
+    <Build Include="messaging\Tables\NotificationRecipients.sql" />
+    <Build Include="messaging\Tables\NotificationMessages.sql" />
+    <Build Include="messaging\Views\NotificationsView.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationsByAppUserID.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationsByContextTypeIDAndContextID.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotification.sql" />
+    <Build Include="messaging\Views\NotificationsDetailView.sql" />
+    <Build Include="messaging\Views\NotificationRecipientsView.sql" />
+    <Build Include="messaging\Stored Procedures\InsertNotification.sql" />
+    <Build Include="messaging\Views\NotificationMessagesView.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationMessage.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationRecipients.sql" />
+    <Build Include="messaging\Tables\NotificationContextTypes.sql" />
+    <None Include="messaging\PostDeployments\NotificationContextTypes_Load.sql" />
+    <Build Include="messaging\Stored Procedures\SaveNotificationRecipient.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationRecipient.sql" />
+    <Build Include="messaging\Views\NotificationRosterUploadedView.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationMessageByCode.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationRosterUploaded.sql" />
+    <Build Include="messaging\Views\NotificationsWithRecipientsView.sql" />
+    <Build Include="messaging\Stored Procedures\GetNumUnreadNotificationsByAppUserID.sql" />
+    <Build Include="search\Stored Procedures\NotificationsSearch.sql" />
+    <Build Include="search\Views\NotificationTrainingEventView.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationsByAppUserIDWithFiltersPaged.sql" />
+    <Build Include="search\Views\NotificationVettingView.sql" />
+    <Build Include="vetting\Views\VettingBatchPersonsView.sql" />
+    <Build Include="vetting\Views\VettingBatchesView.sql" />
+    <Build Include="vetting\Tables\CourtesyBatches.sql" />
+    <Build Include="vetting\Views\CourtesyBatchesView.sql" />
+    <Build Include="vetting\Stored Procedures\GetCourtesyBatchesByVettingBatchIDAndVettingTypeID.sql" />
+    <Build Include="vetting\Stored Procedures\GetCourtesyBatch.sql" />
+    <Build Include="vetting\Views\CourtesyBatchPersonsView.sql" />
+    <Build Include="vetting\Stored Procedures\GetCourtesyBatchPersons.sql" />
+    <Build Include="vetting\Stored Procedures\GetVettingBatchPersons.sql" />
+    <Build Include="training\Stored Procedures\GetRemovedParticipants.sql" />
+    <Build Include="vetting\Stored Procedures\UpdateVettingBatchLeahyGeneratedDate.sql" />
+    <Build Include="migration\StoredProcedures\SaveTrainingEventParticipantsData.sql" />
+    <Build Include="migration\StoredProcedures\SaveTrainingEventInstructorsData.sql" />
+    <Build Include="migration\StoredProcedures\SaveTrainingEventLocationsData.sql" />
+    <Build Include="migration\Functions\GenerateBusinessUnitAcronym.sql" />
+    <Build Include="users\Stored Procedures\GetAppRoles.sql" />
+    <Build Include="users\Stored Procedures\GetAppRolePermissions.sql" />
+    <Build Include="vetting\Views\VettingBatchesView.sql" />
+    <Build Include="training\Views\TrainingEventParticipantsView.sql" />
+    <Build Include="vetting\Stored Procedures\UpdatePersonVetting.sql" />
+    <Build Include="vetting\Stored Procedures\SaveCourtesyBatch.sql" />
+    <Build Include="vetting\Stored Procedures\GetCourtesyBatchesByVettingBatchID.sql" />
+    <Build Include="messaging\Tables\NotificationAppRoleContexts.sql" />
+    <Build Include="messaging\Views\NotificationAppRoleContextsView.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationAppRoleContexts.sql" />
+    <Build Include="messaging\Stored Procedures\SaveNotification.sql" />
+    <None Include="scripts\UAT extra data load.sql" />
+    <Build Include="messaging\Tables\NotificationAppRoleContextTypes.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationAppRoleContext.sql" />
+    <Build Include="migration\StoredProcedures\GetLocationID.sql" />
+    <Build Include="vetting\Functions\AvailableForVettingByTrainingEventIDAndPersonID.sql" />
+    <Build Include="vetting\Stored Procedures\GetPersonVettingStatusesByPersonID.sql" />
+    <Build Include="vetting\Views\PersonsVettingStatusesView.sql" />
+    <Build Include="migration\Tables\OnboardingCitiesList.sql" />
+    <Build Include="migration\Tables\OnboardingUsersList.sql" />
+    <Build Include="migration\Tables\OnboardingAuthorizingDocumentsList.sql" />
+    <Build Include="migration\Tables\OnboardingKeyActivitiesList.sql" />
+    <Build Include="migration\Tables\OnboardingRanksList.sql" />
+    <Build Include="migration\Tables\OnboardingStatesList.sql" />
+    <Build Include="migration\Tables\OnboardingTrainingEventFundingSourcesList.sql" />
+    <Build Include="migration\Tables\OnboardingVettingAuthorizingLawsList.sql" />
+    <Build Include="migration\Tables\OnboardingVettingFundingList.sql" />
+    <Build Include="migration\Tables\OnboardingPostConfigurationValues.sql" />
+    <Build Include="migration\Tables\OnboardingBusinessUnitsList.sql" />
+    <None Include="messaging\PostDeployments\NotificationAppRoleContexts_Load.sql" />
+    <Build Include="location\Stored Procedures\FindOrCreateCityByCityNameStateNameAndCountryID.sql" />
+    <Build Include="unitlibrary\Views\UnitsDetailView.sql" />
+    <Build Include="vetting\Views\PersonsVettingClosedView.sql" />
+    <Build Include="vetting\Stored Procedures\CancelVettingBatchesForTrainingEvent.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationPersonsVettingVettingTypeCreated.sql" />
+    <Build Include="users\Views\AppUsersBusinessUnitsRolesView.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationVettingBatchCourtesyCompleted.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationVettingBatchResultsNotifiedWithRejections.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationVettingBatchResultsNotified.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationVettingBatchAccepted.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationVettingBatchRejected.sql" />
+    <Build Include="unitlibrary\Stored Procedures\UpdateParentBreakdownAndChildUnits.sql" />
+    <Build Include="unitlibrary\Stored Procedures\UpdateChildBreakdownAndChildUnits.sql" />
+    <None Include="scripts\stories\GTTS-1615.sql" />
+    <Build Include="migration\Functions\RemoveAccents.sql" />
+    <Build Include="migration\Tables\OnboardingDefaultBudgetCalcValues.sql" />
+    <Build Include="migration\Tables\OnboardingImplementingPartners.sql" />
+    <Build Include="unitlibrary\Tables\ImplementingPartnersAtPost.sql" />
+    <Build Include="training\Tables\AuthorizingDocumentsAtPost.sql" />
+    <Build Include="training\Tables\KeyActivitiesAtPost.sql" />
+    <Build Include="vetting\Stored Procedures\RemoveParticipantFromVetting.sql" />
+    <Build Include="search\Views\UnitsView.sql" />
+    <Build Include="search\Stored Procedures\UnitSearch.sql" />
+    <Build Include="migration\Tables\OnboardingReportingTypesList.sql" />
+    <Build Include="budgets\Tables\PostBudgetDefaultValues.sql" />
+    <Build Include="messaging\Tables\PostNotificationsConfiguration.sql" />
+    <Build Include="migration\Tables\OnboardingExternalLocations.sql" />
+    <None Include="scripts\stories\GTTS-1759.sql" />
+    <Build Include="vetting\Stored Procedures\GenerateVettingExpirationReport.sql" />
+    <Build Include="users\Stored Procedures\SwitchPost.sql" />
+    <Build Include="location\Stored Procedures\GetPosts.sql" />
+    <Build Include="location\Views\PostsView.sql" />
+    <Build Include="training\Tables\TrainingEventTypesAtBusinessUnit.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventTypesAtBusinessUnit.sql" />
+    <Build Include="training\Views\TrainingEventTypesAtBusinessUnitView.sql" />
+    <Build Include="persons\Views\PersonAttachmentsView.sql" />
+    <Build Include="persons\Stored Procedures\GetPersonAttachments.sql" />
+    <Build Include="persons\Stored Procedures\SavePersonAttachment.sql" />
+    <Build Include="persons\Stored Procedures\GetPersonAttachmentsByAttachmentType.sql" />
+    <Build Include="persons\Stored Procedures\GetPersonAttachment.sql" />
+    <Build Include="search\Stored Procedures\PersonsVettingSearch.sql" />
+    <Build Include="search\Views\PersonsVettingJSONView.sql" />
+    <Build Include="training\Tables\ProjectCodesAtBusinessUnit.sql" />
+    <Build Include="training\Views\ProjectCodesAtBusinessUnitView.sql" />
+    <Build Include="training\Stored Procedures\GetProjectCodesAtBusinessUnit.sql" />
+    <None Include="scripts\stories\GTTS-1879.sql" />
+    <Build Include="training\Tables\KeyActivitiesAtBusinessUnit.sql" />
+    <Build Include="training\Stored Procedures\GetKeyActivitiesAtBusinessUnit.sql" />
+    <Build Include="training\Views\KeyActivitesAtBusinessUnitView.sql" />
+    <Build Include="training\Tables\InterAgencyAgreementsAtBusinessUnit.sql" />
+    <Build Include="training\Views\InterAgencyAgreementsAtBusinessUnitView.sql" />
+    <Build Include="training\Stored Procedures\GetInterAgencyAgreementsAtBusinessUnit.sql" />
+    <Build Include="training\Tables\USPartnerAgenciesAtBusinessUnit.sql" />
+    <Build Include="training\Views\USPartnerAgenciesAtBusinessUnitView.sql" />
+    <Build Include="training\Stored Procedures\GetUSPartnerAgenciesAtBusinessUnit.sql" />
+    <Build Include="training\Stored Procedures\GetParticipantRemovalReasons.sql" />
+    <Build Include="training\Stored Procedures\GetParticipantRemovalCauses.sql" />
+    <Build Include="migration\Tables\OnboardingTrainingEventTypes.sql" />
+    <Build Include="training\Tables\TrainingEventParticipantTypes.sql" />
+    <Build Include="training\Tables\TrainingEventParticipants.sql" />
+    <Build Include="training\Stored Procedures\UpdateTypeTrainingEventParticipants.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="training\Stored Procedures\SaveTrainingEventStakeholders.sql" />
+    <Build Include="training\Stored Procedures\GetTrainingEventStakeholders.sql" />
+    <Build Include="training\Views\TrainingEventStakeholdersView.sql" />
+    <None Include="unitlibrary\PostDeployments\GovtLevels_Load.sql" />
+    <None Include="unitlibrary\PostDeployments\ReportingTypes_Load.sql" />
+    <None Include="unitlibrary\PostDeployments\UnitLevels_Load.sql" />
+    <None Include="unitlibrary\PostDeployments\UnitTypes_Load.sql" />
+    <None Include="training\PostDeployments\VisaStatuses_Load.sql" />
+    <None Include="users\PostDeployments\AppRoles_Load.sql" />
+    <None Include="users\PostDeployments\AppUserRoles_Load.sql" />
+    <None Include="training\PostDeployments\CourseDefinitionPrograms_Load.sql" />
+    <None Include="training\PostDeployments\NonAttendanceCauses_Load.sql" />
+    <None Include="training\PostDeployments\NonAttendanceReasons_Load.sql" />
+    <None Include="training\PostDeployments\TrainingEventRosterDistinctions_Load.sql" />
+    <None Include="vetting\PostDeployments\VettingLeahyHitAppliesTo_Load.sql" />
+    <None Include="vetting\PostDeployments\VettingLeahyHitResults_Load.sql" />
+    <None Include="budgets\PostDeployments\BudgetCategories_Load.sql" />
+    <None Include="budgets\PostDeployments\BudgetItemTypes_Load.sql" />
+    <None Include="unitlibrary\PostDeployments\US_Government_Units_Load.sql" />
+    <None Include="messaging\PostDeployments\NotificationMessages_Load.sql" />
+    <None Include="messaging\PostDeployments\NotificationAppRoleContextTypes_Load.sql" />
+    <Build Include="messaging\Stored Procedures\GetNotificationVettingBatchCreated.sql" />
+    <None Include="TemplateFiles\Training Events Template Files\GTTS New Post Training Event Data Template Instructions.docx" />
+    <None Include="TemplateFiles\Training Events Template Files\GTTS New Post Training Event Data Template Technical Documentation _ Notes.docx" />
+    <None Include="TemplateFiles\Unit Library Template Files\GTTS Unit Library Data Template Instructions.docx" />
+    <None Include="TemplateFiles\Unit Library Template Files\GTTS Unit Library Data Template Technical Documentation &amp; Notes.docx" />
+    <None Include="TemplateFiles\Unit Library Template Files\GTTS Unit Library Data Template.xlsx" />
+    <None Include="TemplateFiles\New Post Onboarding Template Files\GTTS New Post Onboarding User &amp; Data Forms %28Colombia) 2019-05-29.xlsx" />
+    <None Include="TemplateFiles\New Post Onboarding Template Files\GTTS New Post Onboarding User &amp; Data Forms XLXS Password.txt" />
+    <None Include="TemplateFiles\New Post Onboarding Template Files\GTTS New Post Onboarding User &amp; Data Instructions.docx" />
+    <None Include="TemplateFiles\New Post Onboarding Template Files\GTTS New Post Onboarding User &amp; Data Instructions.pdf" />
+    <None Include="TemplateFiles\Unit Library Template Files\GTTS Unit Library Data Template Instructions.pdf" />
+    <None Include="TemplateFiles\Training Events Template Files\GTTS New Post Training Event Data Template Instructions.pdf" />
+    <None Include="TemplateFiles\Training Events Template Files\GTTS New Post Training Event Data Template.xlsx" />
+    <None Include="TemplateFiles\Training Events Template Files\GTTS Training Event Participants Only Upload Template.xlsx" />
+    <None Include="scripts\Onboarding Data Load - Costa Rica.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="INLDB.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="INLDB_localhost_update_transactional.publish.xml" />
+    <None Include="scripts\InitialDeployment.sql" />
+    <None Include="scripts\stories\GTTS-1477.sql" />
+    <None Include="INLDB.publish.xml" />
+    <None Include="scripts\Onboarding Tables Upload Data Reload - Costa Rica.sql" />
+    <None Include="scripts\Onboarding Data Load - Colombia.sql" />
+    <None Include="scripts\stories\GTTS-1860.sql" />
+    <None Include="scripts\stories\GTTS-1861.sql" />
+    <None Include="scripts\stories\GTTS-1573.sql" />
+    <None Include="scripts\stories\GTTS-1329.sql" />
+    <None Include="scripts\stories\GTTS-1677.sql" />
+    <None Include="scripts\RebuildIndexes.sql" />
+    <None Include="scripts\stories\GTTS-1923.sql" />
+    <None Include="scripts\stories\GTTS-1920.sql" />
+    <None Include="scripts\stories\GTTS-1917.sql" />
+    <None Include="scripts\stories\GTTS-1922.sql" />
+    <None Include="scripts\stories\GTTS-1929.sql" />
+    <None Include="scripts\stories\GTTS-1919.sql" />
+    <None Include="scripts\stories\GTTS-1921.sql" />
+    <None Include="scripts\stories\GTTS-1936.sql" />
+    <None Include="training\PostDeployments\TrainingEventParticipantTypes_Load.sql" />
+    <None Include="scripts\stories\GTTS-1165.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="TemplateFiles\Training Events Template Files\Training Event Data Template Dev Folder Archive 2019-06-03.zip" />
+    <None Include="TemplateFiles\New Post Onboarding Template Files\GTTS New Post Onboarding User &amp; Data Forms %28Honduras) 2019-06-19.xlsx" />
+    <None Include="OnboardingProcessFilesAndCode\Onboarding WorkFlow Files 2019-06-26.zip" />
+    <None Include="OnboardingProcessFilesAndCode\Colombia Onboarding Data Load Scripts 2019-06-26.zip" />
+  </ItemGroup>
+</Project>

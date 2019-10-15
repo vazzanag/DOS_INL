@@ -1,0 +1,8 @@
+﻿{
+  "INLBlobConnectionString": "xxxxxxxxxxxxxxxxxxxxxx",
+  "INLDocumentConnectionString": "xxxxxxxxxxxxxxxxxxxxxxx",
+  "INLUploadDocumentEndPoint": "https://xxxxxx/api/v1/documents",
+  "INLUploadDocumentToTrainingEventEndPoint": "https://xxxxxxx/api/v1/trainingevents/{trainingEventID}/documents",
+  "ContainerName": "TrainingEvent",
+  "TestFileURL": "https://www.tutorialspoint.com/csharp/csharp_tutorial.pdf"
+}

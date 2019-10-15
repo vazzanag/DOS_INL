@@ -1,0 +1,12 @@
+﻿:host /deep/ .dataTables_wrapper.no-footer .dataTables_scrollBody
+{
+    border-bottom: 0;
+}
+
+.unread {
+    background: rgb(255, 255, 255);
+}
+
+.read {
+    background: rgb(233, 233, 233);
+}

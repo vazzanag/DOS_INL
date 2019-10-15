@@ -1,0 +1,19 @@
+<div id="tabVettingHistory" class="tab-pane">
+    <div class="panel panel-default">
+        <table #tblVettingHistory class="table table-hover hide-icon-sort hover center-table-header dataTable no-footer no-margin" role="grid" style="width: 100%; margin-top: 0px !important">
+            <thead>
+                <tr class="text-center" role="row">
+                    <th class="center-th sorting" style="width: 5px;">No.</th>
+                    <th class="center-th sorting" style="width: 180px;">Tracking no.</th>
+                    <th class="center-th sorting" style="width: 80px;">Batch ID</th>
+                    <th class="center-th sorting" style="width: 100px;">Result</th>
+                    <th class="center-th sorting" style="width: 150px;">Vetting valid</th>
+                </tr>
+            </thead>
+        </table>
+        <div *ngIf="isLoading" style="width:100%;text-align:center;padding:8px;">
+            Loading
+            <span class="fa fa-spinner fa-spin"></span>
+        </div>
+    </div>
+</div>

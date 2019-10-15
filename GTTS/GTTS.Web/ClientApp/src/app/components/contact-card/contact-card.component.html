@@ -1,0 +1,14 @@
+﻿<div class="calloutContact">
+    <div style="display:inline;">
+        <img *ngIf="Contact.PicturePath == null" src="../../../assets/images/pop-out-profile-photo.svg" alt="Avatar" style="width:45px;margin:5px;" />
+        <img *ngIf="Contact.PicturePath != null" [src]="Contact.PicturePath" [alt]="Contact.FullName" style="width:45px;margin:5px;" />
+    </div>
+    <div style="display:inline;padding-left:5px;padding-right:5px;">
+        <div class="value" style="padding-top:5px;">{{ Contact.FullName }}</div>
+        <div style="border-bottom:1px solid black;width:100%;min-width:175px;padding-bottom:2px;">{{ Contact.PositionTitle }}</div>
+        <div style="padding-bottom:5px;padding-top:2px;">
+            <img src="../../../assets/images/chaticon.svg" alt="Close Event" style="height:15px;padding-right:10px;" />
+            <img src="../../../assets/images/phone.svg" alt="Close Event" style="height:15px;" />
+        </div>
+    </div>
+</div>

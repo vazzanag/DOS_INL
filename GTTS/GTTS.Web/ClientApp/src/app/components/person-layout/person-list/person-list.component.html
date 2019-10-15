@@ -1,0 +1,66 @@
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>
+            <i class="fa fa-users" style="color:#3c8dbc;"></i>&nbsp;&nbsp;Participant database
+        </h1>
+    </section>
+    <section class="content">
+        <div class="box no-top-border">
+            <div class="box-header">
+                <div class="col-xs-12 text-right no-padding">
+
+                    <ul class="nav nav-pills">
+                        <li [ngClass]="{active: totalLabel == 'participants'}" style="cursor:pointer;"><a persontype="All" data-toggle="tab" (click)="ChooseTab($event)">All participants</a></li>
+                        <li [ngClass]="{active: totalLabel == 'students'}" style="cursor:pointer;"><a data-toggle="tab" persontype="Students" (click)="ChooseTab($event)">Students</a></li>
+                        <li [ngClass]="{active: totalLabel == 'instructors'}" style="cursor:pointer;"><a data-toggle="tab" persontype="Instructors" (click)="ChooseTab($event)">Instructors</a></li>
+                        <li class="pull-right" style="padding-top: 10px;padding-right: 15px;">
+                            <span id="spanParticipants" class="participant-tab-totals pull-left" style="font-weight: normal;">Total no. of {{totalLabel}}: {{totalCount}} </span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <table datatable [dtOptions]="dtOptions" class="table table-hover hide-icon-sort hover center-table-header dataTable no-footer no-margin" role="grid" style="width: 100%; margin-top: 0px !important">
+                        <thead>
+                            <tr>
+                                <th class="td-middle" width="2%">No</th>
+                                <th class="td-middle order-dt" width="2%">&nbsp;</th>
+                                <th class="td-middle order-dt" width="15%">Name</th>
+                                <th class="td-middle order-dt" width="3%">Gender</th>
+                                <th class="td-middle order-dt" width="20%">Agency / Organization</th>
+                                <th class="td-middle order-dt" width="25%">Unit</th>
+                                <th class="td-middle order-dt" width="10%">Position / Rank</th>
+                                <th class="td-middle order-dt" width="10%">Last clearance</th>
+                                <th class="td-middle order-dt">Distinction</th>
+                            </tr>
+                        </thead>
+                        <tbody *ngIf="Persons?.length != 0">
+                            <tr *ngFor="let person of Persons">
+                                <td>{{ person.RowNumber }}</td>
+                                <td *ngIf="person.ParticipantType == 'Student'"><div style="display:block; height:auto" width="100%"><img src="../../../assets/images/student_blue.png" style="height:18px;" /></div></td>
+                                <td *ngIf="person.ParticipantType == 'Instructor'"><div style="display:block; height:auto" width="100%"><img src="../../../assets/images/teachers_blue.png" style="height:18px;" /></div></td>
+                                <td><a href='#' data-toggle='modal' data-target='#genericModal' (click)="ShowPersonView(person.PersonID, person.FullName)">{{person.FullName}}</a></td>
+                                <td class="td-middle text-center">{{ person.Gender }}</td>
+                                <td class="td-middle text-center">{{ person.AgencyName }}</td>
+                                <td class="td-middle text-center">{{ person.UnitName }}</td>
+                                <td class="td-middle text-center">{{ person.JobTitle }} <span *ngIf="person.JobTitle && person.RankName">/</span> {{ person.RankName }} </td>
+                                <td class="td-middle text-center">{{ person.LastClearance }} <span *ngIf="person.VettingValidEndDate"><br />(Exp. {{person.VettingValidEndDate | date: 'MM/dd/yyyy'}})</span></td>
+                                <td class="td-middle text-center">{{ person.Distinction }}</td>
+                            </tr>
+                        </tbody>
+                        <tbody *ngIf="Persons?.length == 0">
+                            <tr>
+                                <td colspan="9" class="td-middle text-center">No data available in table</td>
+                            </tr>
+                        <tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<ng-template #personview>
+    <app-person-view-layout (CloseModal)="CloseModal()" [PersonID]="SelectedPersonID" [PersonName]="SelectedPersonName"></app-person-view-layout>
+</ng-template>

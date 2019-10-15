@@ -1,0 +1,195 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left">{{participant.FirstMiddleNames}} {{participant.LastNames}}</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="Cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<form #personForm="ngForm" id="ngForm" (ngSubmit)="SavePerson(personForm)">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="gnControl.touched && gnControl.invalid">
+                    <label for="FirstMiddleNames">*First/middle name(s):</label>
+                    <input name="FirstMiddleNames" class="form-control" [(ngModel)]="Model.FirstMiddleNames" #gnControl="ngModel" placeholder="First/middle name(s)" required />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="fnControl.touched && fnControl.invalid">
+                    <label for="LastNames">*Last name(s):</label>
+                    <input name="LastNames" class="form-control" [(ngModel)]="Model.LastNames" #fnControl="ngModel" placeholder="Last name(s):" required />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="Name1">Name 1</label>
+                    <input name="Name1" class="form-control" [(ngModel)]="Model.Name1" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="Name2">Name 2</label>
+                    <input name="Name2" class="form-control" [(ngModel)]="Model.Name2" />
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="Name3">Name 3</label>
+                    <input name="Name3" class="form-control" [(ngModel)]="Model.Name3" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="Name4">Name 4</label>
+                    <input name="Name4" class="form-control" [(ngModel)]="Model.Name4" />
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="Name5">Name 5</label>
+                    <input name="Name5" class="form-control" [(ngModel)]="Model.Name5" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="nidControl.touched && nidControl.invalid">
+                    <label for="NationalID">(*)National ID:</label>
+                    <input name="NationalID" class="form-control" [(ngModel)]="Model.NationalID" #nidControl="ngModel" placeholder="National ID" required />
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="genControl.touched && genControl.invalid">
+                    <label for="Gender">*Gender:</label>
+                    <div class="col-xs-12 no-padding">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default" (click)="SetGender('M');" [class.active]="Model.Gender=='M'">
+                                <input type="radio" name="Gender" value="M" [(ngModel)]="Model.Gender" #genControl="ngModel" autocomplete="off" required />
+                                <span class="">Male</span>
+                            </label>
+                            <label class="btn btn-default" (click)="SetGender('F');" [class.active]="Model.Gender=='F'">
+                                <input type="radio" name="Gender" value="F" [(ngModel)]="Model.Gender" #genControl="ngModel" autocomplete="off" required />
+                                <span class="">Female</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="dobControl.touched && dobControl.invalid">
+                    <label for="DateOfBirth">(*)Date of birth</label>
+                    <input name="DateOfBirth" class="form-control" [(ngModel)]="Model.DOB" placeholder="Date of Birth" bsDatepicker
+                           [bsConfig]="{ dateInputFormat: 'MM/DD/YYYY', containerClass: 'theme-default' }" required #dobControl="ngModel" />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="pobcountry.touched && pobcountry.invalid">
+                    <label for="CountryOfBirth">(*)Country of birth</label>
+                    <select id="CountryOfBirth" placeholder="Country of Birth" [(ngModel)]="Model.POBCountryID" required
+                            name="POBCountryID" class="form-control" #pobcountry="ngModel" (change)="CountrySelectionChange(pobcountry)">
+                        <option value="">Select Country...</option>
+                        <option *ngFor="let country of BirthCountries" [value]="country.CountryID">{{ country.CountryName }}</option>
+                    </select>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="pobstate.touched && pobstate.invalid">
+                    <label for="StateOfBirth">(*)State of birth</label>
+                    <select id="StateOfBirth" placeholder="State of Birth" [(ngModel)]="Model.POBStateID" required
+                            name="POBStateID" class="form-control" #pobstate="ngModel" (change)="CitySelectionChange(pobstate)">
+                        <option *ngFor="let loc of BirthStates" [value]="loc.StateID">{{ loc.StateName }}</option>
+                    </select>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group" [class.has-error]="pobcitControl.touched && pobcitControl.invalid">
+                    <label for="CityOfBirth">(*)City of birth</label>
+                    <select id="CityOfBirth" [(ngModel)]="Model.POBCityID" #pobcitControl="ngModel" placeholder="City of Birth" required
+                            name="POBCityID" class="form-control">
+                        <option *ngFor="let loc of BirthCities" [value]="loc.CityID">{{ loc.CityName }}</option>
+                    </select>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </div>
+        <hr class="separator">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group" [class.has-error]="unitControl.touched && unitControl.invalid">
+                    <label for="UnitID">*Unit ID:</label>
+                    <select id="UnitID" placeholder="Unit ID" required name="UnitID" [(ngModel)]="Unit" #unitControl="ngModel" (ngModelChange)="LoadUnitData($event)" class="form-control">
+                        <option *ngFor="let unit of Units" [ngValue]="unit">{{ unit.UnitNameEnglish }}</option>
+                    </select>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="UnitBreakdown">Unit breakdown:</label>
+                    <textarea class="form-control" placeholder="Unit breakdown" readonly="readonly" [value]="UnitBreakdown" rows="3"></textarea>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="UnitAlias">Unit alias:</label>
+                    <textarea class="form-control" placeholder="Unit Alias" readonly="readonly" [value]="UnitAlias" rows="3"></textarea>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="JobTitle">Job title:</label>
+                    <input name="JobTitle" class="form-control" placeholder="Job Title" [(ngModel)]="Model.JobTitle"
+                           [typeahead]="JobTitles" typeaheadOptionField="JobTitle" />
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="Rank">(*)Rank:</label>
+                    <select [(ngModel)]="Rank" id="Rank" placeholder="Rank" name="Rank" class="form-control" required>
+                        <option *ngFor="let rank of Ranks" [value]="rank">{{ rank.RankName }}</option>
+                    </select>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label for="IsUnitCommander">Is unit commander</label>
+                    <div class="col-xs-12 no-padding">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default" (click)="SetUnitCommander(true)" [class.active]="IsCommander==true">
+                                <input type="radio" name="IsUnitCommander" value="true" [(ngModel)]="IsCommander" autocomplete="off" />
+                                <span class="">YES</span>
+                            </label>
+                            <label class="btn btn-default" (click)="SetUnitCommander(false)" [class.active]="IsCommander==false">
+                                <input type="radio" name="IsUnitCommander" value="false" [(ngModel)]="IsCommander" autocomplete="off" />
+                                <span class="">NO</span>
+                            </label>
+                        </div>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="Cancel()">Cancel</button>
+        <button type="submit" class="btn btn-primary" [disabled]="personForm.form.invalid">Save</button>
+    </div>
+</form>

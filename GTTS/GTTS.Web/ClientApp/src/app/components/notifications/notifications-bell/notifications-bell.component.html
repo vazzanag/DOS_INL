@@ -1,0 +1,55 @@
+<div dropdown (onShown)="onShown()">
+    <a id="notifications-link" dropdownToggle (click)="false" aria-controls="notifications-dropdown">
+        <span class="hidden-xs"><i class="far fa-bell" style="font-size: 20px;color: white;cursor:pointer;"></i></span>
+    </a>
+        <span id="notificationToRead" class="label label-warning num-unread-messages-label" 
+              *ngIf="numberOfUnreadNotifications != 0">{{ numberOfUnreadNotifications }}
+        </span>
+   
+        <ul id="notifications-dropdown" *dropdownMenu class="dropdown-menu chat-wrapper-menu bottom-right" role="menu" aria-labelledby="notifications-link">
+            <li *ngIf="notifications?.length > 0" class="notifications-dd-items">
+                <table id="tNotification" class="table table-hover dataTable no-footer" role="grid" style="min-width:160px;">
+                    <tbody>
+                        <tr *ngFor="let notification of unreadNotifications; let i = index;" role="row" style="cursor:pointer"
+                            (click)="OpenDetails(notificationDetails, notification, 'modal-dialog modal-md');"
+                            [ngClass]="{'unread': notification.Unread,  'read': !notification.Unread}">
+                            <td class="tex-center valign-middle">
+                                <i *ngIf="notification.NotificationContextType == 'Vetting'" style="font-size:17px;"
+                                   class="far fa-street-view padding-l-5" title="Vetting"
+                                   [ngClass]="{'color-blue': notification.Unread, 'color-mrdarkgray': !notification.Unread}"></i>
+                                <i *ngIf="notification.NotificationContextType == 'Event'" style="font-size:17px;"
+                                   class="fal fa-calendar-day padding-l-5" title="Training Event"
+                                   [ngClass]="{'color-blue': notification.Unread, 'color-mrdarkgray': !notification.Unread}"></i>
+                            </td>
+                            <td>
+                                <a title="{{ notification.NotificationSubject }}">
+                                    <label [ngClass]="{'color-blue': notification.Unread, 'color-black': !notification.Unread}">{{ notification.NotificationSubject }}</label>
+                                    <p style="font-family: arial;font-size: 13px; -webkit-box-orient: vertical;" [innerHTML]="notification.NotificationMessage"></p>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </li>
+            <li *ngIf="notifications?.length > 0" class="menu-chat-footer padding-b-5">
+                <a id="linkNotificationInbox" (click)="OpenModal(notificationList,'modal-responsive-sm');" style="cursor:pointer"
+                   class="link-message" data-size="modal-responsive-sm">See all notifications</a>
+            </li>
+            <li *ngIf="notifications?.length == 0" class="menu-chat-footer padding-b-5" style="color:black;">
+                No notifications
+            </li>
+        </ul>
+</div>
+
+<ng-template #notificationList>
+    <app-notifications-list-modal [Context]="notificationListContext.User"
+                                  (CloseModal)="CloseModal($event)">
+    </app-notifications-list-modal>
+</ng-template>
+
+<ng-template #notificationDetails>
+    <app-notification-details-modal [Notification]="selectedNotification"
+                                    (CloseModal)="CloseModal($event)"
+                                    (RedirectToContext)="CloseModal($event)">
+    </app-notification-details-modal>
+</ng-template>

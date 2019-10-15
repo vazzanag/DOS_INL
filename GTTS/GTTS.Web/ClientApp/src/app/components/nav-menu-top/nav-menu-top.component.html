@@ -1,0 +1,166 @@
+<header class="main-header">
+    <!-- Sidebar toggle button-->
+    <div class="menu-wrapper-gtts" data-toggle="modal" data-target="#navMenuModal" style="width: 90px; padding-left: 0px;">
+        <i class="iconAnimate">
+            <span class="textAnimate">
+                <img src="/assets/images/cactus_0.png" height="16" width="16" />
+                <span style="font-weight: bold">GTTS</span>
+            </span>
+        </i>
+    </div>
+    <div class="modal fade" id="navMenuModal" tabindex="-1" role="dialog" aria-labelledby="genericModalLabel" style="display: none;">
+        <input #NavigateTo id="NavigateTo" style="display:none" />
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" style="background: transparent; box-shadow: none;">
+                <div class="modal-body">
+                    <div class="panel panel-default menu-bck-color no-brd-color">
+                        <div class="panel-body">
+
+                            <div class="animate-wrapper">
+                                <div class="left-float">
+                                    <a *ngIf="HasTrainingAccess" href="#" class="linkAnimation" data-target="/gtts/training" data-module="training">
+                                        <div class="wrapper-module animate-training">
+                                            <i class="fas fa-home fa-3x"></i>
+                                            <span>Training events</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="left-float">
+                                    <a *ngIf="HasParticipantDBAccess" href="#" class="linkAnimation" data-target="/gtts/persons" data-module="participant">
+                                        <div class="wrapper-module animate-participant">
+                                            <i class="fa fa-users fa-3x"></i>
+                                            <span>Participant database</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="left-float">
+                                    <a *ngIf="HasUnitLibraryAccess" href="#" class="linkAnimation" data-target="/gtts/unitlibrary" data-module="unitlibrary">
+                                        <div class="wrapper-module animate-unitlibrary">
+                                            <i class="far fa-sitemap fa-3x"></i>
+                                            <span>Unit library</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="left-float">
+                                    <a *ngIf="HasVettingAccess" href="#" class="linkAnimation" data-target="/gtts/vetting/batches" data-module="vetting">
+                                        <div class="wrapper-module animate-vetting">
+                                            <i class="far fa-street-view fa-3x"></i>
+                                            <span>Vetting</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="left-float">
+                                    <a *ngIf="HasCourtesyVettingAccess" href="#" class="linkAnimation" data-target="/gtts/vetting/courtesy" data-module="courtesy">
+                                        <div class="wrapper-module animate-courtesy">
+                                            <i class="far fa-street-view fa-3x"></i>
+                                            <span>Courtesy <br>vetting</span>
+                                        </div>
+                                    </a>
+                                </div>
+                                <!--<div class="left-float">
+                                    <div class="wrapper-module">
+                                        <i class="far fa-question fa-3x"></i>
+                                        <span>TBD</span>
+                                    </div>
+                                </div>
+                                <div class="left-float">
+                                    <div class="wrapper-module">
+                                        <i class="far fa-question fa-3x"></i>
+                                        <span>TBD</span>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                        <div class="col-md-12 no-padding">
+                            <div class="col-md-4 no-padding">
+                                <div id="NotificationsModal" class="collapse speech-bubble" style="background-color: var(--bar-top-color); color: #fff; margin-left:30px; padding: 0px 1px 0px !important; border: 2px solid var(--alert-color); width: 450px;">
+
+                                    <ul id="ulNotifications" class="chat-wrapper-menu no-padding no-margin">
+                                        <li>
+                                            <input id="searchNotification" type="search" class="form-control hidden" placeholder="Search...">
+                                        </li>
+                                        <li>
+                                            <table id="tNotification" class="table table-hover">
+                                                <tbody></tbody>
+                                                <tfoot></tfoot>
+                                            </table>
+                                        </li>
+                                        <li class="menu-chat-footer padding-b-5">
+                                            <a id="linkMessages" href="#" class="link-message" data-filter="last">See all notifications</a>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </div>
+                            <div class="col-md-5 no-padding" style="border-left: 2px solid var(--alert-color); border-radius: 20px; left:-30px">
+                                <div id="divMessageNotifications" class="speech-bubble-left" style="display:none; background: white; border-radius: 20px;">
+                                    <div class="no-overflow-x" style="border-radius: 20px; background-color: aliceblue; padding-bottom: 5px; padding: 7px;">
+                                        <div id="contentMessage"></div>
+                                        <div id="contentMessageFooter" class="col-md-12 no-padding">
+
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-rounded btn-default">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header Navbar: style can be found in header.less -->
+    <nav class="navbar navbar-static-top">
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                <li class="messages-bell">
+                    <a style="padding:15px 5px 10px 15px">
+                        <span>
+                            <app-messages-bell></app-messages-bell>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a style="padding:15px 5px 10px 15px">
+                        <span>
+                            <app-notifications-bell></app-notifications-bell>
+                        </span>
+                    </a>
+                </li>
+                <li class="dropdown user user-menu" (click)="dropUserMenu($event)">
+                    <a data-toggle="dropdown" style="padding-bottom:13px;">
+                        <span class="far fa-user-circle" style="cursor:pointer;"></span>
+                    </a>
+                    <ul class="dropdown-menu notminwidth sign-out">
+                        <li>
+                            <a (click)="AuthSrvc.Logout()">
+                                Sign out
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <form #OmniSearchForm="ngForm" (keydown.enter)="$event.preventDefault()" (ngSubmit)="OmniSearch()">
+            <div class="input-group global-search" style="padding-top:10px;">
+                <div id="custom-search-input">
+                    <div class="input-group col-md-12">
+                        <input id="OmniSearchPhrase" name="OmniSearchPhrase" [formControl]="OmniSearchInput"
+                               type="text" class="search-query form-control lightBorder" placeholder="Search" style="height:30px;" [value]="IsSearchingString">
+                        <span class="input-group-btn">
+                            <button name="search" id="search-btn" class="btn btn-danger index10" type="submit">
+                                <span class=" fa fa-search" [ngClass]="{'fa-search': !IsSearching, 'fa-spinner': IsSearching, 'fa-spin': IsSearching}"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </nav>
+</header>

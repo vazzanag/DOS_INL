@@ -1,0 +1,54 @@
+<div class="thread-container">
+    <div class="thread-header"
+         cdkDrag
+         cdkDragRootElement=".cdk-overlay-pane"
+         cdkDragHandle>
+        <a routerLink="{{contextUrl}}" class="thread-title chat-header-text" [innerHtml]="threadTitle"></a>
+        <span class="thread-close">
+            <i class="fa fa-close" (click)="onClose()"></i>
+        </span>
+    </div>
+
+    <div #messagesContainer class="messages-container" (scroll)="onMessagesScroll($event.target)">
+        <div class="message-wrapper" *ngFor="let message of messages">
+            <div class="message-container"
+                 [class.self-message-container]="message.senderID == currentUserID"
+                 [class.other-message-container]="message.senderID != currentUserID">
+                <div class="message-content">
+                    <span class="message-sender">{{message.senderName}}: &nbsp;</span>
+                    <span class="message-text">{{message.content}}</span>
+                </div>
+                <div class="message-attachment" *ngIf="message.attachment != null">
+                    <app-file-attachment [file]="message.attachment"></app-file-attachment>
+                </div>
+                <div class="message-date"
+                     [class.self-message-date]="message.senderID == currentUserID"
+                     [class.other-message-date]="message.senderID != currentUserID">
+                    {{message.sentAt.toLocaleString()}}
+                </div>
+            </div>
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+
+    <div class="sending-hint">
+        <div *ngIf="isSendingMessage">Sending...</div>
+    </div>
+
+    <div class="new-message-container">
+        <div class="new-message-input-container chat-input-text">
+            <input type="text" class="new-message-input" placeholder="Type a message" [(ngModel)]="inProgressNewMessageText" (keyup)="onNewMessageInputKeyUp($event)" />
+            <label class="attach-button chat-input-button">
+                <input class="attach-input" type="file" [(ngModel)]="attachmentInputPlaceholder" (change)="onAttachmentInputChange($event.target.files)" />
+                <i class="fa fa-paperclip"></i>
+            </label>
+        </div>
+        <div>
+            <div class="attachment-container" *ngIf="inProgressNewMessageFile != null">
+                <img src="../../../assets/images/file-alt.svg" class="attachment-icon" />
+                <label class="attachment-name">{{inProgressNewMessageFile.name}}</label>
+                <i class="fa fa-close attachment-remove" (click)="onAttachmentRemove()"></i>
+            </div>
+        </div>
+    </div>
+</div>

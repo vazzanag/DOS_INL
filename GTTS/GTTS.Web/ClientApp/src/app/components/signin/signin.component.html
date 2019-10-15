@@ -1,0 +1,39 @@
+<div class="content-wrapper" style="margin-top:-100px">
+
+    <div id="homepage-feature">
+        <div [@slideAnimation]="currentIndex">
+            <ng-template ngFor [ngForOf]="slides" let-slide let-i="index">
+                <div class="item slide" *ngIf="isCurrentSlideIndex(i)" [style.background-image]="'url(' + slide.image + ')'"
+                     [ngClass]="{'center-scale': i == 5}"></div>
+            </ng-template>
+        </div>
+
+        <!--  Navigation controls, if we ever need to implement
+        <button class="arrow prev" (click)="nextSlide()"></button>
+        <button class="arrow next" (click)="prevSlide()"></button>
+        <nav class="nav">
+            <div class="wrapper">
+                <ul class="dots">
+                    <li class="dot" *ngFor="let slide of slides; let i = index;">
+                        <span [ngClass]="{'active':isCurrentSlideIndex(i)}"
+                              (click)="setCurrentSlideIndex(i);">{{slide.description}}</span>
+                    </li>
+                </ul>
+            </div>
+        </nav>-->
+    </div>
+
+
+    <!-- /#homepage-feature.carousel -->
+    <div class="layer-opacity">
+        <div class="layer-wrapper layer-title">
+            <div class="layer-title">
+                <h1><b>GTTS</b></h1>
+                <h1>Global Training Tracking System</h1>
+            </div>
+            <div class="layer-action">
+                <button type="button" id="btnSignIn" class="btn btn-rounded" (click)="btnSignIn_Click()">Sign in</button>
+            </div>
+        </div>
+    </div>
+</div>

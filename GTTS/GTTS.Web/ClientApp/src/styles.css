@@ -1,0 +1,18 @@
+/* You can add global styles to this file, and also import other style files */
+
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic");
+@import "assets/slick-1.8.1/slick/slick.css";
+@import "assets/slick-1.8.1/slick/slick-theme.modified.css";
+/* This file is loaded after bootstrap, font-awesome, ionicons and Adminlte main css and bluetheme -> styles here will override previous loads */
+/* Meantime gttsAdminLTE.css layout file is loaded at the json */
+@import "assets/gttsOne.css";
+@import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
+@import "assets/font-awesome-pro/css/all.min.css";
+@import "../node_modules/font-awesome/css/font-awesome.min.css";
+@import "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css";
+@import "../node_modules/ionicons/dist/css/ionicons.min.css";
+@import "assets/adminlte/css/AdminLTE245.min.css";
+@import "assets/adminlte/css/skins/skin-blue.min.css";
+@import "assets/gttsAdminLTE.css";
+@import "gtts-mat.css";

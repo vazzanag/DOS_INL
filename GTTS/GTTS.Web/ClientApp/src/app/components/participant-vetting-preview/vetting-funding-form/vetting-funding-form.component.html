@@ -1,0 +1,62 @@
+<div class="modal-content">
+    <div class="modal-header no-padding-bottom padding-t-5 padding-b-5">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CancelClick()"><span aria-hidden="true">×</span></button>
+
+    </div>
+    <form #fundingForm="ngForm" (ngSubmit)="SaveFunding(fundingForm)">
+        <div class="modal-body no-padding-bottom padding-t-10">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="txtEventName" style="font-size: 13px;">Funding source</label>
+                    <ng-select class="form-control" style="padding: 0px 0px !important" [clearable]="false" required name="FundingSourceID" [(ngModel)]="model.FundingSourceID" [items]="FundingSourceDataSource" bindLabel="CodeDescription" bindValue="VettingFundingSourceID" placeholder="Select...">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="txtEventName" style="font-size: 13px;">Authorizing law</label>
+                    <ng-select class="form-control" style="padding: 0px 0px !important" [clearable]="false" required name="AuthorizingLawID" [(ngModel)]="model.AuthorizingLawID" [items]="AuthorizingLawDataSource" bindLabel="Description" bindValue="AuthorizingLawID" placeholder="Select...">
+                    </ng-select>
+                </div>
+            </div>
+            <div class="col-md-12 no-padding" id="divDates" style="display: block;">
+                <div class="col-xs-6 col-md-6" *ngIf="ShowLeahyDate">
+                    <div class="form-group">
+                        <label for="formGroupExampleInput2" style="font-size: 13px;">Leahy need-by-date</label>
+                        <div class="input-group date">
+                            <input type="text" class="form-control pull-right" name="LeahyNeedByDate" #LeahyNeedByDate #dpLeahy="bsDatepicker" bsDatepicker [required]="LeahyNeedByDate"
+                                   [(ngModel)]="model.LeahyNeedByDate" [bsConfig]="{ showWeekNumbers:false, containerClass:'theme-dark-blue' }" (ngModelChange)="LeahyNeedByDateChanged($event)" [minDate]="minDate" [daysDisabled]="[6,0]" />
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar" (click)="dpLeahy.toggle()"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6 col-md-6" *ngIf="ShowCourtesyDate">
+                    <div class="form-group">
+                        <label for="formGroupExampleInput2" style="font-size: 13px;">Courtesy need-by-date</label>
+                        <div class="input-group date">
+                            <input type="text" class="form-control pull-right" name="CourtesyNeedByDate" #CourtesyNeedByDate #dpCourtesy="bsDatepicker" bsDatepicker [required]="CourtesyNeedByDate"
+                                   [(ngModel)]="model.CourtesyNeedByDate" [bsConfig]="{ showWeekNumbers:false, containerClass:'theme-dark-blue' }" (ngModelChange)="CourtesyNeedByDateChanged($event)" [minDate]="minDate"  [daysDisabled]="[6,0]" />
+                            <div class="input-group-addon">
+                                <i class="fa fa-calendar" (click)="dpCourtesy.toggle()"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 padding-b-10" *ngIf="ShowLeahyDate">
+                <div id="error35" class="color-error" style="font-size: 12px;" *ngIf="showLeahyDateError"> The Vetting Unit requires {{LeahyLeadTime}} working days to process a Leahy request. You may need to reconsider the event's start date or contact the Vetting Unit if results are needed sooner. </div>
+                <div id="error5" class="color-error" style="font-size: 12px;" *ngIf="showLeahyAfterDateError"> Need-by date cannot be after the training event start date: {{TrainingEventStartDate | date: 'MM/dd/yyyy'}}.</div>
+            </div>
+            <div class="col-md-6 padding-b-10" *ngIf="ShowCourtesyDate">
+                <div id="error5" class="color-error" style="font-size: 12px;" *ngIf="showCourtesyDateError"> The Vetting Unit requires {{CourtesyLeadTime}} working days to process a Courtesy request. You may need to reconsider the event's start date or contact the Vetting Unit if results are needed sooner. </div>
+                <div id="error5" class="color-error" style="font-size: 12px;" *ngIf="showCourtesyAfterDateError"> Need-by date cannot be after the training event start date: {{TrainingEventStartDate | date: 'MM/dd/yyyy'}}.</div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-rounded btn-default" type="button" (click)="CancelClick()">Close</button>
+            <button type="submit" class="btn btn-rounded bColorPrimary" data-dismiss="modal" [disabled]="!fundingForm.valid || showCourtesyAfterDateError || showLeahyAfterDateError">Submit to vetting</button>
+        </div>
+    </form>
+</div>

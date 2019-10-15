@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "INL.TrainingService.Functions": {
+      "commandName": "Project",
+      "commandLineArgs": "host start --pause-on-error --nodeDebugPort 5872"
+    }
+  }
+}

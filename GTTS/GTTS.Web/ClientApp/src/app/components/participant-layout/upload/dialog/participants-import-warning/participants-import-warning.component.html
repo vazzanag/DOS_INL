@@ -1,0 +1,62 @@
+<div>
+    <div class="alert alert-dismissible" style="text-align:justify;">
+        <button type="button" class="close" (click)="OnCancelClick()">×</button>
+        <div *ngIf="InvalidParticipants.length > 0">
+            <br>
+            <p>
+                <b>Please correct the <span style="color: #ff0000;">error(s)</span> for the following participant(s) before importing.</b>
+            </p>
+            <br>
+            <ul>
+                <mat-selection-list #list>
+                    <mat-list-option *ngFor="let participant of InvalidParticipants">
+                        <li>
+                            {{ participant.FirstMiddleName + ' ' + participant.LastName}}<br />
+                            <em>{{GetInvalidProperties(participant).join(', ')}}</em>
+                        </li>
+                    </mat-list-option>
+                </mat-selection-list>
+            </ul>
+            <br>
+        </div>
+        <div *ngIf="RejectedLeahyParticipants.length > 0">
+            <p>
+                <b>The following participant(s) have been rejected in INVEST and are not eligible to receive assistance. Please remove from import.</b>
+            </p>
+            <br>
+            <ul *ngIf="RejectedLeahyParticipants.length > 0">
+                <mat-selection-list #list>
+                    <mat-list-option *ngFor="let participant of RejectedLeahyParticipants"> <li> {{ participant.FirstMiddleName + ' ' + participant.LastName}} </li></mat-list-option>
+                </mat-selection-list>
+            </ul>
+            <br>
+        </div>
+        <div *ngIf="SuspendedLeahyParticipants.length > 0">
+            <p>
+                <b>The following participant(s) have been suspended in INVEST and may not be eligible to receive assistance. Please review pending information requests or disqualifying derogatory information and consider removal from import.</b>
+            </p>
+            <br>
+            <ul>
+                <mat-selection-list #list>
+                    <mat-list-option *ngFor="let participant of SuspendedLeahyParticipants"> <li> {{ participant.FirstMiddleName + ' ' + participant.LastName}} </li></mat-list-option>
+                </mat-selection-list>
+            </ul>
+            <br>
+        </div>
+        <div *ngIf="RejectedCourtesyParticipants.length > 0">
+            <p>
+                <b>The following participant(s) did not pass a prior vetting investigation and may not be eligible to receive assistance. Please review pending information requests or disqualifying derogatory information and consider removal from import.</b>
+            </p>
+            <br>
+            <ul>
+                <mat-selection-list #list>
+                    <mat-list-option *ngFor="let participant of RejectedCourtesyParticipants"> <li> {{ participant.FirstMiddleName + ' ' + participant.LastName}} </li></mat-list-option>
+                </mat-selection-list>
+            </ul>
+        </div>
+        <div style="text-align:right;">
+            <button id="btnCancel" class="btn btn-rounded btn-default" data-dismiss="modal" (click)="OnCancelClick()">Close</button>
+            <button *ngIf="InvalidParticipants.length < 1 && RejectedLeahyParticipants.length < 1" id="btnCancel" class="btn btn-rounded bColorPrimary" data-dismiss="modal" (click)="OnOkClick()">Continue importing participants</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,76 @@
+/*.participant-button {
+  height:35px;
+ 
+  }
+.participant-action {
+  height: 25px;
+ 
+}*/
+.participantHeader {
+    background-color: #3C628F;
+    font-weight: 600;
+    font-size: 10pt;
+    text-align: center;
+    padding: 5px;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.participantRow {
+    border-bottom: 1px solid #707070;
+}
+
+.headerRow {
+    border-bottom: 1px solid #707070;
+}
+
+.headerInsideCell {
+    padding: 5px;
+    border-right: 1px solid #707070;
+}
+
+.addFileBtn {
+    background-color: darkgreen;
+    height: 30px;
+    padding-left: 25px;
+    background-repeat: no-repeat;
+    margin-left: 20px;
+    vertical-align: middle;
+    align-content: center;
+}
+
+.importBtn {
+    height: 30px;
+    padding-left: 25px;
+    background-image: url('../../../../assets/images/file-export.svg');
+    background-repeat: no-repeat;
+    margin-left: 20px;
+    background-color: #ecf0f5;
+}
+
+.listCell {
+    font-size: 0.8em;
+    text-align: center;
+    padding-right: 5px;
+}
+
+.listCell a {
+    cursor: pointer;
+}
+.approvedVetting {
+    background-color: #e6ffe6;
+}
+
+.rejectedVetting {
+    background-color: #F2D7D5;
+}
+
+.suspendedVetting {
+    background-color: #FFFFCC;
+}
+
+.table.dataTable thead > tr > th {
+    background-color: #f4f4f4;
+    color: #a9a9a9;
+    text-align: center;
+}

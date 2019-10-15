@@ -1,0 +1,6 @@
+<div style="border: 1px solid var(--blue-color); border-radius: 5px;" class="contextmenu"  [ngStyle]="{'right.px': X, 'top.px': Y}" (mouseleave)="CloseContextMenu()">
+    <div *ngFor="let contextMenuItems of contextMenuItemsArray;  let i = index">
+        <a *ngFor="let contextMenuItem of contextMenuItems;" class="contextmenu-item pointer" (click)="ContextMenuItemClick(contextMenuItem)" [innerHTML]="contextMenuItem.displayText"></a>
+        <div *ngIf = "i < contextMenuItemsArray.length-1"><hr class="no-margin" /></div>
+    </div>
+</div>

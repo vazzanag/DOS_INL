@@ -1,0 +1,227 @@
+:host /deep/ .panel-group .panel + .panel {
+    margin-top: 0 !important;
+    border-radius: 0 !important;
+}
+
+:host /deep/ .panel {
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+
+:host /deep/ .panel-group {
+    padding: 0 0 0 0 !important;
+}
+
+:host /deep/ .panel-heading {
+    padding: 0 0 0 0 !important;
+    font-weight: bold !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+}
+
+:host /deep/ .panel-body {
+    background-color:#fff;
+    font-weight:normal;
+    padding: 0 0 0 0 !important;
+    color: #333;
+}
+
+:host /deep/ .panel-body:matches(:hover) {
+    font-weight: normal;
+    padding: 0 0 0 0 !important;
+    color: #333;
+}
+
+:host /deep/ .btn-link {
+    font-weight: bold !important;
+}
+
+
+
+
+/*
+.participantHeader {
+    background-color: #3C628F;
+    font-weight: 600;
+    color: #FFFFFF;
+    text-align: center;
+    
+}
+
+.participantRow {
+}
+.participantRow:hover {
+    background-color: #FFF3CF;
+    cursor: pointer;
+}
+
+.mat-cell {
+    font-family: 'Source Sans Pro','Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-size: 14px;
+}
+
+.listCell[_ngcontent-c11] {
+    font-size: 14px;
+    text-align: center;
+    padding-right: 5px;
+}
+
+mat-header-row
+{
+    height:40px;
+}
+
+
+
+.headerRow {
+    border-bottom: 1px solid #707070;
+}
+.headerInsideCell {
+    padding: 5px;
+    border-right: 1px solid #707070;
+}
+
+mat-header-cell {
+    display: flex;
+    justify-content: flex-end;
+}
+
+
+
+.buttonSpacer {
+    width: 60px;
+    text-align: center;
+    display: inline-block;
+}
+
+.viewBatchesButton {
+    height: 30px;
+    width: 40px;
+    background-image: url('../../../assets/images/Batch-icon.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.addParticipantButton {
+    height: 30px;
+    width: 30px;
+    background-image: url('../../../assets/images/Add-Participant.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.uploadParticipantsButton {
+    height: 30px;
+    width: 30px;
+    background-image: url('../../../assets/images/upload.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.transferButton {
+    height: 30px;
+    width: 35px;
+    background-image: url('../../../assets/images/Transfer-icon.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.groupButton {
+    height: 30px;
+    width: 40px;
+    background-image: url('../../../assets/images/Group-icon.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.rosterButton {
+    height: 30px;
+    width: 25px;
+    background-image: url('../../../assets/images/Roster-icon.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.submitToVettingButton {
+    height: 30px;
+    width: 35px;
+    background-image: url('../../../assets/images/Vetting-INL.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.exportFileButton {
+    height: 30px;
+    width: 35px;
+    background-image: url('../../../assets/images/file-export.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+
+.tableHeader {
+    font-weight: 600;
+    font-size: 0.9em;
+    text-align: center;
+    padding: 2px;
+    margin: 2px;
+}
+
+.tableHeaderBlue {
+    color: #FFFFFF;
+    background-color: #3C628F;
+}
+
+.tableHeaderGreen {
+    background-color: #667450;
+    color: #FFFFFF;
+}
+
+.tableHeaderGray {
+    background-color: #535E64;
+    color: #FFFFFF;
+}
+
+.tableHeaderPurple {
+    background-color: #661C97;
+    color: #FFFFFF;
+}
+
+.tableHeaderPurpleLight {
+    background-color: rgba(102,28,151, .60);
+    color: #FFFFFF;
+}
+
+.tableRow {
+}
+
+.tableRow:hover {
+    background-color: #FFF3CF;
+    cursor: pointer;
+}
+
+
+.tableHeaderRow {
+    border-bottom: 1px solid #707070;
+}
+
+
+.tableCell {
+    text-align: center;
+}*/

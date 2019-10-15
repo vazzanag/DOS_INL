@@ -1,0 +1,65 @@
+<div class="modal-header no-border">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="Cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title text-center"><span class="color-orange">Leahy / </span> {{DOB | date: 'MM/dd/yyyy'}}  - {{PersonName}}</h4>
+</div>
+<div class="modal-body no-padding-top-bottom">
+    <form (ngSubmit)="SaveLeahyHit()">
+        <div class="box no-top-border">
+            <div class="box-body" *ngIf="dataLoaded">
+
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <b>Result</b>
+                        </div>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <div class="btn-group btn-group-justified radios" data-toggle="buttons">
+                                <label class="btn btn-default rounded"  [class.disabled]="ReadOnly" [class.toggle-disabled]="ReadOnly"  [class.active]="model.LeahyHitResultID == leahyHitResult.LeahyHitResultID" *ngFor="let leahyHitResult of leahyHitResults" (click)="model.LeahyHitResultID = leahyHitResult.LeahyHitResultID">
+                                    <input name="Result" type="radio" [(ngModel)]="model.LeahyHitResultID"><span>{{leahyHitResult.Code}}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="txtLocation">Violation type:</label>
+                            <div class="btn-group btn-group-justified radios" data-toggle="buttons">
+                                <label class="btn btn-default rounded"  [class.disabled]="ReadOnly" [class.toggle-disabled]="ReadOnly" [class.active]="model.ViolationTypeID == violationType.ViolationTypeID" *ngFor="let violationType of hitViolationTypes" (click)="model.ViolationTypeID = violationType.ViolationTypeID">
+                                    <input name="ViolationType" type="radio" [(ngModel)]="model.ViolationTypeID"><span>{{violationType.Code}}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="form-group">
+                            <label for="HitAppliesTo">Hit applies to:</label>
+                            <div class="btn-group btn-group-justified radios" data-toggle="buttons">
+                                <label class="btn btn-default rounded" [class.disabled]="ReadOnly" [class.toggle-disabled]="ReadOnly" [class.active]="model.LeahyHitAppliesToID == appliesTo.LeahyHitAppliesToID" *ngFor="let appliesTo of leahyHitAppliesTo" (click)="model.LeahyHitAppliesToID = appliesTo.LeahyHitAppliesToID">
+                                    <input name="Result" type="radio" value="Suspend" [(ngModel)]="model.LeahyHitAppliesToID"><span>{{appliesTo.Code}}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Notes</label>
+                            <textarea class="form-control" rows="10" name="Summary" [(ngModel)]="model.Summary" [readonly] ="ReadOnlyNotes"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div><div class="modal-footer">
+            <button type="button" class="btn btn-rounded" data-dismiss="modal" (click)="Cancel()">Cancel</button>
+            <button type="submit" class="btn btn-rounded bColorPrimary" [disabled]="ReadOnly && ReadOnlyNotes">Save</button>
+        </div>
+    </form>
+
+</div>
+

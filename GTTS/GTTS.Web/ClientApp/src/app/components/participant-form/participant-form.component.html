@@ -1,0 +1,639 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" (click)="Cancel()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title pr-title text-center" id="txtTitleParticipant">{{ RequestedAction == 'Create' ? 'Add' : 'Edit' }} participant</h4>
+</div>
+<form #participantForm="ngForm" (ngSubmit)="SaveTrainingEventParticipant(participantForm)">
+    <div id="top" name="top" class="modal-body" #top>
+        <div class="col-md-12 no-padding" id="pnlNewParticipant">
+
+            <div class="col-md-2 no-padding-right">
+                <div>
+                    <span class="step-default" (click)="ChangeTab(TabType.Personal)" [ngClass]="{finish: SetTabAvailable(TabType.Personal), active: CurrentTab == TabType.Personal}">Personal</span>
+                    <span class="step-default" (click)="ChangeTab(TabType.Unit)" [ngClass]="{finish: SetTabAvailable(TabType.Unit), active: CurrentTab == TabType.Unit}">Unit</span>
+                    <span class="step-default" (click)="ChangeTab(TabType.Other)" [ngClass]="{finish: SetTabAvailable(TabType.Other), active: CurrentTab == TabType.Other}">Other</span>
+                    <span class="step-default" (click)="ChangeTab(TabType.Comments)" [ngClass]="{finish: SetTabAvailable(TabType.Comments), active: CurrentTab == TabType.Comments}">Comments</span>
+                </div>
+            </div>
+            <div class="col-md-10 minH-Participant">
+                <!-- One "tab" for each step in the form: -->
+                <!--Tab Personal-->
+                <div class="tab-step" [ngStyle]="{display: CurrentTab == TabType.Personal ? 'block' : 'none'}">
+                    <section>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="col-md-5 no-padding-left">
+                                    <div class="form-group">
+                                        <label for="rdoParticipant">
+                                            Participant type *
+                                        </label>
+                                        <div class="btn-group btn-group-justified radios" data-toggle="buttons">
+                                            <label class="btn btn-default rounded" (click)="participant.ParticipantType='Student';"
+                                                   [ngClass]="{active: participant.ParticipantType == 'Student'}">
+                                                <input name="rdoParticipant" type="radio" value="Student" required><span>Student</span>
+                                            </label>
+                                            <label class="btn btn-default rounded" (click)="participant.ParticipantType='Alternate';"
+                                                   [ngClass]="{active: participant.ParticipantType == 'Alternate'}">
+                                                <input name="rdoParticipant" type="radio" value="Alternate" required><span>Alternate</span>
+                                            </label>
+                                            <label class="btn btn-default rounded" (click)="participant.ParticipantType='Instructor';"
+                                                   [ngClass]="{active: participant.ParticipantType == 'Instructor'}">
+                                                <input name="rdoParticipant" type="radio" value="Instructor" required><span>Instructor</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="FirstMiddlNames">
+                                        First name(s)<span [ngClass]="{'red': participant?.FirstMiddleNames == '' && (FirstMiddleNames.dirty || FirstMiddleNames.touched)}">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" name="FirstMiddlNames" #FirstMiddleNames="ngModel" [disabled]="ReadOnlyBio"
+                                           [(ngModel)]="participant.FirstMiddleNames" [required]="FirstMiddleNames.dirty || FirstMiddleNames.touched ? 'required': null" (change)="personDataChanged=true;">
+                                    <div class="error" *ngIf="FirstMiddleNames.invalid && (FirstMiddleNames.dirty || FirstMiddleNames.touched)">
+                                        Required
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtLastname">Last name(s) <span [ngClass]="{'red': participant?.LastNames == '' && (LastNames.dirty || LastNames.touched)}">*</span></label>
+                                    <input type="text" class="form-control" name="LastNames" #LastNames="ngModel" [disabled]="ReadOnlyBio"
+                                           [(ngModel)]="participant.LastNames" [required]="LastNames.dirty || LastNames.touched ? 'required': null" (change)="personDataChanged=true;">
+                                    <div class="error" *ngIf="LastNames.invalid && (LastNames.dirty || LastNames.touched)">
+                                        Required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label>
+                                                Date of birth
+                                                <span *ngIf="!participant?.IsUSCitizen" [ngClass]="{'red': DateOfBirth.invalid && (DateOfBirth.dirty || DateOfBirth.touched)}">*</span>
+                                            </label>
+                                            <div class="input-group date">
+                                                <input type="text" class="form-control pull-right" name="DateOfBirth" #DateOfBirth="ngModel" #dpDOB="bsDatepicker" bsDatepicker
+                                                       DOBValidRange [(ngModel)]="participant.DOB" [bsConfig]="{ showWeekNumbers:false, containerClass:'theme-dark-blue' }" [disabled]="ReadOnlyBio"
+                                                       (change)="DOBChanged($event)" [maxDate]="maxDOB" [required]="!participant?.IsUSCitizen && (DateOfBirth.dirty || DateOfBirth.touched) ? 'required': null" />
+                                                <div class="input-group-addon">
+                                                    <i *ngIf="!ReadOnlyBio && !participant.IsUSCitizen" class="fa fa-calendar" (click)="dpDOB.toggle()"></i>
+                                                </div>
+                                            </div>
+                                            <div class="error" *ngIf="DateOfBirth.errors?.required && !participant?.IsUSCitizen && (DateOfBirth.invalid && (DateOfBirth.dirty || DateOfBirth.touched))">
+                                                Required
+                                            </div>
+                                            <div class="error" *ngIf="DateOfBirth.errors?.dOBValidRange && !participant?.IsUSCitizen && (DateOfBirth.invalid && (DateOfBirth.dirty || DateOfBirth.touched))">
+                                                Date of birth must be between 1900 and today
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="form-group">
+                                            <label for="txtNationalId">
+                                                National ID
+                                                <span *ngIf="!participant?.IsUSCitizen" [ngClass]="{'red': NationalID.invalid && (NationalID.dirty || NationalID.touched)}">*</span>
+                                            </label>
+                                            <input type="text" class="form-control" name="NationalID" #NationalID="ngModel" [(ngModel)]="participant.NationalID"
+                                                   [required]="!participant?.IsUSCitizen && (NationalID.dirty || NationalID.touched) ? 'required': null" [disabled]="ReadOnlyBio || participant?.IsUSCitizen ? '' : null" (change)="personDataChanged=true;">
+                                            <div class="error" *ngIf="!participant?.IsUSCitizen && (NationalID.invalid && (NationalID.dirty || NationalID.touched))">
+                                                Required
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="Gender">
+                                                Gender *
+                                            </label>
+                                            <div class="btn-group btn-group-justified radios" data-toggle="buttons">
+                                                <label class="btn btn-default rounded" (click)="!ReadOnlyBio && participant.Gender='M';"
+                                                       [ngClass]="{active: participant.Gender == 'M'}" [class.toggle-disabled]="ReadOnlyBio">
+                                                    <input name="Gender" type="radio" value="M" #Gender="ngModel" [(ngModel)]="participant.Gender" required [disabled]="ReadOnlyBio" [class.disabled]="ReadOnlyBio" (change)="personDataChanged=true;"><span>Male</span>
+                                                </label>
+                                                <label class="btn btn-default rounded" (click)="!ReadOnlyBio && participant.Gender='F';"
+                                                       [ngClass]="{active: participant.Gender == 'F'}" [class.toggle-disabled]="ReadOnlyBio">
+                                                    <input name="Gender" type="radio" value="F" #Gender="ngModel" [(ngModel)]="participant.Gender" required [disabled]="ReadOnlyBio" [class.disabled]="ReadOnlyBio" (change)="personDataChanged=true;"><span>Female</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-7">
+                                        <div class="form-group">
+                                            <label for="rdoUSCitizen">Is US citizen? *</label>
+                                            <div class="btn-group btn-group-justified radios" data-toggle="buttons">
+                                                <label class="btn btn-default rounded" (click)="!ReadOnlyBio && Citizenshipe_Change(true)"
+                                                       [ngClass]="{active: participant.IsUSCitizen}" [class.toggle-disabled]="ReadOnlyBio">
+                                                    <input name="rdoUSCitizen" type="radio" value="true" [disabled]="ReadOnlyBio"><span>Yes</span>
+                                                </label>
+                                                <label class="btn btn-default rounded" (click)="!ReadOnlyBio && Citizenshipe_Change(false)"
+                                                       [ngClass]="{active: !participant.IsUSCitizen}" [class.toggle-disabled]="ReadOnlyBio">
+                                                    <input name="rdoUSCitizen" type="radio" value="false" [disabled]="ReadOnlyBio"><span>No</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" *ngIf="!isImporting">
+                                <label>
+                                    Upload National ID
+                                </label>
+                                <app-file-upload #NationalIDFileUploadComponent (onFileDrop)="NationalIDDocuments_OnUploadDrop($event)"></app-file-upload>
+                            </div>
+                            <div class="col-md-2" *ngIf="!isImporting">
+                                <div *ngFor="let document of nationalIDDocuments; let i = index">
+                                    <div class="col-md-6" [ngClass]="{'left-style': i%2 != 0, 'right-style': i%2 === 0 }">
+                                        <app-file-attachment [file]="MapPersonAttachmentToFileAttachment(document)"
+                                                             [ShowFileName]="false"
+                                                             (onFileDeleted)="NationalIDDocument_OnFileDeleted($event)">
+                                        </app-file-attachment>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        POB country
+                                        <span *ngIf="!participant?.IsUSCitizen" [ngClass]="{'red': CountryOfBirth.invalid && (CountryOfBirth.dirty || CountryOfBirth.touched)}">*</span>
+                                    </label>
+                                    <ng-select name="CountryOfBirth" [items]="countries" bindLabel="CountryName" bindValue="CountryID" #CountryOfBirth="ngModel"
+                                               (change)="CountrySelectionChange($event, 'CountryOfBirth')" [(ngModel)]="participant.POBCountryID"
+                                               [disabled]="ReadOnlyBio || participant?.IsUSCitizen ? '' : null" [required]="!participant?.IsUSCitizen ? 'required': null">
+                                    </ng-select>
+                                    <div class="error" *ngIf="!participant?.IsUSCitizen && (CountryOfBirth.invalid && (CountryOfBirth.dirty || CountryOfBirth.touched))">
+                                        Required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        POB state
+                                        <span *ngIf="!participant?.IsUSCitizen" [ngClass]="{'red': StateOfBirth.invalid && (StateOfBirth.dirty || StateOfBirth.touched)}">*</span>
+                                    </label>
+                                    <ng-select name="StateOfBirth" [items]="BirthStates" bindLabel="StateName" bindValue="StateID" #StateOfBirth="ngModel"
+                                               (change)="!ReadOnlyBio && StateSelectionChange($event, 'StateOfBirth')" [(ngModel)]="participant.POBStateID"
+                                               [disabled]="ReadOnlyBio || participant?.IsUSCitizen ? '' : null" [loading]="loadingStates[0]"
+                                               [required]="!participant?.IsUSCitizen ? 'required': null">
+                                    </ng-select>
+                                    <div class="error" *ngIf="!participant?.IsUSCitizen && (StateOfBirth.invalid && (StateOfBirth.dirty || StateOfBirth.touched))">
+                                        Required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>
+                                        POB city
+                                        <span *ngIf="!participant?.IsUSCitizen" [ngClass]="{'red': CityOfBirth.invalid && (CityOfBirth.dirty || CityOfBirth.touched)}">*</span>
+                                    </label>
+                                    <ng-select name="CityOfBirth" [items]="BirthCities" bindLabel="CityName" bindValue="CityID" #CityOfBirth="ngModel"
+                                               [(ngModel)]="participant.POBCityID" [disabled]="ReadOnlyBio || participant?.IsUSCitizen ? '' : null" [loading]="loadingCities[0]"
+                                               [required]="!participant?.IsUSCitizen ? 'required': null" (change)="personDataChanged=true;">
+                                    </ng-select>
+                                    <div class="error" *ngIf="!participant?.IsUSCitizen && (CityOfBirth.invalid && (CityOfBirth.dirty || CityOfBirth.touched))">
+                                        Required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Residence country</label>
+                                    <ng-select name="ResidenceCountry" [items]="countries" bindLabel="CountryName" bindValue="CountryID"
+                                               (change)="CountrySelectionChange($event, 'ResidenceCountry')" [(ngModel)]="participant.ResidenceCountryID"
+                                               [disabled]="participant?.IsUSCitizen ? '' : null">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Residence state</label>
+                                    <ng-select name="ResidenceState" [items]="AddressStates" bindLabel="StateName" bindValue="StateID" [loading]="loadingStates[2]"
+                                               (change)="StateSelectionChange($event, 'ResidenceState')" [(ngModel)]="participant.ResidenceStateID"
+                                               [disabled]="participant?.IsUSCitizen ? '' : null">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Residence city</label>
+                                    <ng-select name="ResidenceCity" [items]="AddressCities" bindLabel="CityName" bindValue="CityID"
+                                               [(ngModel)]="participant.ResidenceCityID" [loading]="loadingCities[2]"
+                                               [disabled]="participant?.IsUSCitizen ? '' : null">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtEmail">Email</label>
+                                    <input type="email" class="form-control" name="Email" [(ngModel)]="participant.ContactEmail"
+                                           #Email="ngModel" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$" [disabled]="participant?.IsUSCitizen ? '' : null">
+                                    <div class="error" *ngIf="Email.invalid && (Email.dirty || Email.touched)">
+                                        Incorrect email format
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtTelephone">Telephone</label>
+                                    <input type="tel" class="form-control" name="Phone" [(ngModel)]="participant.ContactPhone"
+                                           [disabled]="participant?.IsUSCitizen ? '' : null">
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--Tab Unit-->
+                <div class="tab-step" [ngStyle]="{display: CurrentTab == TabType.Unit ? 'block' : 'none'}">
+                    <section>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="Agency">
+                                        Agency / Organization
+                                        <span [ngClass]="{'red': Agency.invalid && (Agency.dirty || Agency.touched)}">*</span>
+                                    </label>
+                                    <ng-select name="Agency" #Agency="ngModel" [items]="agencies" bindLabel="UnitName" bindValue="UnitID" required
+                                               (change)="AgencySelectionChange($event)" [(ngModel)]="participant.UnitMainAgencyID">
+                                    </ng-select>
+                                    <div class="error" *ngIf="Agency.invalid && (Agency.dirty || Agency.touched)">
+                                        Required
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="txtUnitId">
+                                        <span>
+                                            GTTS unit &amp; ID
+                                            <span [ngClass]="{'red': GTTSUnit.invalid && (GTTSUnit.dirty || GTTSUnit.touched)}">*</span>
+                                        </span>
+                                    </label>
+                                    <ng-select name="Unit" #GTTSUnit="ngModel" [items]="Units" bindLabel="UnitName" bindValue="UnitID" required
+                                               (change)="UnitSelectionChange($event)" [(ngModel)]="participant.UnitID" [searchFn]="Units_CustomSearch">
+                                        <ng-template ng-label-tmp let-item="item">
+                                            {{ item.UnitGenID}} <span *ngIf="unit?.UnitGetID">-</span> {{ item.UnitName }}
+                                        </ng-template>
+                                        <ng-template ng-option-tmp let-item="item" let-index="index">
+                                            {{ item.UnitGenID}} - {{ item.UnitName }}
+                                        </ng-template>
+                                    </ng-select>
+                                    <div class="error" *ngIf="GTTSUnit.invalid && (GTTSUnit.dirty || GTTSUnit.touched)">
+                                        Required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group host-vetting">
+                                    <label>
+                                        <span>
+                                            Vetting type
+                                            <span [ngClass]="{'red': !isVettingTypeValid}">*</span>
+                                        </span>
+                                    </label>
+                                    <select name="VettingType" id="VettingType" required #VettingType class="form-control"
+                                            style="width: 100%; padding:4px;height:32px;" (change)="VettingType_Change(VettingType.value)" [ngClass]="{'error-input': !isVettingTypeValid}">
+                                        <option value="-1"></option>
+                                        <option value="1">Courtesy</option>
+                                        <option value="2">Leahy</option>
+                                        <option value="0">None</option>
+                                    </select>
+                                    <div class="error" *ngIf="!isVettingTypeValid">
+                                        Required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Unit breakdown</label>
+                                    <textarea class="form-control" rows="4" id="txtUnitBreakdown" disabled="disabled">{{ Unit?.UnitBreakdownLocalLang }}</textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtUnitAlias">Unit alias</label>
+                                    <textarea class="form-control" rows="4" id="txtUnitAlias" disabled="disabled">{{ Unit?.UnitBreakdown }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="txtPostion">Position</label>
+                                    <input type="text" class="form-control" name="txtPostion" [(ngModel)]="participant.JobTitle"
+                                           [disabled]="participant?.IsUSCitizen ? '' : null">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="txtRank">Rank</label>
+                                    <select class="form-control select2" style="width: 100%;" placeholder="Select rank"
+                                            [(ngModel)]="participant.RankID" name="Rank" [disabled]="participant?.IsUSCitizen ? '' : null">
+                                        <option value="0"></option>
+                                        <option *ngFor="let rank of Ranks" [value]="rank.RankID">{{ rank.RankName }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="txtYears">Years in position</label>
+                                    <input type="text" pattern="\d*" class="form-control" name="YearsInPosition" [(ngModel)]="participant.YearsInPosition"
+                                           [disabled]="participant?.IsUSCitizen ? '' : null">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="col-md-11">
+                                    <div class="form-group">
+                                        <label for="Commander">Is commander?</label>
+                                        <div *ngIf="participant.IsUSCitizen" class="btn-group btn-group-justified radios">
+                                            <label class="btn btn-default rounded Commander">
+                                                <span>Yes</span>
+                                            </label>
+                                            <label class="btn btn-default rounded Commander">
+                                                <span>No</span>
+                                            </label>
+                                        </div>
+                                        <div class="btn-group btn-group-justified radios" data-toggle="buttons" *ngIf="!participant.IsUSCitizen">
+                                            <label class="btn btn-default rounded Commander" [ngClass]="{active: participant.IsUnitCommander }" (click)="participant.IsUnitCommander=true;">
+                                                <input name="Commander" type="radio" value="1" [disabled]="participant?.IsUSCitizen ? '' : null"><span>Yes</span>
+                                            </label>
+                                            <label class="btn btn-default rounded Commander" [ngClass]="{active: !participant.IsUnitCommander }" (click)="participant.IsUnitCommander=false;">
+                                                <input name="Commander" type="radio" value="0" checked="" [disabled]="participant?.IsUSCitizen ? '' : null"><span>No</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1"></div>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="form-group">
+                                    <label for="txtBadge">Badge number</label>
+                                    <input type="text" class="form-control" name="BadgeNumber" [(ngModel)]="participant.PoliceMilSecID"
+                                           [disabled]="participant?.IsUSCitizen ? '' : null">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtPoC">Host nation POC name</label>
+                                    <input type="text" class="form-control" name="HostNationPOCName" [(ngModel)]="participant.HostNationPOCName">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtPoCEmail">Host nation POC email</label>
+                                    <input type="email" class="form-control" name="HostNationPOCEmail" [(ngModel)]="participant.HostNationPOCEmail"
+                                           email #HostNationPOCEmail="ngModel" pattern="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$">
+                                    <div class="error" *ngIf="HostNationPOCEmail.invalid && (HostNationPOCEmail.dirty || HostNationPOCEmail.touched)">
+                                        Incorrect email format
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--Tab Other-->
+                <div class="tab-step" [ngStyle]="{display: CurrentTab == TabType.Other ? 'block' : 'none'}">
+                    <section>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="rdoVetting">Host nation vetting</label>
+                                    <select id="HasLocalGovTrust" name="HasLocalGovTrust" class="form-control" [(ngModel)]="HostNationVetting"
+                                            style="width: 100%" [disabled]="participant?.IsUSCitizen ? '' : null">
+                                        <option value="-1"></option>
+                                        <option value="2">Yes, passed</option>
+                                        <option value="1">Yes, failed</option>
+                                        <option value="0">No, not vetted</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4" *ngIf="HostNationVetting > 0">
+                                <div class="form-group host-vetting">
+                                    <label>Host nation vetting date</label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control pull-right" id="LocalGovTrustCertDate" name="LocalGovTrustCertDate" #dpHostNationVetting="bsDatepicker" bsDatepicker
+                                               [(ngModel)]="participant.LocalGovTrustCertDate" [bsConfig]="{ showWeekNumbers:false, containerClass:'theme-dark-blue' }" />
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar" (click)="dpHostNationVetting.toggle()"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="PassedOtherVetting">Other vetting</label>
+                                    <select id="PassedOtherVetting" name="PassedOtherVetting" [(ngModel)]="OtherVetting" class="form-control" style="width: 100%"
+                                            [disabled]="participant?.IsUSCitizen ? '' : null">
+                                        <option value="-1"></option>
+                                        <option value="2">Yes, passed</option>
+                                        <option value="1">Yes, failed</option>
+                                        <option value="0">No, not vetted</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4" *ngIf="OtherVetting > 0">
+                                <div class="form-group other-vetting">
+                                    <label>Other vetting date</label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control pull-right" id="OtherVettingDate" name="OtherVettingDate" #dpOtherVetting="bsDatepicker" bsDatepicker
+                                               [(ngModel)]="participant.OtherVettingDate" [bsConfig]="{ showWeekNumbers:false, containerClass:'theme-dark-blue' }" />
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar" (click)="dpOtherVetting.toggle()"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4" *ngIf="OtherVetting > 0">
+                                <div class="form-group other-vetting">
+                                    <label for="txtOtherVettingType">Other vetting description</label>
+                                    <input type="text" class="form-control pull-right" name="OtherVettingDescription" id="OtherVettingDescription"
+                                           [(ngModel)]="participant.OtherVettingDescription" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>English language ability</label>
+                                    <select class="form-control select2" data-placeholder="Select language(s)" style="width: 100%;"
+                                            title="Select only those language(s) for which participant has minimum professional proficiency."
+                                            [(ngModel)]="participant.EnglishLanguageProficiencyID" name="EnglishLanguageProficiency">
+                                        <option value="0"></option>
+                                        <option *ngFor="let prof of LanguageProficiencies" [value]="prof.LanguageProficiencyID">{{ prof.Code }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Education level</label>
+                                    <select class="form-control select2" style="width: 100%;" placeholder="Select highest education"
+                                            [(ngModel)]="participant.HighestEducationID" name="HighestEducation">
+                                        <option value="0"></option>
+                                        <option *ngFor="let el of EducationLevels" [value]="el.EducationLevelID">{{ el.Code }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label class="label-headsup">For travel:</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Departure country</label>
+                                    <ng-select name="DepartureCountry" [items]="countries" bindLabel="CountryName" bindValue="CountryID"
+                                               (change)="CountrySelectionChange($event, 'DepartureCountry')" [(ngModel)]="participant.DepartureCountryID">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Departure state</label>
+                                    <ng-select name="DepartureState" [items]="DepartureStates" bindLabel="StateName" bindValue="StateID" [loading]="loadingStates[1]"
+                                               (change)="StateSelectionChange($event, 'DepartureState')" [(ngModel)]="participant.DepartureStateID">
+                                    </ng-select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Departure city</label>
+                                    <ng-select name="DepartureCity" [items]="DepartureCities" bindLabel="CityName" bindValue="CityID"
+                                               [(ngModel)]="participant.DepartureCityID" [loading]="loadingCities[1]">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="txtPassport">Passport number</label>
+                                    <input type="text" class="form-control" name="PassportNumber" [(ngModel)]="participant.PassportNumber"
+                                           [disabled]="participant?.IsUSCitizen ? '' : null">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Passport expiration</label>
+                                    <div class="input-group date">
+                                        <input type="text" class="form-control pull-right" name="PassportExpiration" #dpPassportExpiration="bsDatepicker" bsDatepicker
+                                               [(ngModel)]="participant.PassportExpirationDate" [bsConfig]="{ showWeekNumbers:false, containerClass:'theme-dark-blue' }"
+                                               [disabled]="participant?.IsUSCitizen ? '' : null" />
+                                        <div class="input-group-addon">
+                                            <i *ngIf="!participant?.IsUSCitizen" class="fa fa-calendar" (click)="dpPassportExpiration.toggle()"></i>
+                                        </div>
+                                    </div>
+                                    <!-- /.input group -->
+                                </div>
+                            </div>
+                            <div class="col-md-4" *ngIf="!isImporting">
+                                <div class="form-group">
+                                    <label>Issuing country</label>
+                                    <ng-select name="IssuingCountry" [items]="countries" bindLabel="CountryName" bindValue="CountryID"
+                                               [(ngModel)]="participant.PassportIssuingCountryID" [disabled]="participant?.IsUSCitizen ? '' : null">
+                                    </ng-select>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!--Tab Comments-->
+                <div class="tab-step" [ngStyle]="{display: CurrentTab == TabType.Comments ? 'block' : 'none'}">
+                    <section>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="txtComments">Comments and notes</label>
+                                    <textarea type="text" class="form-control" name="Comments" rows="10" [(ngModel)]="participant.Comments"> </textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="FormAction != ActionType.Create && Context != ParticipantContextType.Import ">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Upload documents</label>
+                                    <app-file-upload #FileUploadComponent
+                                                     (onFileDrop)="OnUploadDocumentsDrop($event)"
+                                                     (onFileDeleted)="OnFileDeleted($event)">
+                                    </app-file-upload>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="col-md-4">
+
+            </div>
+            <div class="col-md-8">
+
+                <div style="overflow:auto;">
+                    <div style="float:right;">
+                        <button *ngIf="CurrentTab != TabType.Personal" type="button" id="prevBtn" (click)="NextPrevious(-1);" class="btn btn-default btn-rounded-md">Back</button>  &nbsp;
+                        <button *ngIf="CurrentTab != TabType.Comments" [disabled]="!IsCurrentTabValid()" type="button" id="nextBtn" #nextBtn (click)="NextPrevious(1);"
+                                class="btn btn-rounded-md bColorPrimary">
+                            Next
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <ng-template #participantRemoval>
+                <app-participant-removal (CloseModal)="ParticipantRemoval_Close($event)" [TrainingEventID]="TrainingEventID" [PersonID]="PersonID">
+                </app-participant-removal>
+            </ng-template>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col-md-6" style="text-align:left;">
+                <a *ngIf="RequestedAction != 'Create' && !isImporting && !participant.RemovedFromEvent" style="cursor: pointer;" (click)="OpenModal(participantRemoval, 'modal-responsive-sm')"
+                   role="menuitem" id="bRemoveParticipant" class="btn btn-default btn-rounded-md">Remove participant</a>
+                <a *ngIf="RequestedAction != 'Create' && !isImporting && participant.RemovedFromEvent" style="cursor: pointer;" (click)="ReAddParticipant(participantForm)"
+                   role="menuitem" id="bReAddParticipant" class="btn btn-default btn-rounded-md">Re-add participant</a>
+                <a *ngIf="RequestedAction == 'Create'" style="cursor: pointer;" (click)="Cancel()" id="lnkSearchParticipant" class="modal-action-link">Search for a participant</a>
+            </div>
+            <div class="col-md-6">
+                <span class="ppr-capture">
+                    <button type="button" id="Cancel" [disabled]="IsSaving" class="btn btn-rounded" data-dismiss="modal" (click)="Cancel()">Close</button>
+
+                    <button type="submit" id="AddParticipant" [disabled]="isInVetting || IsSaving || (TabFinishState < 3 && FormAction == ActionType.Create ) || !participantForm.valid" class="btn btn-rounded bColorPrimary">
+                        {{ GetSaveButtonText() }}
+                        <span *ngIf="IsSaving || IsLoading" class="fa fa-spinner fa-spin"></span>
+                    </button>
+                </span>
+            </div>
+        </div>
+
+    </div>
+</form>

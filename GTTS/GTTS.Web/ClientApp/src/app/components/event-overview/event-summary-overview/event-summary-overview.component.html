@@ -1,0 +1,236 @@
+<div class="row box-ov">
+    <div class="box-ov-title col-sm-12 color-blue"  style="cursor:pointer;" routerLink="/gtts/training/{{ Training.TrainingEventID }}/edit">
+        Event Summary
+    </div>
+    <div class="box-ov-body col-sm-12" style="cursor:pointer;" routerLink="/gtts/training/{{ Training.TrainingEventID }}/edit">
+        <div class="row">
+            <div class="col-xs-12">
+                <h4 class="color-blue text-center" style="margin-bottom: 4px; margin-top: 4px;">{{ Training.Name }}</h4>
+            </div>
+        </div>
+        <!-- Locations -->
+        <div class="row">
+            <div class="col-xs-4 text-bold color-blue">
+                Location
+            </div>
+            <div class="col-xs-4 text-bold color-blue">
+                Dates
+            </div>
+            <div class="col-xs-4 text-bold color-blue">
+                Travel dates
+            </div>
+        </div>
+        <div class="row" *ngFor="let loc of Training.TrainingEventLocations">
+            <div class="col-xs-4" style="color:#888888;">
+                {{ loc.CityName}}, {{ loc.StateName }}, {{ loc.CountryName }}
+            </div>
+            <div class="col-xs-4" style="color:#888888;">
+                {{ loc.EventStartDate | date: 'MM/dd/yy' }} - {{ loc.EventEndDate | date: 'MM/dd/yy' }}
+            </div>
+            <div class="col-xs-4" style="color:#888888;">
+                {{ loc.TravelStartDate | date: 'MM/dd/yy' }} - {{ loc.TravelEndDate | date: 'MM/dd/yy' }}
+            </div>
+        </div>
+
+
+        <hr style="margin-top: 5px;margin-bottom: 5px;">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-12 text-bold color-blue">
+                        Event type
+                    </div>
+                    <div class="col-xs-6 col-sm-12" style="color:#888888;">
+                        {{ Training.TrainingEventTypeName }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-12 text-bold color-blue">
+                        Program / key activities
+                    </div>
+                    <div class="col-xs-6 col-sm-12" style="color:#888888;">
+                        <span class="list-comma" *ngFor="let activity of Training.TrainingEventKeyActivities">
+                            {{ activity.Code }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-12 text-bold color-blue">
+                        Funding source(s)
+                    </div>
+                    <div class="col-xs-6 col-sm-12" style="color:#888888;">
+                        {{ Training.ProjectCodes }}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-12 text-bold color-blue">
+                        Event organizer
+                    </div>
+                    <div class="col-xs-6 col-sm-12" style="color:#888888;">
+                        {{ Training.Organizer?.FullName
+                        }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-12 text-bold color-blue">
+                        Implementing partner(s)
+                    </div>
+                    <div class="col-xs-6 col-sm-12" style="color:#888888;">
+                        <span class="list-comma" *ngFor="let partner of Training.TrainingEventUSPartnerAgencies">
+                            {{ partner.Name }}
+                        </span>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="row">
+                    <div class="col-xs-6 col-sm-12 text-bold color-blue">
+                        Additional stakeholders
+                    </div>
+                    <div class="col-xs-6 col-sm-12" style="color:#888888;">
+                        <span class="list-comma" *ngFor="let person of Training.TrainingEventStakeholders">
+                            {{ person.FullName }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr style="margin-top: 5px;margin-bottom: 0px;">
+    </div>
+    <div class="col-sm-12 box-ov-footer" style="text-align:right;">
+        <span *ngIf="Training?.TrainingEventStatus?.toUpperCase() == 'CLOSED' || Training?.TrainingEventStatus?.toUpperCase() == 'CANCELED'"
+              class="color-blue text-bold">
+            Status:
+            <span style="padding-right: 20px;"><span>{{ Training?.TrainingEventStatus }}</span></span>
+        </span>
+        <button *ngIf="Training?.TrainingEventStatus?.toUpperCase() != 'CANCELED' && Training?.TrainingEventStatus?.toUpperCase() != 'CLOSED'"
+                (click)="CheckVettingExits()"
+                class="btn btn-default btn-rounded-sm">
+            Cancel event
+        </button>
+        <button *ngIf="Training?.TrainingEventStatus?.toUpperCase() == 'CANCELED'"
+                (click)="OpenModal(eventCancelUncancel, 'modal-responsive-sm')"
+                class="btn btn-default btn-rounded-sm">
+            Uncancel event
+        </button>
+        &nbsp;
+        <button *ngIf="Training?.TrainingEventStatus?.toUpperCase() != 'CLOSED' && Training?.TrainingEventStatus?.toUpperCase() != 'CANCELED'"
+                (click)="OpenModal(eventCloseoutModal, 'modal-responsive-mdsm')"
+                class="btn bColorPrimary btn-rounded-sm">
+            Close event
+        </button>
+
+
+        <!--<button class="btn bColorPrimary btn-rounded-sm pull-right" data-size="modal-responsive-mdsm" data-target="#genericModal" data-toggle="modal" data-url="/Training/CloseEvent" style="margin-right:10px">Close event</button>
+    <button class="btn bColorPrimary btn-rounded-sm pull-right" data-size="modal-responsive-mdsm" data-target="#genericModal" data-toggle="modal" data-url="/Training/CloseEventGroup" id="spnCloseGroup" style="margin-right:10px">Close event group</button>
+    <button class="btn btn-default btn-rounded-sm pull-right" data-size="modal-responsive-mdsm" data-target="#genericModal" data-toggle="modal" data-url="/Training/CancelEvent" style="margin-right:10px">Cancel event</button>-->
+    </div>
+</div>
+
+<ng-template #eventCloseoutModal>
+    <app-event-closeout (CloseModal)="CloseEventCloseout()"
+                        (ReloadTrainingEvent)="ReloadAfterCloseout()"
+                        [TrainingEventID]="Training.TrainingEventID">
+    </app-event-closeout>
+</ng-template>
+
+<ng-template #eventCancelUncancel>
+    <app-cancel-uncancel-event (CloseModal)="CancelUncancel_Close($event)"
+                               [TrainingEventID]="Training.TrainingEventID"
+                               [ActionRequested]="Training.TrainingEventStatus?.toUpperCase() == 'CANCELED' ? 'Uncancel' : 'Cancel'">
+    </app-cancel-uncancel-event>
+</ng-template>
+
+<!--<div class="overviewContainer">
+    <div class="overviewHeader">Event Summary</div>
+    <div class="overviewContainerContent">
+        <table style="width:100%;margin:0;padding:0;border-collapse:collapse;">
+
+            <tr class="bottomBorder" *ngIf="AuthSrvc.HasPermission('UPDATE TRAINING EVENT')">
+                <td colspan="9">
+                    Event Name:&nbsp;
+                    <span class="value"><a routerLink="/gtts/training/{{ Training.TrainingEventID }}/edit">{{ Training.Name }}</a></span>
+                </td>
+                <td colspan="3" style="text-align:right;">
+                    Event ID:&nbsp;
+                    <span class="value"><a routerLink="/gtts/training/{{ Training.TrainingEventID }}/edit">{{ Training.TrainingEventID }}</a></span>
+                </td>
+            </tr>
+            <tr class="bottomBorder" *ngIf="!AuthSrvc.HasPermission('UPDATE TRAINING EVENT')">
+                <td colspan="9">
+                    Event Name:&nbsp;
+                    <span class="value">{{ Training.Name }}</span>
+                </td>
+                <td colspan="3" style="text-align:right;">
+                    Event ID:&nbsp;
+                    <span class="value">{{ Training.TrainingEventID }}</span>
+                </td>
+            </tr>
+
+            <tr class="bottomBorder">
+                <td colspan="4" class="rightBorder">
+                    <div>Key Activity: <span class="value">{{ Training.KeyActivityName }}</span></div>
+                    <div>Event Type: <span class="value">{{ Training.TrainingEventTypeName }}</span></div>
+                </td>
+                <td colspan="8" style="padding:0;margin:0;border-collapse:collapse;padding-top:3px;">
+                    <table style="width:100%;min-height:40px;margin:0px;padding:0px;border-collapse:collapse;height:100%;">
+                        <tbody>
+                            <tr *ngFor="let loc of Training.TrainingEventLocations" style="padding-bottom:0;margin-bottom:0;">
+                                <td class="rightBorder" style="padding:0;margin:0;padding-left:4px;">
+                                    Location: <span class="value">{{ loc.CityName}}, {{ loc.CountryName }}</span>
+                                </td>
+                                <td style="padding:0;margin:0;padding-left:4px;">
+                                    Dates: <span class="value">{{ loc.EventStartDate | date: 'MM/dd/yy' }} - {{ loc.EventEndDate | date: 'MM/dd/yy' }}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
+            <tr class="bottomBorder">
+                <td colspan="4" class="rightBorder">
+                    Organizer:
+                    <div class="value" style="display:inline;">
+                        <a href="#">{{ Training.Organizer.FullName }}</a>
+                        <app-contact-card [Contact]="Training.Organizer"></app-contact-card>
+                    </div>
+                </td>
+                <td colspan="4" class="rightBorder">Estimatd Cost (USD): <span class="value">{{ Training.EstimatedBudget | currency:'USD' }}</span></td>
+                <td colspan="4">
+                    Project Codes:
+                    <span class="value">{{ FormatProjectCodes(Training.TrainingEventProjectCodes) }}</span>
+                </td>
+            </tr>
+
+            <tr class="bottomBorder">
+                <td colspan="3" class="rightBorder">Host Nation <br />Participants (GOM): <span class="value">{{ Training.PlannedParticipantCnt }}</span></td>
+                <td colspan="3" class="rightBorder">Mission Direct <br />Hires (USG): <span class="value">{{ Training.PlannedMissionDirectHireCnt }}</span></td>
+                <td colspan="3" class="rightBorder">Non-Mission <br />Direct Hires (USG): <span class="value">{{ Training.PlannedNonMissionDirectHireCnt }}</span></td>
+                <td colspan="3">Mission Outsourced <br />Hires (TPC): <span class="value">{{ Training.PlannedMissionOutsourceCnt }}</span></td>
+            </tr>
+
+            <tr>
+                <td colspan="4" class="rightBorder">Other <br />(Instructors, SMEs): <span class="value">{{ Training.PlannedOtherCnt }}</span></td>
+                <td colspan="4" class="rightBorder">
+                    Implementing Partners: <br />
+                    <span class="value">{{ FormatImplementingPartners(Training.TrainingEventUSPartnerAgencies) }}</span>
+                </td>
+                <td colspan="4">
+                    Stakeholders:<br />
+                    <div *ngFor="let person of Training.TrainingEventStakeholders" class="value">{{ person.FullName }}</div>
+                </td>
+        </table>
+    </div>
+</div>-->

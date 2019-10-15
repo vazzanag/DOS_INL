@@ -1,0 +1,48 @@
+#title-bar{
+    color: #962626;
+    font-weight: bold;
+    font-size: x-large;
+    background-color: #d4891d;
+    padding: 8px;
+}
+
+#title-bar-icon{
+    width: 26px;
+    margin: 4px;
+}
+
+#rejection-content{
+    padding: 24px;
+}
+
+#rejection-content-label{
+    font-weight: bold;
+    border-bottom: solid 1px;
+}
+
+#rejection-form-container{
+    margin-top: 8px;
+}
+
+#rejection-form-card{
+    padding: 4px;
+    height: 320px;
+}
+
+#reject-reason-input{
+    width: 100%;
+    height: 280px;
+    border: none;
+}
+
+#actions-container{
+    float: right;
+}
+
+#cancel-button{
+    height: 40px;
+}
+
+#save-button{
+    height: 40px;
+}

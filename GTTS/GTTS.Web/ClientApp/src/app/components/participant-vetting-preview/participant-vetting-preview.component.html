@@ -1,0 +1,83 @@
+
+<div class="modal-header content-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CancelClick()"><span aria-hidden="true">&times;</span></button>
+    <h1 class="header-padding-top font-16" style="padding-bottom:15px;">
+        Review all batch and participant data carefully. If all data is correct, click “Submit to vetting” to submit these participants <br /> (in their respective batches as detailed below) for Leahy and/or Courtesy vetting. Participants listed under “Remove from submission” will not be submitted for vetting at this time.
+    </h1>
+</div>
+<div class="modal-body no-overflow-x" id="modalBodyVettingPreview" #modalBodyVettingPreview>
+    <accordion>
+        <accordion-group *ngFor="let batch of model.LeahyReVettingBatches" panelClass="bg-color-midblue text-bold color-blue toogleDiv pointer"
+                         [heading]="  " [isOpen]="IsAccordionBatchOpen(batch, 'leahyrevetting')"
+                         (isOpenChange)="BatchAccordion_OpenChange($event, batch, 'leahyrevetting')">
+            <span accordion-heading>
+                <i class="fas" [ngClass]="{'fa-angle-down': IsAccordionBatchOpen(batch, 'leahyrevetting'), 'fa-angle-right': !IsAccordionBatchOpen(batch, 'leahyrevetting')}"></i> Leahy batch {{batch.BatchNumber}} <span class="text-danger">(re-vetting)</span> 
+            </span>
+            <app-vetting-preview-group [BatchType]="LeahyReVettingBatchType" [BatchNumber]="batch.BatchNumber"></app-vetting-preview-group>
+        </accordion-group>
+    </accordion>
+
+    <accordion>
+        <accordion-group *ngFor="let batch of model.LeahyBatches" panelClass="bg-color-midblue text-bold color-blue toogleDiv pointer"
+                         [heading]="  " [isOpen]="IsAccordionBatchOpen(batch, 'leahy')"
+                         (isOpenChange)="BatchAccordion_OpenChange($event, batch, 'leahy')">
+            <span accordion-heading>
+                <i class="fas" [ngClass]="{'fa-angle-down': IsAccordionBatchOpen(batch, 'leahy'), 'fa-angle-right': !IsAccordionBatchOpen(batch, 'leahy')}"></i> Leahy batch {{batch.BatchNumber}}
+            </span>
+            <app-vetting-preview-group [BatchType]="LeahyBatchType" [BatchNumber]="batch.BatchNumber"></app-vetting-preview-group>
+        </accordion-group>
+    </accordion>
+
+    <accordion>
+        <accordion-group *ngFor="let batch of model.CourtesyReVettingBatches" panelClass="bg-color-midblue text-bold color-blue toogleDiv pointer"
+                         [heading]="  " [isOpen]="IsAccordionBatchOpen(batch, 'courtesyrevetting')"
+                         (isOpenChange)="BatchAccordion_OpenChange($event, batch, 'courtesyrevetting')">
+            <span accordion-heading>
+                <i class="fas" [ngClass]="{'fa-angle-down': IsAccordionBatchOpen(batch, 'courtesyrevetting'), 'fa-angle-right': !IsAccordionBatchOpen(batch, 'courtesyrevetting')}"></i> Courtesy batch {{batch.BatchNumber}} <span class="text-danger">(re-vetting)</span>
+            </span>
+            <app-vetting-preview-group [BatchType]="CourtesyReVettingBatchType" [BatchNumber]="batch.BatchNumber"></app-vetting-preview-group>
+        </accordion-group>
+    </accordion>
+
+    <accordion>
+        <accordion-group *ngFor="let batch of model.CourtesyBatches" panelClass="bg-color-midblue text-bold color-blue toogleDiv pointer"
+                         [heading]="  " [isOpen]="IsAccordionBatchOpen(batch, 'courtesy')"
+                         (isOpenChange)="BatchAccordion_OpenChange($event, batch, 'courtesy')">
+            <span accordion-heading>
+                <i class="fas" [ngClass]="{'fa-angle-down': IsAccordionBatchOpen(batch, 'courtesy'), 'fa-angle-right': !IsAccordionBatchOpen(batch, 'courtesy')}"></i> Courtesy batch {{batch.BatchNumber}}
+            </span>
+            <app-vetting-preview-group [BatchType]="CourtesyBatchType" [BatchNumber]="batch.BatchNumber"></app-vetting-preview-group>
+        </accordion-group>
+    </accordion>
+
+    <accordion>
+        <accordion-group *ngFor="let batch of model.RemovedParticipants" panelClass="bg-color-midblue text-bold color-blue toogleDiv pointer"
+                         [heading]="  " [isOpen]="IsAccordionBatchOpen(batch, 'removedparticipants')"
+                         (isOpenChange)="BatchAccordion_OpenChange($event, batch, 'removedparticipants')">
+            <span accordion-heading>
+                <i class="fas" [ngClass]="{'fa-angle-down': IsAccordionBatchOpen(batch, 'removedparticipants'), 'fa-angle-right': !IsAccordionBatchOpen(batch, 'removedparticipants')}"></i> Remove from submission
+            </span>
+            <app-vetting-preview-group [BatchType]="RemovedBatchType" [BatchNumber]="batch.BatchNumber"></app-vetting-preview-group>
+        </accordion-group>
+    </accordion>
+</div>
+<div class="modal-footer">
+    <button id="btnSubmit" class="btn btn-rounded btn-default" data-dismiss="modal" (click)="CancelClick()">Close</button>
+    <button id="R1" class="btn btn-rounded-md bColorPrimary" (click)="SubmitVettingBatchClicked();" [disabled]="!model.SubmitEnabled">Submit to Vetting</button>
+</div>
+
+<ng-template #vettingFundingView>
+    <app-vetting-funding-form [TrainingEventID]="TrainingEventID"
+                              [TrainingEventStartDate] ="TrainingEvent.EventStartDate"
+                              [ShowLeahyDate]="ShowLeahyNeedByDate"
+                              [ShowCourtesyDate]="ShowCourtesyNeedByDate"
+                              [AuthorizingLawID]="AuthorizingLawID"
+                              [BatchSubmissionDate]="BatchSubmissionDate"
+                              [FundingSourceID]="FundingSourceID"
+                              [LeahyLeadTime]="model.LeahyBatchLeadTime"
+                              [CourtesyLeadTime]="model.CourtesyBatchLeadTime"
+                              (SaveFundingEvent)="SaveFunding($event)"
+                              (CloseModal)="CloseFundingModal()">
+    </app-vetting-funding-form>
+</ng-template>
+

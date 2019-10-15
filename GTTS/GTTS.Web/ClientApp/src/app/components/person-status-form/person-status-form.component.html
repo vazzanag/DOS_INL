@@ -1,0 +1,117 @@
+<div class="modal-header">
+    <h4 class="modal-title pull-left" style="text-align: center; width: 97%">{{ModalLabel}} </h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="Cancel()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body no-padding-top-bottom">
+    <div class="modal-instructions text-center">Select participant(s) whose status you would like to change</div>
+    <div style="height:20px">
+        <span class="modal-link-align-right" style="padding-right: 16px;">
+            <a class="modal-action-link select-all-items" style="cursor: pointer" (click)="onSelectAllToggleClick()">{{allModelsSelected ? 'Deselect all participants' : 'Select all participants'}}</a>
+        </span>
+    </div>
+    <form #removalForm="ngForm" id="ngForm">
+        <div class="box-body no-padding-side bulk-participants-list no-padding-bottom">
+            <ul class="products-list product-list-in-box children-items-selectable" id="participants-to-select">
+                <li class="item" [class.selected]="model.selected" *ngFor="let model of itemModels" (click)="model.selected = !model.selected">
+                    <!--<div class="" style="float:left; padding: 0px 20px;" *ngIf="model.item.ParticipantType == 'Student' && !model.item.IsParticipant">
+                        <img src="/assets/images/alternate_blue.png" width="18" height="18" title="Alt">
+                    </div>
+                    <div class="" style="float:left; padding: 0px 20px;" *ngIf="model.item.ParticipantType == 'Student' && model.item.IsParticipant">
+                        <img src="/assets/images/student_blue.png" width="18" height="18" title="Participant">
+                    </div>
+                    <div class="" style="float:left; padding: 0px 20px;" *ngIf="model.item.ParticipantType == 'Instructor'">
+                        <img src="/assets/images/teachers_blue.png" width="18" height="18" title="Intructor">
+                    </div>-->
+                    <div class="" style="float:left; padding: 0px 20px;">
+                        <img src="/assets/images/{{ model.item.ParticipantTypeIcon }}" width="18" height="18" title="{{model.item.ParticipantType}}">
+                    </div>
+                    <div class="product-info">
+                        <a class="product-title"> {{model.item.FirstMiddleNames}} {{model.item.LastNames}} </a>
+                        <span class="product-description">{{model.item.AgencyName}}</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="box-body no-padding-side no-padding-top">
+            <div class="modal-instructions text-center padding-b-5">Change status to:</div>
+            <div class="row no-padding">
+                <div class="col-xs-offset-2 col-xs-8">
+                    <div class="row" id="divButtonsStatus">
+                        <div class="col-xs-3 no-padding text-center">
+                            <button class="btn btn-default" [class.active]="Status == 'participant'" (click)="SetStatusUpdate('participant');" style="width: 96px; height: 73px;" name="btnStatus" id="btnStu">
+                                <img src="/assets/images/student_blue.png" style="width: 70px;">
+                            </button>
+                            <span class="product-description color-999">Student</span>
+                        </div>
+                        <div class="col-xs-3 no-padding text-center">
+                            <button class="btn btn-default" [class.active]="Status == 'instructor'" (click)="SetStatusUpdate('instructor');" style="width: 96px; height: 73px;" name="btnStatus" id="btnTea">
+                                <img src="/assets/images/teachers_blue_large.png" style="width: 45px;">
+                            </button>
+                            <span class="product-description color-999">Instructor</span>
+                        </div>
+                        <div class="col-xs-3 no-padding text-center">
+                            <button class="btn btn-default" [class.active]="Status == 'alternate'" (click)="SetStatusUpdate('alternate');" style="width: 96px; height: 73px;" name="btnStatus" id="btnAlt">
+                                <img src="/assets/images/alternate_blue.png" style="width: 70px;">
+                            </button>
+                            <span class="product-description color-999">Alternate</span>
+                        </div>
+                        <div class="col-xs-3 no-padding text-center">
+                            <button class="btn btn-default" [class.active]="Status == 'removed'" (click)="SetStatusUpdate('removed');" style="width: 96px; height: 73px;" name="btnStatus" id="btnRem">
+                                <img src="/assets/images/student-removed-blue.png" style="width: 70px;">
+                            </button>
+                            <span class="product-description color-999">Removed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel no-border" id="pnlDeleteParticipant">
+            <div class="panel-body no-padding-top-bottom" id="pnlDelete" *ngIf="DisplayRemovalReason">
+                <div class="row" [class.has-error]="RemovalReasonID < 0">
+                    <div class="box no-top-border bulk-remove-selected">
+                        <div class="row no-padding" style="height: 20px;">
+                            <div class="col-xs-offset-8 col-xs-4 color-darkgray optional" *ngIf="DisplayRemovalCauses && DisplayRemovalReason">*Optional </div>
+                        </div>
+                        <div class="row">
+                            <div class="row" style="margin-left: 20px; margin-right: 20px;">
+                                <div class="col-xs-8 no-padding-right">
+                                    <div class="btn-radio-group radios" data-toggle="buttons">
+                                        <div class="col-xs-6">
+                                            <label class="btn btn-default btn-block" *ngFor="let reasons of oddRemovalReasons" [class.active]="RemovalReasonID == reasons.RemovalReasonID" (click)="SetRemovalReason(reasons);">
+                                                <input name="rdoCause" class="radio-label" type="radio" />
+                                                <span>{{ reasons.Description }}</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-xs-6">
+                                            <label class="btn btn-default btn-block" *ngFor="let reasons of evenRemovalReasons" [class.active]="RemovalReasonID == reasons.RemovalReasonID" (click)="SetRemovalReason(reasons);">
+                                                <input name="rdoCause" class="radio-label" type="radio" />
+                                                <span>{{ reasons.Description }}</span>
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-xs-4">
+                                    <div class="btn-radio-group radios optional" data-toggle="buttons" *ngIf="DisplayRemovalCauses && DisplayRemovalReason">
+                                        <label class="btn btn-default btn-block" *ngFor="let causes of RemovalCausesFiltered" [class.active]="RemovalCauseID == causes.RemovalCauseID" (click)="SetRemovalCause(causes);">
+                                            <input name="rdoOptional" class="radio-label" type="radio" />
+                                            <span>{{ causes.Description }}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-rounded" (click)="Cancel()">Cancel</button>
+    <button type="button" class="btn btn-rounded bColorPrimary" (click)="Save()" [disabled]="removalForm.form.invalid || IsInvalidForm()">{{ BulkMode == true ? 'Update status' : 'Remove participant' }}</button>
+</div>

@@ -1,0 +1,634 @@
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="Cancel()"><span aria-hidden="true">×</span></button>
+    <h4 class="modal-title" id="txtTitleParticipant" style="vertical-align: middle !important;">
+        Close event
+        <strong class="strong-headsup pull-right pull-right-margin-right">
+            Last update by <span class="strong-headsup-data">{{ TrainingEventModel.ModifiedBy.FullName }} ({{ TrainingEventModel.ModifiedDate | date: 'MM/dd/yyyy, hh:mm a Z' }})</span>
+        </strong>
+    </h4>
+</div>
+
+<div id="top" name="top" class="modal-body no-overflow-x" #top>
+    <div class="row">
+        <div class="col-md-10"></div>
+        <div class="col-md-2">
+            <input id="fileUploadRoster" class="btn btn-primary" style="display: none;" value="Upload roster" type="file" accept=".xls, .xlsx">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box no-top-border no-box-shadow" id="divTabs" *ngIf="!ShowPreview">
+                <div class="box-header no-padding-bottom">
+                    <div class="col-xs-12 text-right no-padding">
+                        <ul class="nav nav-pills" id="tabCloseEvent">
+                            <li class="tabs-attendance" [ngClass]="{active: CurrentTab == TabType.Details}"><a class="tab-a" data-toggle="tab" href="#tabEventDetail" id="liEventDetail" aria-expanded="false" (click)="SetTab(TabType.Details);">Event details</a></li>
+                            <li *ngIf="this.InstructorPerformanceRoster?.RosterGroups?.length > 0" class="tabs-instructors" [ngClass]="{active: CurrentTab == TabType.Instructors}"><a class="tab-a" data-toggle="tab" href="#tabInstructors" id="liInstructors" aria-expanded="false" (click)="SetTab(TabType.Instructors);">Instructors</a></li>
+                            <li class="tabs-students" [ngClass]="{active: CurrentTab == TabType.Students}"><a class="tab-a" href="#tabStudents" data-toggle="tab" id="liStudents" aria-expanded="false" (click)="SetTab(TabType.Students);">Students</a></li>
+                            <li class="tabs-comments" [ngClass]="{active: CurrentTab == TabType.Comments}"><a class="tab-a" href="#tabComments" data-toggle="tab" id="liComments" aria-expanded="true" (click)="SetTab(TabType.Comments);">Comments</a></li>
+                            <li class="pull-right pull-right-margin-right">
+                                <div class="pull-right">
+                                    <input id="UploadRosterHidden" type="file" #file style="display: none" (change)="UploadRosterHidden_Change()" />
+                                    <button id="UploadRoster" class="btn btn-rounded bColorPrimary" style="margin-top: 5px;"
+                                            *ngIf="this.CurrentTab == TabType.Students" (click)="UploadRoster_Click()">
+                                        Upload roster
+                                    </button>
+                                </div>
+                                <div class="pull-right" style="padding-top:8px;padding-right:10px;">
+                                    <i *ngIf="this.CurrentTab == TabType.Students && UploadedRoster" class="far fa-file-export color-blue fa-2x" style="cursor:pointer;" (click)="DownloadRoster()"></i>
+                                </div>
+                            </li>
+                        </ul>
+                        <a #DownloadLink></a>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="tab-content" style="height: 400px;">
+                        <!-- Event Detail -->
+                        <div id="tabEventDetail" class="tab-pane fade" [ngClass]="{active: CurrentTab == TabType.Details, in: InitialLoad}">
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="EventName">Training event name <span [ngClass]="{'red': TrainingEventModel?.Name == ''}">*</span></label>
+                                        <input type="text" class="form-control" id="EventName" [(ngModel)]="TrainingEventModel.Name"
+                                               [ngClass]="{'error-input': TrainingEventModel?.Name == ''}" />
+                                        <div id="EventNameRequired" class="error" *ngIf="TrainingEventModel?.Name == ''">
+                                            Required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Locations -->
+                            <div class="row" *ngFor="let location of TrainingEventModel.TrainingEventLocations; let i = index">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="LocationName">Location</label>
+                                        <input type="text" class="form-control" id="LocationName" [(ngModel)]="location.LocationName"
+                                               [ngClass]="{'error-input': TrainingEventModel.TrainingEventLocations[i].LocationName == ''}" readonly />
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label for="LocationDates">Dates <span [ngClass]="{'red': ValidDateRange(location)}">*</span></label>
+                                        <input type="text" class="form-control pull-right" id="LocationDates" #drp="bsDaterangepicker" bsDaterangepicker
+                                               [(ngModel)]="location.EventDateRange" [bsConfig]="{ showWeekNumbers:false, containerClass:'theme-dark-blue' }"
+                                               [ngClass]="{'error-input': ValidDateRange(location)}" />
+                                        <div id="EventNameRequired" class="error" *ngIf="ValidDateRange(location)">
+                                            Required
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label for="txtEventName">Program/Key Activity *</label>
+                                        <select2 [data]="KeyActivities"
+                                                 [value]="defaultKeyActivityIds"
+                                                 [options]="select2Options"
+                                                 (valueChanged)="onKeyActivitiesChange($event)">
+                                        </select2>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Event type *</label>
+                                        <select id="EventType" class="form-control select2" style="width: 100%;" data-placeholder="Select type" [(ngModel)]="TrainingEventModel.TrainingEventTypeID">
+                                            <option *ngFor="let type of TrainingEventTypes" value="{{ type.TrainingEventTypeID }}">{{ type.Name }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="EstimatedCost">Estimated cost</label>
+                                        <input type="number" class="form-control" id="EstimatedCost" [(ngModel)]="TrainingEventModel.EstimatedBudget" readonly="" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label for="FinalCost">Final cost</label>
+                                        <input type="number" class="form-control" id="FinalCost" #FinalCost="ngModel" [(ngModel)]="TrainingEventModel.ActualBudget" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2" style="vertical-align: middle;">
+                                    <div class="form-group">
+                                        <span class="pull-right">Participants:</span>
+                                    </div>
+                                </div>
+
+                                <!-- Counts (no groups) -->
+                                <div class="col-md-2" *ngIf="TrainingEventModel.ParticipantCounts?.length < 2 && TrainingEventModel.ParticipantCounts?.length > 0">
+                                    <div class="form-group">
+                                        <label for="txtNoParticipants">Students</label>
+                                        <input type="number" class="form-control" id="NoParticipants" [(ngModel)]="TrainingEventModel.ParticipantCounts[0].Students" readonly="" />
+                                    </div>
+                                </div>
+                                <div class="col-md-2" *ngIf="TrainingEventModel.ParticipantCounts?.length < 2 && TrainingEventModel.ParticipantCounts?.length > 0">
+                                    <div class="form-group">
+                                        <label for="txtNoInstructors">Instructors</label>
+                                        <input type="number" class="form-control" id="NoInstructors" [(ngModel)]="TrainingEventModel.ParticipantCounts[0].Instructors" readonly="" />
+                                    </div>
+                                </div>
+
+                                <!-- Counts (with groups) -->
+                                <div class="col-md-4" *ngIf="TrainingEventModel.ParticipantCounts?.length >= 2 && TrainingEventModel.ParticipantCounts?.length > 0">
+                                    <div class="row">
+                                        <div class="col-md-6 center-th">
+                                            <label for="txtNoParticipants">Students</label>
+                                        </div>
+                                        <div class="col-md-6 center-th">
+                                            <label for="txtNoInstructors">Instructors</label>
+                                        </div>
+                                    </div>
+                                    <div *ngFor="let count of TrainingEventModel.ParticipantCounts">
+                                        <div class="row row-header-sm center-th">
+                                            <div class="col-md-12">
+                                                <strong>{{ count.GroupName }}</strong>
+                                            </div>
+                                        </div>
+                                        <div class="row form-control-cell">
+                                            <div class="col-md-6">
+                                                <span>{{ count.Students }}</span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <span>{{ count.Instructors }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Instructors -->
+                        <div *ngIf="this.InstructorPerformanceRoster?.RosterGroups?.length > 0" id="tabInstructors" class="tab-pane fade" [ngClass]="{active: CurrentTab == TabType.Instructors}">
+                            <div class="table-responsive">
+                                <div id="tblInstructors_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                    <div class="top"></div>
+                                    <div *ngFor="let group of InstructorPerformanceRoster.RosterGroups">
+                                        <div class="row row-header" style="margin-bottom:5px;" *ngIf="InstructorPerformanceRoster.RosterGroups.length > 1">
+                                            <div class="col-md-12">
+                                                <strong>{{ group.GroupName }}</strong>
+                                            </div>
+                                        </div>
+                                        <table id="InstructorsTable" datatable class="table table-hover hide-icon-sort hover center-table-header dataTable no-foote"
+                                               [dtOptions]="InstructorOptions">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th style="width: 25px;">No</th>
+                                                    <th style="width: 180px;text-align:left;">Name</th>
+                                                    <th>Met min. attendance requirement</th>
+                                                    <th style="width: 140px;">Reason</th>
+                                                    <th style="width: 130px;">Cause</th>
+                                                    <th style="width: 100px;">Distinction</th>
+                                                    <th style="width: 0px;">Comments</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr role="row" *ngFor="let roster of group.Rosters; let odd=odd; let even=even" ngClass="{odd: odd, even: even}">
+                                                    <td>{{ roster.PersonID }}</td>
+                                                    <td>
+                                                        <span style="display:none;">{{ roster.LastNames }}</span>
+                                                        {{ roster.FirstMiddleNames }} {{ roster.LastNames }}
+                                                    </td>
+                                                    <td>
+                                                        <span style="display:none;">{{ roster.MinimumAttendanceMet }}</span>
+                                                        <div class="form-group-label" id="instructorMinimumAttendanceMetDiv">
+                                                            <div class="btn-group radios" data-toggle="buttons">
+                                                                <label class="btn btn-default label-inner-radio" [ngClass]="{active: roster.MinimumAttendanceMet}"
+                                                                       style="width:40px;" (click)="MinimumAttendanceMet_Change(roster, 1)">
+                                                                    <input name="instructorMinimumAttendanceMet" class="radio-label" type="radio" value="1"
+                                                                           [checked]="roster.MinimumAttendanceMet" data-id="instructorMinimumAttendanceMet">
+                                                                    <span>Yes</span>
+                                                                </label>
+                                                                <label class="btn btn-default label-inner-radio" [ngClass]="{active: !roster.MinimumAttendanceMet}"
+                                                                       style="width:40px;" (click)="MinimumAttendanceMet_Change(roster, 0)">
+                                                                    <input name="instructorMinimumAttendanceMet" class="radio-label" type="radio" value="0"
+                                                                           [checked]="!roster.MinimumAttendanceMet" data-id="instructorMinimumAttendanceMet">
+                                                                    <span>No</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="instructorReasonDiv" style="">
+                                                            <select id="instructorReason" class="form-control-datatable" style="width: 100%;" data-placeholder="Select reason"
+                                                                    [(ngModel)]="roster.NonAttendanceReasonID" *ngIf="!roster.MinimumAttendanceMet" required>
+                                                                <option value="-1"></option>
+                                                                <option *ngFor="let reason of NonAttendanceReasons" [value]="reason.NonAttendanceReasonID">{{ reason.Description }}</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="instructorCauseDiv" style="">
+                                                            <select id="instructorCause" class="form-control-datatable" style="width: 100%;" data-placeholder="Select reason"
+                                                                    [(ngModel)]="roster.NonAttendanceCauseID" *ngIf="!roster.MinimumAttendanceMet">
+                                                                <option value="-1"></option>
+                                                                <option *ngFor="let cause of NonAttendanceCauses" [value]="cause.NonAttendanceCauseID">{{ cause.Description }}</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span style="display:none;">{{ roster.TrainingEventRosterDistinction }}</span>
+                                                        <div id="instructorDistinctionDiv">
+                                                            <select id="instructorDistinction" class="form-control-datatable" style="width: 100%;" data-placeholder="Select distinction" [(ngModel)]="roster.TrainingEventRosterDistinctionID" title="Select distinction to denote a participant whose performance was particularly exceptional or unsatisfactory">
+                                                                <option value="-1"></option>
+                                                                <option *ngFor="let distinction of TrainingEventRosterDistinctions" [value]="distinction.TrainingEventRosterDistinctionID">{{ distinction.Code }}</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td><div id="instructorCommentsDiv"><textarea id="instructorComments" class="textarea-datatable" [(ngModel)]="roster.Comments"> </textarea></div></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="bottom"></div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Students -->
+                        <div id="tabStudents" class="tab-pane fade" [ngClass]="{active: CurrentTab == TabType.Students}">
+                            <div class="table-responsive">
+                                <div id="tblParticipants_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                    <div class="top"></div>
+                                    <div *ngFor="let group of StudentPerformanceRoster.RosterGroups">
+                                        <div class="row row-header" style="margin-bottom:5px;" *ngIf="StudentPerformanceRoster.RosterGroups.length > 1">
+                                            <div class="col-md-12">
+                                                <strong>{{ group.GroupName }}</strong>
+                                            </div>
+                                        </div>
+                                        <table id="StudentsTable" datatable class="table table-hover hide-icon-sort hover center-table-header dataTable no-footer"
+                                               role="grid" [dtOptions]="StudentOptions">
+                                            <thead>
+                                                <tr role="row">
+                                                    <th style="width: 18px;">No</th>
+                                                    <th style="width: 180px;text-align:left;">Name</th>
+                                                    <th>Met min. attendance requirement</th>
+                                                    <th style="width: 140px;">Reason</th>
+                                                    <th style="width: 130px;">Cause</th>
+                                                    <th style="width: 100px;">Distinction</th>
+                                                    <th style="width: 0px;">Comments</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr role="row" *ngFor="let roster of group.Rosters; let odd=odd; let even=even" ngClass="{odd: odd, even: even}">
+                                                    <td class="sorting_1">{{ roster.PersonID }}</td>
+                                                    <td>
+                                                        <span style="display:none;">{{ roster.LastNames }}</span>
+                                                        {{ roster.FirstMiddleNames }} {{ roster.LastNames }}
+                                                    </td>
+                                                    <td>
+                                                        <span style="display:none;">{{ roster.MinimumAttendanceMet }}</span>
+                                                        <div class="form-group-label" id="studentMinimumAttendanceMetDiv">
+                                                            <div class="btn-group radios" data-toggle="buttons">
+                                                                <label class="btn btn-default label-inner-radio" [ngClass]="{active: roster.MinimumAttendanceMet}"
+                                                                       style="width:40px;" (click)="MinimumAttendanceMet_Change(roster, 1)">
+                                                                    <input name="studentMinimumAttendanceMet" class="radio-label" type="radio" value="1"
+                                                                           [checked]="roster.MinimumAttendanceMet == 1" data-id="studentMinimumAttendanceMet">
+                                                                    <span>Yes</span>
+                                                                </label>
+                                                                <label class="btn btn-default label-inner-radio" [ngClass]="{active: !roster.MinimumAttendanceMet}"
+                                                                       style="width:40px;" (click)="MinimumAttendanceMet_Change(roster, 0)">
+                                                                    <input name="studentMinimumAttendanceMet" class="radio-label" type="radio" value="0"
+                                                                           [checked]="roster.MinimumAttendanceMet == 0" data-id="studentMinimumAttendanceMet">
+                                                                    <span>No</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="studentReasonDiv" style="">
+                                                            <select id="studentReason" class="form-control-datatable" style="width: 100%;" data-placeholder="Select reason"
+                                                                    [(ngModel)]="roster.NonAttendanceReasonID" *ngIf="!roster.MinimumAttendanceMet" required>
+                                                                <option value="-1"></option>
+                                                                <option *ngFor="let reason of NonAttendanceReasons" [value]="reason.NonAttendanceReasonID">{{ reason.Description }}</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="studentCauseDiv" style="">
+                                                            <select id="studentCause" class="form-control-datatable" style="width: 100%;" data-placeholder="Select caise"
+                                                                    [(ngModel)]="roster.NonAttendanceCauseID" *ngIf="!roster.MinimumAttendanceMet">
+                                                                <option value="-1"></option>
+                                                                <option *ngFor="let cause of NonAttendanceCauses" [value]="cause.NonAttendanceCauseID">{{ cause.Description }}</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <span style="display:none;">{{ roster.TrainingEventRosterDistinction }}</span>
+                                                        <div id="studentDistinctionDiv">
+                                                            <select id="studentDistinction" class="form-control-datatable" style="width: 100%;" data-placeholder="Select distinction" [(ngModel)]="roster.TrainingEventRosterDistinctionID" title="Select distinction to denote a participant whose performance was particularly exceptional or unsatisfactory">
+                                                                <option value="-1"></option>
+                                                                <option *ngFor="let distinction of TrainingEventRosterDistinctions" [value]="distinction.TrainingEventRosterDistinctionID">{{ distinction.Code }}</option>
+                                                            </select>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div id="studentCommentsDiv"><textarea id="studentComments" class="textarea-datatable" [(ngModel)]="roster.Comments"> </textarea></div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="bottom"></div>
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Comments -->
+                        <div id="tabComments" class="tab-pane fade" [ngClass]="{active: CurrentTab == TabType.Comments}">
+                            <div class="row" style="margin-top: 10px;">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Event comments</label>
+                                        <textarea rows="7" style="width: 100%; resize: none;" [(ngModel)]="TrainingEventModel.Comments"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Event documents</label>
+                                        <app-file-upload #FileUploadComponent
+                                                         (onFileDrop)="OnUploadDocumentsDrop($event)"
+                                                         (onFileDeleted)="OnFileDeleted($event)">
+                                        </app-file-upload>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- ./contentTabs -->
+                </div><!-- ./box-body -->
+            </div>
+
+            <!-- Preview -->
+            <div class="box no-top-border no-box-shadow" *ngIf="ShowPreview" id="divPreview">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12" style="text-align: center;margin-bottom: 10px;margin-top: -12px;">
+                            <span class="strong-headsup" style="font-size: 16px !important;">
+                                Please review all event information carefully before closing event. Select "Cancel" to go back and continue making changes.
+                            </span>
+                        </div>
+                    </div>
+                    <!-- Event Detail -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-overview">
+                                <div class="box-header">
+                                    <h3 class="box-title">Event details</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="txtEventNameP">Training event name</label>
+                                                <input type="text" class="form-control" id="txtEventNameP" value="{{TrainingEventModel.Name}}" disabled="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Locations -->
+                                    <div class="row" *ngFor="let location of TrainingEventModel.TrainingEventLocations">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label for="txtLocationP">Location</label>
+                                                <input type="text" class="form-control" id="txtLocationP" value="{{ location.LocationName }}" disabled="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Dates</label>
+                                                <input type="text" class="form-control pull-right" value="{{ location.EventStartDate | date: 'MM/dd/yyyy' }} - {{ location.EventEndDate | date: 'MM/dd/yyyy' }}" disabled="">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-8">
+                                            <div class="form-group">
+                                                <label for="txtKeyActivityP">Program/Key Activity</label>
+                                                <input type="text" class="form-control" id="txtKeyActivityP" value="{{TrainingEventModel.KeyActivityName}}" disabled="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label>Event type</label>
+                                                <input type="text" class="form-control" value="{{TrainingEventModel.TrainingEventTypeName}}" disabled="">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="txtEstimatedCostP">Estimated cost</label>
+                                                <input type="text" class="form-control" id="txtEstimatedCostP" value="{{TrainingEventModel.EstimatedBudget}}" disabled="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label for="txtFinalCostP">Final cost</label>
+                                                <input type="text" class="form-control" id="txtFinalCostP" value="{{TrainingEventModel.ActualBudget}}" disabled="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" style="vertical-align: middle;">
+                                            <div class="form-group">
+                                                <span class="pull-right">Participants:</span>
+                                            </div>
+                                        </div>
+                                        <!-- Counts (no groups) -->
+                                        <div class="col-md-2" *ngIf="TrainingEventModel.ParticipantCounts.length < 2">
+                                            <div class="form-group">
+                                                <label for="txtNoParticipantsP">Students</label>
+                                                <input type="text" class="form-control" id="txtNoParticipantsP" value="{{TrainingEventModel.ParticipantCounts[0].Students}}" disabled="">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2" *ngIf="TrainingEventModel.ParticipantCounts.length < 2">
+                                            <div class="form-group">
+                                                <label for="txtNoInstructorsP">Instructors</label>
+                                                <input type="text" class="form-control" id="txtNoInstructorsP" value="{{TrainingEventModel.ParticipantCounts[0].Instructors}}" disabled="">
+                                            </div>
+                                        </div>
+                                        <!-- Counts (with groups) -->
+                                        <div class="col-md-4" *ngIf="TrainingEventModel.ParticipantCounts.length >= 2">
+                                            <div class="row">
+                                                <div class="col-md-6 center-th">
+                                                    <label for="txtNoParticipants">Students</label>
+                                                </div>
+                                                <div class="col-md-6 center-th">
+                                                    <label for="txtNoInstructors">Instructors</label>
+                                                </div>
+                                            </div>
+                                            <div *ngFor="let count of TrainingEventModel.ParticipantCounts">
+                                                <div class="row row-header-sm center-th">
+                                                    <div class="col-md-12">
+                                                        <strong>{{ count.GroupName }}</strong>
+                                                    </div>
+                                                </div>
+                                                <div class="row form-control-cell">
+                                                    <div class="col-md-6">
+                                                        <span>{{ count.Students }}</span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <span>{{ count.Instructors }}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Instructors -->
+                    <div class="row" *ngIf="this.InstructorPerformanceRoster?.RosterGroups?.length > 0">
+                        <div class="col-md-12">
+                            <div class="box box-overview">
+                                <div class="box-header">
+                                    <h3 class="box-title">Instructors</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="table-responsive">
+                                        <div *ngFor="let group of InstructorPerformanceRoster.RosterGroups">
+                                            <div class="row row-header" style="margin-bottom:5px;" *ngIf="InstructorPerformanceRoster.RosterGroups.length > 1">
+                                                <div class="col-md-12">
+                                                    <strong>{{ group.GroupName }}</strong>
+                                                </div>
+                                            </div>
+
+                                            <table id="InstructorsTablePreview" datatable class="table table-hover hide-icon-sort hover" [dtOptions]="InstructorOptionsPreview">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="center-th" style="width: 18px;">No.</th>
+                                                        <th style="width: 180px;text-align:left;">Name</th>
+                                                        <th class="center-th" style="width: 80px; font-size: 11px;">Met min. attendance requirement</th>
+                                                        <th class="center-th" style="width: 160px;">Reason</th>
+                                                        <th class="center-th" style="width: 150px;">Cause</th>
+                                                        <th class="center-th" style="width: 120px;">Distinction</th>
+                                                        <th class="center-th">Comments</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr role="row" *ngFor="let roster of group.Rosters; let odd=odd; let even=even" ngClass="{odd: odd, even: even}">
+                                                        <td class="center-td">{{ roster.PersonID }}</td>
+                                                        <td><span style="display:none;">{{ roster.LastNames }}</span>{{ roster.FirstMiddleNames }} {{ roster.LastNames }}</td>
+                                                        <td class="center-td">{{ roster.MinimumAttendanceMet ? 'Yes' : 'No'}}</td>
+                                                        <td class="center-td">{{ roster.NonAttendanceReason }}</td>
+                                                        <td class="center-td">{{ roster.NonAttendanceCause }} </td>
+                                                        <td class="center-td">{{ roster.TrainingEventRosterDistinction}}</td>
+                                                        <td class="center-td">{{ roster.Comments }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Students -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-overview">
+                                <div class="box-header">
+                                    <h3 class="box-title">Students</h3>
+                                    <a *ngIf="UploadedRoster" class="pull-right modal-action-link" style="cursor:pointer;"
+                                       (click)="OpenPerformanceRosterDetails(performanceRosterDetailsModal);">View student roster</a>
+                                </div>
+                                <div class="box-body">
+                                    <div class="table-responsive">
+                                        <div *ngFor="let group of StudentPerformanceRoster.RosterGroups">
+                                            <div class="row row-header" style="margin-bottom:5px;" *ngIf="StudentPerformanceRoster.RosterGroups.length > 1">
+                                                <div class="col-md-12">
+                                                    <strong>{{ group.GroupName }}</strong>
+                                                </div>
+                                            </div>
+                                            <table id="StudentsTablePreview" datatable class="table table-hover hide-icon-sort hover center-table-header" [dtOptions]="StudentOptionsPreview">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="center-th" style="width: 18px;">No.</th>
+                                                        <th style="width: 180px;text-align:left;">Name</th>
+                                                        <th class="center-th" style="width: 80px; font-size: 11px;">Met min. attendance requirement</th>
+                                                        <th class="center-th" style="width: 160px;">Reason</th>
+                                                        <th class="center-th" style="width: 150px;">Cause</th>
+                                                        <th class="center-th" style="width: 120px;">Distinction</th>
+                                                        <th class="center-th">Comments</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr role="row" *ngFor="let roster of group.Rosters; let odd=odd; let even=even" ngClass="{odd: odd, even: even}">
+                                                        <td class="center-td">{{ roster.PersonID }}</td>
+                                                        <td><span style="display:none;">{{ roster.LastNames }}</span>{{ roster.FirstMiddleNames }} {{ roster.LastNames }}</td>
+                                                        <td class="center-td">{{ roster.MinimumAttendanceMet ? 'Yes' : 'No'}}</td>
+                                                        <td class="center-td">{{ roster.NonAttendanceReason }}</td>
+                                                        <td class="center-td">{{ roster.NonAttendanceCause }} </td>
+                                                        <td class="center-td">{{ roster.TrainingEventRosterDistinction}}</td>
+                                                        <td class="center-td">{{ roster.Comments }}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Comments -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-overview">
+                                <div class="box-header">
+                                    <h3 class="box-title">Comments &amp; documents</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label>Event comments: </label>
+                                                <span> &nbsp; {{ TrainingEventModel.Comments }}</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div *ngFor="let attachment of TrainingEventModel.TrainingEventAttachments" style="text-align: center;display:inline-flex">
+                                                <div style="display:block;padding:7px;width:100px;max-width:100px;">
+                                                    <a [href]="GetFileLink(attachment)">
+                                                        <img [src]="GetFileIcon(attachment)" style="height:61px;" /><br />
+                                                        <span>{{ attachment.FileName}}</span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <ng-template #performanceRosterDetailsModal>
+        <app-performance-roster-details (CloseModal)="CloseEventCloseout()"
+                            [TrainingEventID]="TrainingEventID">
+        </app-performance-roster-details>
+    </ng-template>
+
+
+</div>
+<div class="modal-footer">
+    <button id="btnNextSave" type="button" [disabled]="IsTransitioning" class="btn btn-rounded bColorPrimary pull-right pull-right-margin-left"
+            (click)="NextTab();">
+        {{ SaveCloseButtonText }}
+        <span *ngIf="IsTransitioning" class="fa" [ngClass]="{'fa-spinner': IsTransitioning, 'fa-spin': IsTransitioning}"></span>
+    </button>
+    <button id="CancelTabs" type="button" class="btn btn-rounded btn-default pull-right pull-right-margin-left" 
+            [disabled]="IsTransitioning" (click)="Cancel()" *ngIf="!ShowPreview">Cancel</button>
+    <button id="CancelPreview" type="button" class="btn btn-rounded btn-default pull-right pull-right-margin-left" 
+            [disabled]="IsTransitioning" (click)="SetTab(TabType.Details);" *ngIf="ShowPreview">Cancel</button>
+    <div *ngIf="StatusMessage.length > 0" class="pull-left text-red"><strong>{{ StatusMessage }}</strong></div>
+</div>
+<a #TabChange data-toggle="tab"></a>

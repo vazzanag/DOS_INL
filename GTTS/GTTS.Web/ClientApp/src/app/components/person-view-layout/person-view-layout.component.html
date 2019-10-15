@@ -1,0 +1,36 @@
+<div class="modal-content">
+    <div class="modal-header no-border">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="Cancel()"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title text-center">{{PersonName}}</h4>
+    </div>
+
+    <div class="modal-body no-padding-top-bottom">
+        <div class="col-md-12">
+            <div class="box no-top-border no-box-shadow" id="divTabs">
+                <div class="box-header no-padding-bottom">
+                    <div class="col-xs-12 text-right no-padding">
+                        <div class="col-xs-12 text-right no-padding">
+                            <ul class="nav nav-pills">
+                                <li [class.active]="selectedTab === 'PersonView'" [class.hideTab]="ShowOnlyHistory"><a href="#tabPersonalInformation" data-toggle="tab" aria-expanded="true" (click)="LoadTab('PersonView')">Personal information</a></li>
+                                <li [class.active]="selectedTab === 'UnitView'" [class.hideTab]="ShowOnlyHistory"><a data-toggle="tab" href="#tabUnitInformation" aria-expanded="false" (click)="LoadTab('UnitView')">Unit information</a></li>
+                                <li [class.active]="selectedTab === 'TrainingView'"><a data-toggle="tab" href="#tabTrainingHistory" aria-expanded="false" (click)="LoadTab('TrainingView')">Training history</a></li>
+                                <li [class.active]="selectedTab === 'VettingView'"><a data-toggle="tab" href="#tabVettingHistory" aria-expanded="false" (click)="LoadTab('VettingView')">Vetting history</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="tab-content">
+                        <app-person-view *ngIf="selectedTab === 'PersonView'" [PersonID]="PersonID"></app-person-view>
+                        <app-person-unit-view *ngIf="selectedTab === 'UnitView'" [PersonID]="PersonID"></app-person-unit-view>
+                        <app-person-training-history *ngIf="selectedTab === 'TrainingView'" [PersonID]="PersonID"></app-person-training-history>
+                        <app-person-vetting-history *ngIf="selectedTab === 'VettingView'" [PersonID]="PersonID"></app-person-vetting-history>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button id="btnCancel" class="btn btn-rounded btn-default" (click)="Cancel()">Close</button>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+﻿<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="Close()"><span aria-hidden="true">×</span></button>
+    <h4 class="modal-title" style="vertical-align: middle !important; width: 40%"></h4>
+
+    <div id="custom-search-input">
+        <form #SearchForm="ngForm" (keydown.enter)="$event.preventDefault()" (ngSubmit)="Search()">
+            <div class="input-group">
+                <input id="searchNotificationInbox" [formControl]="SearchInput" type="text" class="search-query form-control pull-right" placeholder="Search" style="width: 40%">
+                <span class="input-group-btn">
+                    <button class="btn btn-danger index10" type="submit">
+                        <span class="fa" [ngClass]="{'fa-search': !isSearching, 'fa-spinner': isSearching, 'fa-spin': isSearching}"></span>
+                    </button>
+                </span>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal-body no-overflow-x">
+    <div id="contentMessageI">
+        <div id="tNotificationInbox_wrapper" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+            <div class="top"></div>
+            <table #NotificationsTable id="NotificationsTablePaged" datatable [dtOptions]="dtOptions" class="table table-hover">
+                <thead>
+                    <tr>
+                        <th class="bg-color-midblue color-blue font-14 deleteTd sorting" style="width: 31px;" (click)="sorted = true;">*Type</th>
+                        <th class="bg-color-midblue color-blue font-14 deleteTd sorting" (click)="sorted = true;">Subject</th>
+                        <th class="bg-color-midblue color-blue font-14 deleteTd sorting" style="width: 66px;" (click)="sorted = true;">Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngIf="isLoading">
+                        <td colspan="3" class="no-data-available"><a><span class="fa fa-spinner fa-spin"></span></a></td>
+                    </tr>
+                    <tr *ngFor="let notification of notifications; let i = index;" (click)="OpenModal(notificationDetails, notification, 'modal-responsive-sm');"
+                        [ngClass]="{'unread': notification.Unread,  'read': !notification.Unread}">
+                        <td>
+                            <i *ngIf="notification.NotificationContextType == 'Vetting'" class="far fa-street-view"
+                               title="Vetting" [ngClass]="{'color-blue': notification.Unread, 'color-mrdarkgray': !notification.Unread}"></i>
+                            <i *ngIf="notification.NotificationContextType == 'Event'" class="fal fa-calendar-day"
+                               title="Training Event" [ngClass]="{'color-blue': notification.Unread, 'color-mrdarkgray': !notification.Unread}"></i>
+                        </td>
+                        <td>
+                            <label style="font-weight:400;"
+                                   [ngClass]="{'color-blue': notification.Unread, 'color-black': !notification.Unread}">
+                                {{ notification.NotificationSubject }}
+                            </label>
+                        </td>
+                        <td>{{ notification.ModifiedDate?.toLocaleDateString() }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="bottom"></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-rounded btn-default" [disabled]="isLoading" (click)="Close()">Close</button>
+</div>
+<ng-template #notificationDetails>
+    <app-notification-details-modal [Notification]="selectedNotification"
+                                    (CloseModal)="NotificationDetails_CloseModal()"
+                                    (RedirectToContext)="NotificationDetails_RedirectToContext($event)">
+    </app-notification-details-modal>
+</ng-template>

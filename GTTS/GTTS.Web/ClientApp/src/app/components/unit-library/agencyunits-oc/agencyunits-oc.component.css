@@ -1,0 +1,19 @@
+.content-header > h1 {
+    color: var(--mrdarkgray-color);
+    font-size: 24px !important;
+}
+
+#overviewDiv {
+    position: absolute;
+    width: 200px;
+    height: 100px;
+    top: 120px;
+    left: 25px;
+    background-color: aliceblue;
+    z-index: 300; /* make sure its in front */
+    border: solid 1px blue;
+}
+
+    #overviewDiv canvas {
+        outline: none;
+    }

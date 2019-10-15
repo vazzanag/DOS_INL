@@ -1,0 +1,14 @@
+<div>
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="OnCancelClick()"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title text-center">The following participant(s) are already in a vetting process for another training event.</h5>
+    </div>
+    <mat-selection-list #list>
+        <mat-list-option *ngFor="let participant of Participants"> * {{ participant.FirstMiddleNames + ' ' +  participant.LastNames + ' [' + participant.VettingTrainingEventName + ' ]'}} <br /></mat-list-option>
+    </mat-selection-list>
+
+    <div class="modal-footer">
+        <button id="btnCancel" class="btn btn-rounded btn-default" data-dismiss="modal" (click)="OnCancelClick()">Close</button>
+        <button id="btnCancel" class="btn btn-rounded bColorPrimary" data-dismiss="modal" (click)="OnOkClick()">Continue to submit to vetting</button>
+    </div>
+</div>

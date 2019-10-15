@@ -1,0 +1,95 @@
+
+<div class="training-event-location">
+
+    <div class="col-xs-7 no-padding">
+        <div class="col-xs-1" style="padding-top: 2px; width: 6%">
+            <div class="col-xs-12 no-padding">
+                <button *ngIf="this.FirstInList" class="btn btn-primary btn-sm" alt="Add Another Location" (click)="AddRemoveLocation();">
+                    <i class="fa fa-plus"></i>
+                </button>
+                <button *ngIf="!this.FirstInList" class="btn btn-primary btn-sm" alt="Remove Location" (click)="AddRemoveLocation();">
+                    <i class="fa fa-minus"></i>
+                </button>
+            </div>
+        </div>
+        <div class="col-xs-11 no-padding" style="width: 94%">
+            <div class="col-xs-4 no-padding-left">
+                <div class="form-group">
+                    <select placeholder="Location Country" class="form-control" required [(ngModel)]="Model.TrainingEventLocation.CountryID" name="CountryID" (change)="onCountryIDChange()">
+                        <option *ngFor="let country of countries" [value]="country.CountryID">{{ country.CountryName }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-4 no-padding-left">
+                <div class="form-group">
+                    <select #LocationState class="form-control" required [(ngModel)]="Model.TrainingEventLocation.StateID" name="StateID" (change)="onStateIDChange()">
+                        <option *ngFor="let state of states" [value]="state.StateID">{{ state.StateName }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-xs-4 no-padding-left">
+                <div class="form-group">
+                    <select #LocationCity class="form-control" required [(ngModel)]="Model.TrainingEventLocation.CityID" name="CityID" (change)="onCityIDChange()">
+                        <option *ngFor="let city of cities" [value]="city.CityID">{{ city.CityName }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-5 no-padding">
+        <div class="col-xs-6 no-padding-left">
+            <div class="col-xs-12 col-md-12 no-padding-right">
+                <div class="form-group padding-r-5">
+                    <div class="input-wrappers">
+                        <input required
+                               (ngModelChange)="EventDateChanged()"
+                               type="text"
+                               [class.ng-invalid]="eventEndNotBeforeEventStartDate || eventStartNotAfterEventEndDate"
+                               class="form-control pull-right" #drp="bsDaterangepicker" bsDaterangepicker
+                               [(ngModel)]="eventDates" [bsConfig]="{ showWeekNumbers:false, containerClass:'theme-dark-blue' }" />
+                        <mat-error *ngIf="eventEndNotBeforeEventStartDate">
+                            Event end date cannot be before event start date
+                        </mat-error>
+                        <mat-error *ngIf="eventStartNotAfterEventEndDate">
+                            Event start date cannot be after event end date
+                        </mat-error>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-6 no-padding-right">
+            <div class="col-xs-12 col-md-12 no-padding-right">
+                <div class="form-group">
+                    <div class="input-wrappers">
+                        <input required
+                               (ngModelChange)="TravelDateChanged()"
+                               type="text"
+                               [class.ng-invalid]="travelStartNotAfterTravelEndDate || travelStartNotAfterEventStartDate || travelEndNotBeforeTravelStartDate || travelEndNotBeforeEventEndDate"
+                               class="form-control pull-right" #drp="bsDaterangepicker" bsDaterangepicker
+                               [(ngModel)]="travelDates" [bsConfig]="{ showWeekNumbers:false, containerClass:'theme-dark-blue event-travel-dpicker' }" />
+                        <div>
+                            <mat-error *ngIf="travelStartNotAfterTravelEndDate">
+                                Travel start date cannot be after travel end date.
+                            </mat-error>
+                        </div>      
+                        <div>
+                            <mat-error *ngIf="travelStartNotAfterEventStartDate">
+                                Travel start date cannot be after event start date.
+                            </mat-error>
+                        </div>                     
+                        <div>
+                            <mat-error *ngIf="travelEndNotBeforeTravelStartDate">
+                                Travel end date cannot be before travel start date.
+                            </mat-error>
+                        </div>                      
+                        <div>
+                            <mat-error *ngIf="travelEndNotBeforeEventEndDate">
+                                Travel end date cannot be before event end date.
+                            </mat-error>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

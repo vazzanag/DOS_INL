@@ -1,0 +1,21 @@
+<div id="tabTrainingHistory" class="tab-pane">
+    <div class="panel panel-default">
+        <table #tblTrainingHistory class="table table-hover hide-icon-sort hover center-table-header dataTable no-footer no-margin" role="grid" style="width: 100%; margin-top: 0px !important">
+            <thead>
+                <tr class="text-center" role="row">
+                    <th class="center-th sorting" style="width: 2%;">No</th>
+                    <th class="center-th no-padding" style="width: 3%;"></th>
+                    <th class="center-th sorting" style="width: 15%;">Event</th>
+                    <th class="center-th sorting" style="width: 25%;">Dates</th>
+                    <th class="center-th sorting" style="width: 10%;">Section</th>
+                    <th class="center-th sorting" style="width: 20%;">Complete / Certificate</th>
+                    <th class="center-th sorting" style="width: 20%;">Distinction</th>
+                </tr>
+            </thead>
+        </table>
+        <div *ngIf="isLoading" style="width:100%;text-align:center;padding:8px;">
+            Loading
+            <span class="fa fa-spinner fa-spin"></span>
+        </div>
+    </div>
+</div>

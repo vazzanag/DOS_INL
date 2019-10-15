@@ -1,0 +1,239 @@
+<div class="component-container">
+    <div>
+        <div class="event-name-container">
+            Create groups for event: {{trainingEvent?.TrainingEvent?.Name}} ({{trainingEvent?.TrainingEvent?.EventStartDate.toLocaleDateString()}} - {{trainingEvent?.TrainingEvent?.EventEndDate.toLocaleDateString()}})
+        </div>
+
+        <div class="group-num-selection-container">
+            <span>
+                <i class="fa fa-group fa-lg color-darkgray"></i>
+            </span>
+            <span class="group-num-instructions">Select number of groups participating in this event:</span>
+            <span class="group-num-selection">
+                <select #numGroupsSelection class="group-num-selection-control" (change)="onNumGroupsChange($event.target.value)">
+                    <option value="0">--</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                </select>
+            </span>
+        </div>
+    </div>
+    <div>
+        <div class="event-participants-instructions">Select one or more participant(s) from left and drag and drop participant(s) into desired group on right.</div>
+    </div>
+    <div cdkDropListGroup>
+        <div class="event-participants-container">
+            <div class="event-participants-selection-container">
+                <div class="instructors-container" [hidden]="!showInstructorsList">
+                    <div class="instructors-container-header">
+                        <span class="instructors-label">
+                            <span class="instructors-label-instructors">Instructors</span>
+                            &nbsp;
+                            <span class="instructors-label-instructions">(the same instructor may be added to multiple groups)</span>
+                        </span>
+                        <span class="unit-label">
+                            Unit
+                        </span>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="instructors-container-list">
+                        <div cdkDropList
+                             [cdkDropListData]="instructors"
+                             (cdkDropListDropped)="onIntoInstructorsDrop($event)">
+                            <div cdkDrag
+                                 (cdkDragStarted)="onParticipantsDragStart()"
+                                 (cdkDragReleased)="onParticipantsDragRelease()"
+                                 [hidden]="participant.isSelected && isDragging"
+                                 class="instructor-item"
+                                 [class.selected-participant]="participant.isSelected"
+                                 [cdkDragDisabled]="!participant.isSelected"
+                                 (click)="onParticipantClick(participant, false)"
+                                 *ngFor="let participant of instructors">
+                                <div *cdkDragPreview>
+                                    <div *ngTemplateOutlet="selectedParticipantsTemplate"></div>
+                                </div>
+                                <img class="instructor-image" src="../../../assets/images/teachers.png" />
+                                <div class="instructor-name">
+                                    <div>{{participant.data.LastNames}}, {{participant.data.FirstMiddleNames}}</div>
+                                </div>
+                                <div class="instructor-unit">
+                                    <div>{{participant.data.AgencyName}}</div>
+                                </div>
+                                <div style="clear: both;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="students-container" [hidden]="!showStudentsList">
+                    <div class="students-container-header">
+                        <span class="students-label">
+                            <span class="students-label-students">Students</span>
+                        </span>
+                        <span class="unit-label">
+                            Unit
+                        </span>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="students-container-list">
+                        <div cdkDropList
+                             [cdkDropListData]="students"
+                             (cdkDropListDropped)="onIntoStudentsDrop($event)"
+                             class="students-drop-list">
+                            <div cdkDrag
+                                 (cdkDragStarted)="onParticipantsDragStart()"
+                                 (cdkDragReleased)="onParticipantsDragRelease()"
+                                 [hidden]="participant.isSelected && isDragging"
+                                 class="student-item"
+                                 [class.selected-participant]="participant.isSelected"
+                                 [cdkDragDisabled]="!participant.isSelected"
+                                 (click)="onParticipantClick(participant, false)"
+                                 *ngFor="let participant of students">
+                                <div *cdkDragPreview>
+                                    <div *ngTemplateOutlet="selectedParticipantsTemplate"></div>
+                                </div>
+                                <div *ngIf="participant.data.IsParticipant; then studentParticipantImageBlock else studentAlternateImageBock"></div>
+                                <ng-template #studentParticipantImageBlock>
+                                    <img class="student-image" src="../../../assets/images/student.png" />
+                                </ng-template>
+                                <ng-template #studentAlternateImageBlock>
+                                    <img class="student-image" src="../../../assets/images/alternate.png" />
+                                </ng-template>
+                                <div class="student-name">
+                                    <div class="student-first-last">{{participant.data.LastNames}}, {{participant.data.FirstMiddleNames}}</div>
+                                    <div class="student-job-rank">{{participant.data.JobTitle}} / {{participant.data.RankName}}</div>
+                                </div>
+                                <div class="student-unit">
+                                    <div>{{participant.data.AgencyName}}</div>
+                                </div>
+                                <div style="clear: both;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="event-groups-container">
+            <div class="event-groups-selection-container">
+                <div class="groups-container">
+                    <div class="groups-container-list">
+                        <div cdkDropList
+                             *ngFor="let group of groups"
+                             [cdkDropListData]="group.participants"
+                             (cdkDropListEntered)="onIntoGroupEnter(group)"
+                             (cdkDropListExited)="onFromGroupExit(group)"
+                             (cdkDropListDropped)="onIntoGroupDrop(group, $event)">
+                            <div class="group-container">
+                                <div class="group-header" [class.targeted-group-header]="group.isTargeted">
+                                    <div class="group-header-name">{{group.name}}</div>
+                                    <span class="group-header-stats">{{group.numParticipantTypes}} Participant(s); {{group.numAlternateTypes}} Alternate(s); {{group.numInstructorTypes}} Instructors(s)</span>
+                                    <div style="clear: both;"></div>
+                                </div>
+                                <div cdkDrag
+                                     (cdkDragStarted)="onParticipantsDragStart()"
+                                     (cdkDragReleased)="onParticipantsDragRelease()"
+                                     [hidden]="participant.isSelected && isDragging"
+                                     *ngFor="let participant of group.participants"
+                                     [cdkDragDisabled]="!participant.isSelected">
+                                    <div *cdkDragPreview>
+                                        <div *ngTemplateOutlet="selectedParticipantsTemplate"></div>
+                                    </div>
+                                    <div *cdkDragPlaceholder>
+                                        <div *ngTemplateOutlet="selectedParticipantsTemplate"></div>
+                                    </div>
+                                    <div *ngIf="participant.isInstructor; then groupInstructorBlock else groupStudentBlock"></div>
+                                    <ng-template #groupInstructorBlock>
+                                        <div class="instructor-item" [class.selected-participant]="participant.isSelected" (click)="onParticipantClick(participant, true)">
+                                            <img class="instructor-image" src="../../../assets/images/teachers.png" />
+                                            <div class="instructor-name">
+                                                <div>{{participant.data.LastNames}}, {{participant.data.FirstMiddleNames}}</div>
+                                            </div>
+                                            <div class="instructor-unit">
+                                                <div>{{participant.data.AgencyName}}</div>
+                                            </div>
+                                            <div style="clear: both;"></div>
+                                        </div>
+                                    </ng-template>
+                                    <ng-template #groupStudentBlock>
+                                        <div class="student-item" [class.selected-participant]="participant.isSelected" (click)="onParticipantClick(participant, true)">
+                                            <div *ngIf="participant.data.IsParticipant; then groupStudentParticipantImageBlock else groupStudentAlternateImageBock"></div>
+                                            <ng-template #groupStudentParticipantImageBlock>
+                                                <img class="student-image" src="../../../assets/images/student.png" />
+                                            </ng-template>
+                                            <ng-template #groupStudentAlternateImageBlock>
+                                                <img class="student-image" src="../../../assets/images/alternate.png" />
+                                            </ng-template>
+                                            <div class="student-name">
+                                                <div class="student-first-last">{{participant.data.LastNames}}, {{participant.data.FirstMiddleNames}}</div>
+                                                <div class="student-job-rank">{{participant.data.JobTitle}} / {{participant.data.RankName}}</div>
+                                            </div>
+                                            <div class="student-unit">
+                                                <div>{{participant.data.AgencyName}}</div>
+                                            </div>
+                                            <div style="clear: both;"></div>
+                                        </div>
+                                    </ng-template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="clear:both"></div>
+    </div>
+    <div>
+        <div class="participants-controls">
+            <button class="primary-button" (click)="onAutoArrangeClick()" [disabled]="!isAutoArrangeEnabled">Auto-arrange</button>
+            <button class="secondary-button" (click)="onStartOverClick()" [disabled]="!isStartOverEnabled">Start over</button>
+        </div>
+        <div class="groups-controls">
+            <button class="secondary-button" (click)="onCancelClick()">Cancel</button>
+            <button class="primary-button" (click)="onUngroupClick()" [hidden]="!canUngroup">Ungroup</button>
+            <button class="primary-button" (click)="onSaveClick()" [disabled]="!isSaveEnabled">Create Groups</button>
+        </div>
+        <div style="clear: both"></div>
+    </div>
+    <ng-template #selectedParticipantsTemplate>
+        <div *ngFor="let participant of selectedParticipants">
+            <div *ngIf="participant.isInstructor; then selectedInstructor else selectedStudent"></div>
+            <ng-template #selectedInstructor>
+                <div class="instructor-item selected-participant">
+                    <img class="instructor-image" src="../../../assets/images/teachers.png" />
+                    <div class="instructor-name">
+                        <div>{{participant.data.LastNames}}, {{participant.data.FirstMiddleNames}}</div>
+                    </div>
+                    <div class="instructor-unit">
+                        <div>{{participant.data.AgencyName}}</div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </ng-template>
+            <ng-template #selectedStudent>
+                <div class="student-item selected-participant">
+                    <div *ngIf="participant.data.IsParticipant; then selectedStudentParticipantImageBlock else selectedStudentAlternateImageBock"></div>
+                    <ng-template #selectedStudentParticipantImageBlock>
+                        <img class="student-image" src="../../../assets/images/student.png" />
+                    </ng-template>
+                    <ng-template #selectedStudentAlternateImageBlock>
+                        <img class="student-image" src="../../../assets/images/alternate.png" />
+                    </ng-template>
+                    <div class="student-name">
+                        <div class="student-first-last">{{participant.data.LastNames}}, {{participant.data.FirstMiddleNames}}</div>
+                        <div class="student-job-rank">{{participant.data.JobTitle}} / {{participant.data.RankName}}</div>
+                    </div>
+                    <div class="student-unit">
+                        <div>{{participant.data.AgencyName}}</div>
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </ng-template>
+        </div>
+    </ng-template>
+</div>

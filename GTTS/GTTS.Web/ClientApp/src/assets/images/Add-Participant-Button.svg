@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 126 42">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #699228;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        font-size: 12px;
+        font-family: SegoeUI-Bold, Segoe UI;
+        font-weight: 700;
+      }
+
+      .cls-4 {
+        filter: url(#Rectangle_1577);
+      }
+    </style>
+    <filter id="Rectangle_1577" x="0" y="0" width="126" height="42" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.388"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_160" data-name="Group 160" transform="translate(-515 -14)">
+    <g class="cls-4" transform="matrix(1, 0, 0, 1, 515, 14)">
+      <rect id="Rectangle_1577-2" data-name="Rectangle 1577" class="cls-1" width="108" height="24" rx="5" transform="translate(9 6)"/>
+    </g>
+    <g id="Group_157" data-name="Group 157" transform="translate(-57 -5)">
+      <g id="Group_67" data-name="Group 67" transform="translate(-701 -74.333)">
+        <text id="PARTICIPANT" class="cls-2" transform="translate(1305 116)"><tspan x="0" y="0">PARTICIPANT</tspan></text>
+      </g>
+      <path id="plus" class="cls-3" d="M11.143,36.714H7.286V32.857A.857.857,0,0,0,6.429,32H5.571a.857.857,0,0,0-.857.857v3.857H.857A.857.857,0,0,0,0,37.571v.857a.857.857,0,0,0,.857.857H4.714v3.857A.857.857,0,0,0,5.571,44h.857a.857.857,0,0,0,.857-.857V39.286h3.857A.857.857,0,0,0,12,38.429v-.857A.857.857,0,0,0,11.143,36.714Z" transform="translate(588 -1)"/>
+    </g>
+  </g>
+</svg>

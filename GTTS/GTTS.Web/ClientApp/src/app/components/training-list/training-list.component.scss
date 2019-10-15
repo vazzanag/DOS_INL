@@ -1,0 +1,16 @@
+﻿
+.list-comma::before {
+    content: ', ';
+}
+
+.list-comma:first-child::before {
+    content: '';
+}
+
+.list-forwardslash::before {
+    content: ' / ';
+}
+
+.list-forwardslash:first-child::before {
+    content: '';
+}

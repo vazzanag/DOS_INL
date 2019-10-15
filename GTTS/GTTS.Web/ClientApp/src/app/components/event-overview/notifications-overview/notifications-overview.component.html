@@ -1,0 +1,75 @@
+﻿<div class="row box-ov">
+    <div class="box-ov-title col-sm-12">
+        Notifications
+    </div>
+    <div class="box-ov-body col-sm-12">
+        <div>
+            <div class="dataTables_wrapper form-inline dt-bootstrap no-footer" id="tNotification_wrapper">
+                <div class="top"></div>
+                <div *ngIf="isLoading" id="tNotification_processing" style="text-align:center;height:25px;">
+                    <a><span class="fa fa-spinner fa-spin"></span></a>
+                </div>
+                <div *ngIf="!isLoading" class="dataTables_scroll">
+                    <div class="dataTables_scrollBody" style="overflow: hidden auto;width: 100%;max-height:466px;">
+                        <table class="table table-hover dataTable no-footer NotificationS" id="tNotification" role="grid" style="width: 100px;">
+                            <thead style="display: none;">
+                                <tr role="row" style="height: 0px;">
+                                    <th class="sorting_disabled tex-center valign-middle" colspan="1" rowspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 0px;">
+                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;"></div>
+                                    </th>
+                                    <th class="sorting_disabled" colspan="1" rowspan="1" style="padding-top: 0px; padding-bottom: 0px; border-top-width: 0px; border-bottom-width: 0px; height: 0px; width: 0px;">
+                                        <div class="dataTables_sizing" style="height:0;overflow:hidden;"></div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let notification of notifications; let i = index;" role="row" style="cursor:pointer;"
+                                    [ngClass]="{'odd': i%2 == 0, 'even': i%2 == 1, 'unread': notification.Unread,  'read': !notification.Unread}"
+                                    (click)="OpenModal(notificationDetails, notification, 'modal-responsive-sm');">
+                                    <td class=" text-center valign-middle">
+                                        <i *ngIf="notification.NotificationContextType == 'Vetting'" style="font-size:17px;"
+                                           class="far fa-street-view padding-l-5" title="Vetting"
+                                           [ngClass]="{'color-blue': notification.Unread, 'color-mrdarkgray': !notification.Unread}"></i>
+                                        <i *ngIf="notification.NotificationContextType == 'Event'" style="font-size:17px;"
+                                           class="far fa-chart-bar padding-l-5" title="Training Event"
+                                           [ngClass]="{'color-blue': notification.Unread, 'color-mrdarkgray': !notification.Unread}"></i>
+                                    </td>
+                                    <td>
+                                        <a title="{{ notification.NotificationSubject }}">
+                                            <label [ngClass]="{'color-blue': notification.Unread, 'color-black': !notification.Unread}">{{ notification.NotificationSubject }}</label>
+                                            <p [innerHTML]="notification.NotificationMessage" style="-webkit-box-orient: vertical;"></p>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <!-- Placeholder row if there are no notifications for this event -->
+                                <tr *ngIf="notifications.length == 0" class="odd" role="row" style="background: rgb(255, 255, 255);">
+                                    <td class="text-center color-mrdarkgray">No notifications</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom"></div>
+            <div class="clear"></div>
+        </div>
+    </div>
+    <div *ngIf="notifications.length != 0" class="text-center padding-b-5 padding-t-5">
+        <a id="linkNotificationInbox" (click)="OpenModal(notificationList,'modal-responsive-sm');" style="cursor:pointer;"
+           class="color-orange" data-size="modal-responsive-sm">See all notifications</a>
+    </div>
+</div>
+
+<ng-template #notificationDetails>
+    <app-notification-details-modal [Notification]="selectedNotification"
+                                    (CloseModal)="NotificationDetails_CloseModal()"
+                                    (RedirectToContext)="NotificationDetails_CloseModal()">
+    </app-notification-details-modal>
+</ng-template>
+
+<ng-template #notificationList>
+    <app-notifications-list-modal [Context]="notificationListContext.TrainingEvent"
+                                  [ContextID]="trainingEventID"
+                                  (CloseModal)="CloseModal($event)">
+    </app-notifications-list-modal>
+</ng-template>

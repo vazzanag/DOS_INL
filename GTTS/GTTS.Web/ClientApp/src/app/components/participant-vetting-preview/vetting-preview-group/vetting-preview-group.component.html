@@ -1,0 +1,18 @@
+<div class="table-responsive no-overflow-x no-footer no-margin no-padding">
+    <table #tblBatchGroup id="tblBatchGroup" class="table table-hover hide-icon-sort hover no-margin-top dataTable gray-header text-normal">
+        <thead>
+            <tr>
+                <th style="width:35px">Type</th>
+                <th style="width:35px">No.</th>
+                <th style="width:105px">Name</th>
+                <th style="width:378px">Agency / Organization</th>
+                <th style="width:263px">Position / Rank</th>
+                <th style="width:60px">Move to</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <div *ngIf="contextmenu==true">
+        <app-context-menu [X]="contextmenuX" [Y]="contextmenuY" (DisableContextMenu)="DisableContextMenu()" [contextMenuItemsArray]="contextMenuItemsArray" (ContextMenuClicked)="MoveToBatch($event) "></app-context-menu>
+    </div>
+</div>

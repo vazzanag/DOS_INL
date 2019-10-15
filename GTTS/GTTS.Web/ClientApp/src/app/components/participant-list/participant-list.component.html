@@ -1,0 +1,127 @@
+<div id="ParticipantTableWrapper{{ TrainingEventGroupID }}" class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+    <div class="top"></div>
+    <table #ParticipantTable datatable [dtOptions]="dtOptions" [dtTrigger]="dtTrigger" class="table table-hover">
+        <thead>
+            <tr>
+                <th class="sorting" style="width:41px;">*Type</th>
+                <th class="sorting" style="width:25px;">No.</th>
+                <th class="sorting">Name</th>
+                <th class="sorting" style="width:86px;">Date of birth</th>
+                <th class="sorting" style="width:51px;">Gender</th>
+                <th class="sorting">Agency / Organization</th>
+                <th class="sorting">Departure city</th>
+                <th class="sorting" style="max-width:111px;">Travel dates</th>
+                <th class="sorting">Email</th>
+                <th class="sorting">*Vetting</th>
+                <th class="sorting">*Visa</th>
+                <th class="sorting" width="78px;">Documents</th>
+                <th class="sorting" style="width:50px;">Status</th>
+                <th class="sorting">Date of birth (yyyy/MM/dd)</th>
+                <th class="sorting">Ordinal</th>
+                <th class="sorting">Is removed</th>
+            </tr>
+        </thead>
+        <tbody *ngIf="Participants?.length > 0">
+            <tr *ngFor="let participant of Participants" style="cursor:pointer;">
+                <td [ngClass]="{'bg-removed': participant.RemovedFromEvent}">
+                    <div style="display:none" *ngIf="participant.ParticipantType == 'Instructor'">1</div>
+                    <div style="display:none" *ngIf="participant.ParticipantType == 'Student'">2</div>
+                    <div style="display:none" *ngIf="participant.ParticipantType == 'Alternate'">3</div>
+                    <div style="display:none" *ngIf="participant.ParticipantType == 'Removed'">4</div>
+
+                    <a class="tooltip-2" (click)="BulkChange();" style="cursor: pointer; display:block; height:auto;">
+                        <img src="../../../assets/images/{{ participant.ParticipantTypeIcon }}" style="height:18px;"/>
+                        <div class="tooltiptext" style="width:250px; font-family: Source Sans Pro,Helvetica Neue,Helvetica,Arial,sans-serif; font-size:14px">Click here to update participant status</div>
+                    </a>
+                </td>
+                <td [ngClass]="{'bg-removed': participant.RemovedFromEvent}" style="max-width:25px"></td>
+                <td [ngClass]="{'bg-removed': participant.RemovedFromEvent}" class="show-details text-left" (click)="ParticipantTable_Rowclick(participant.PersonID)">
+                    <div style="display:none">
+                        {{ participant.FirstMiddleNames }} {{ participant.LastNames }}
+                    </div>
+                    {{ participant.FirstMiddleNames }} {{ participant.LastNames }}
+                </td>
+                <td [ngClass]="{'bg-removed': participant.RemovedFromEvent}" class="show-details text-center" style="max-width:80px;" (click)="ParticipantTable_Rowclick(participant.PersonID)">
+                    {{ (participant.DOB !== null) ? (participant.DOB | date:'MM/dd/yyyy'): ""}}
+                </td>
+                <td [ngClass]="{'bg-removed': participant.RemovedFromEvent}" class="show-details text-center" style="max-width:51px;" (click)="ParticipantTable_Rowclick(participant.PersonID)">{{ participant.Gender }}</td>
+                <td [ngClass]="{'bg-removed': participant.RemovedFromEvent}" class="show-details text-left" (click)="ParticipantTable_Rowclick(participant.PersonID)">{{ participant.AgencyName }}</td>
+                <td [ngClass]="{'bg-removed': participant.RemovedFromEvent}" class="show-details text-center" (click)="ParticipantTable_Rowclick(participant.PersonID)">{{ participant.DepartureCity }}</td>
+                <td [ngClass]="{'bg-removed': participant.RemovedFromEvent}" class="text-center" style="padding-top:5px;">
+                    <!-- Travel Dates -->
+                    <div style="display:none;">{{ participant.DepartureDate }}</div>
+                    <input type="text" class="datepicker-inline-table" id="LocationDates" #drp="bsDaterangepicker" bsDaterangepicker
+                           [(ngModel)]="participant.TravelDateRange" [bsConfig]="{ showWeekNumbers:false, containerClass:'theme-dark-blue' }"
+                           (onHidden)="UpdateParticipantTravelDates($event, participant)" (onShown)="SetDaterangepickerDefaults(participant)" />
+                </td>
+                <td [ngClass]="{'bg-removed': participant.RemovedFromEvent}" class="show-details text-center" (click)="ParticipantTable_Rowclick(participant.PersonID)">{{ participant.ContactEmail }}</td>
+                <td [ngClass]="{'bg-removed': participant.RemovedFromEvent}" class="show-details text-center" (click)="ShowVettingBatches();">
+                    <!-- Vetting -->
+                    <a class="tooltip-2" style="cursor: pointer;width:100%;">
+                        <span *ngIf="!participant.ParticipantVettingStatus" class="fa fa-spinner fa-spin"></span>
+                        <span *ngIf="participant.ParticipantVettingStatus" [ngClass]="{'color-error': VettingStatusIsRed(participant)}">
+                            {{ participant.ParticipantVettingStatus}}
+                        </span>
+                        <div class="tooltiptext" style="font-family: Source Sans Pro,Helvetica Neue,Helvetica,Arial,sans-serif; font-size:14px"
+                             [ngStyle]="{width: participant.VettingBatchStatus?.toLowerCase() != 'submitted to courtesy' ? '200px' : '100%'}">
+                            <span *ngIf="participant.VettingBatchStatus?.toLowerCase() != 'submitted to courtesy'">Click to open batch view</span>
+                            <span *ngIf="participant.VettingBatchStatus?.toLowerCase() == 'submitted to courtesy'">
+                                <span *ngIf="participant.ParticipantVettingStatus?.toLowerCase() != 'canceled'">
+                                    <span *ngFor="let vetting of participant.CourtesyVettings">
+                                        <span [ngStyle]="{'text-decoration': vetting.CourtesyVettingSkipped || vetting.HitResultCode ? 'line-through' : 'none'}">
+                                            {{ vetting.VettingTypeCode }}
+                                        </span>
+                                    </span>
+                                </span>
+                                <span *ngIf="participant.ParticipantVettingStatus?.toLowerCase() == 'canceled'">Click to open batch view</span>
+                            </span>
+                        </div>
+                    </a>
+                </td>
+                <td [ngClass]="{'bg-removed': participant.RemovedFromEvent}" class="show-details text-center" style="padding-top:10px;" (click)="ShowVisaChecklist()">
+                    <!-- Visas -->
+                    <span class="tooltip-2" [ngClass]="{'color-error': participant.VisaStatus?.toLowerCase() == 'rejected'}"
+                          style="cursor: pointer;width:100%;">
+                        {{participant.VisaStatus ? participant.VisaStatus : '-'}}
+                        <div class="tooltiptext" style="width:200px; font-family: Source Sans Pro,Helvetica Neue,Helvetica,Arial,sans-serif; font-size:14px">
+                            Click to open visa checklist
+                        </div>
+                    </span>
+                </td>
+                <td [ngClass]="{'bg-removed': participant.RemovedFromEvent}" class="show-details text-center" style="max-width:78px;padding-top:10px;" (click)="ShowDocumentManagementModal(participant)">
+                    <!-- Documents -->
+                    <i class="fa color-orange fa-file" *ngIf="(participant.DocumentCount || 0) > 0" style="cursor: pointer;width:100%;"></i>
+                    <span *ngIf="(participant.DocumentCount || 0) == 0"> - </span>
+                </td>
+                <td [ngClass]="{'bg-removed': participant.RemovedFromEvent}" class="show-details text-center" style="max-width:50px;" (click)="SetStatus(participant);">
+                    <!-- Status -->
+                    <div class="checkbox" title="Click to confirm this participant's requirements are complete.">
+                        <label style="font-size: 1.4em">
+                            <i id="i7" class="cr-icon fa color-orange ichk fa-check" *ngIf="participant.OnboardingComplete"></i>
+                            <span *ngIf="!participant.OnboardingComplete"> - </span>
+                        </label>
+                    </div>
+                </td>
+                <td></td>
+                <td>{{participant.Ordinal}}</td>
+                <td>{{participant.RemovedFromEvent}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <ng-template #participantFormModal>
+        <app-participant-form (CloseModal)="ParticipantForm_Close($event)"
+                              [RequestedAction]="'Update'"
+                              [TrainingEventID]="TrainingEventID"
+                              [PersonID]="PersonID"
+                              [Context]="participantContext.TrainingEvent">
+        </app-participant-form>
+    </ng-template>
+    <ng-template #documentsModal>
+        <app-files-modal [Files]="participantFileAttachments"
+                         [ModalTitle]="'Manage participant documents'"
+                         (OnFileDrop)="Documents_OnFileDrop($event)"
+                         (OnFileDeleted)="Documents_OnFileDeleted($event)"
+                         (Close)="FilesModal_Close($event)">
+        </app-files-modal>
+    </ng-template>
+</div>

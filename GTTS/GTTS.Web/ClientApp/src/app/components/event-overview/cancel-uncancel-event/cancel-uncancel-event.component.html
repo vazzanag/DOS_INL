@@ -1,0 +1,30 @@
+﻿<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" (click)="Close()"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title pr-title text-center" id="txtTitleParticipant">{{ ActionRequested }} event</h4>
+</div>
+<form [formGroup]="CancelUncancelFormGroup" (ngSubmit)="CancelUncancelFormGroup_Submit()">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="control-label" for="CancelUncancelReason">
+                        Reason
+                        <span *ngIf="ActionRequested == 'Cancel'" [ngClass]="{'red': CancelUncancelReason.value == ''}">*</span>
+                    </label>
+                    <textarea #CancelUncancelReason id="CancelUncancelReason" name="CancelUncancelReason" formControlName="CancelUncancelReason"
+                              class="form-control" rows="8" [required]="ActionRequested == 'Cancel' ? 'required': null">
+                    </textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" id="Cancel" [disabled]="processingCancelUncancel" class="btn btn-rounded" data-dismiss="modal" (click)="Close()">Close</button>
+
+        <button id="SubmitCancelUncancelModal" type="submit" class="btn btn-rounded bColorPrimary"
+                [disabled]="!CancelUncancelFormGroup.valid || processingCancelUncancel">
+            Save
+            <span *ngIf="processingCancelUncancel" class="fa fa-spinner fa-spin"></span>
+        </button>
+    </div>
+</form>

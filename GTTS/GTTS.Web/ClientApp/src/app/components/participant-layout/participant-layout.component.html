@@ -1,0 +1,104 @@
+<div class="clearfix"></div>
+<section class="col-md-12 col-sm-12 content-header">
+    <div class="col-md-7 col-lg-7 col-xs-12 no-padding content-header">
+        <h1>
+            <span class="color-orange">PARTICIPANTS / </span> {{TrainingEvent.Name}}
+        </h1>
+    </div>
+    <div class="col-md-5 col-lg-5 col-xs-12 no-padding">
+        <span class="pull-right">
+            <button id="btnParticipant" class="btn btn-rounded-xs bColorPrimary" style="margin-right:5px;" (click)="OpenModal(participantSearch, 'modal-responsive-md')">Add participant</button>
+            <a class="btn btn-rounded-xs bColorPrimary" style="margin-right:5px;" routerLink="/gtts/training/{{ TrainingEventID }}/participantsUpload">Upload XLS</a>
+            <button class="btn btn-rounded-xs bColorPrimary" style="margin-right:5px;" (click)="OpenModal(participantVettingPreview, 'modal-lg')" [disabled]="!SubmitToVetting">Submit to vetting</button>
+            <a class="btn btn-rounded-xs bColorPrimary" style="margin-right:5px;" routerLink="/gtts/training/{{ TrainingEventID }}/groups">Manage groups</a>
+            <button class="btn btn-rounded-xs bColorPrimary" (click)="OpenModal(participantPerformanceRosterGeneration, 'modal-responsive-xs')">Generate roster</button>
+            <span class="color-blue" style="margin-left:5px;cursor:pointer" (click)="ExportParticipants()"><img src="../../../assets/images/download.png" style="width:28px;" /></span>
+            <a #ExportParticipantList name="ExportParticipantList" href=""></a>
+        </span>
+    </div>
+</section>
+<div class="clearfix"></div>
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <div style="display:inline-flex;padding-bottom:0px;">
+                <!-- Event Information -->
+                <app-participant-header></app-participant-header>
+            </div>
+            <section>
+                <accordion *ngIf="trainingEventGroups?.length > 1; else noGroups">
+                    <accordion-group *ngFor="let group of trainingEventGroups" panelClass="bg-color-midblue text-bold color-blue"
+                                     [heading]="group.GroupName" [isOpen]="IsAccordionGroupOpen(group)"
+                                     (isOpenChange)="GroupsAccordion_OpenChange($event, group)">
+                        <span accordion-heading>
+                            <i class="fa" [ngClass]="{'fa-angle-down': IsAccordionGroupOpen(group), 'fa-angle-right': !IsAccordionGroupOpen(group)}"></i>
+                        </span>
+
+                        <!-- Participant List -->
+                        <app-participant-list [Participants]="group.Participants"
+                                              [TrainingEventID]="TrainingEventID"
+                                              [TrainingEventGroupID]="group.TrainingEventGroupID"
+                                              [DepartureDateDefault]="TrainingEvent.TravelStartDate"
+                                              [ReturnDateDefault]="TrainingEvent.TravelEndDate"
+                                              [TrainingEventStartDate]="TrainingEvent.EventStartDate"
+                                              (StatusChangeRequested)="ParticipantList_StatusChangeRequested()"
+                                              (ParticipantUpdated)="ParticipantList_ParticipantUpdated()"
+                                              (VisaChecklistChangeRequested)="ParticipantList_VisaChecklistChangeRequested()">
+                        </app-participant-list>
+                    </accordion-group>
+                </accordion>
+
+                <ng-template #noGroups>
+                    <!-- Participant List -->
+                    <app-participant-list *ngIf="trainingEventGroups?.length < 2"
+                          [Participants]="trainingEventGroups[0]?.Participants"
+                          [TrainingEventID]="TrainingEventID"
+                          [TrainingEventGroupID]="0"
+                          [DepartureDateDefault]="TrainingEvent.TravelStartDate"
+                          [ReturnDateDefault]="TrainingEvent.TravelEndDate"
+                          [TrainingEventStartDate]="TrainingEvent.EventStartDate"
+                          (StatusChangeRequested)="ParticipantList_StatusChangeRequested()"
+                          (ParticipantUpdated)="ParticipantList_ParticipantUpdated()"
+                          (VisaChecklistChangeRequested)="ParticipantList_VisaChecklistChangeRequested()">
+                    </app-participant-list>
+                </ng-template>
+                
+            </section>
+        </div>
+    </div>
+</section>
+
+<ng-template #participantVettingPreview>
+    <app-participant-vetting-preview (CloseModal)="ParticipantVettingPreview_CloseModal()"
+                                     [TrainingEventID]="TrainingEventID">
+    </app-participant-vetting-preview>
+</ng-template>
+
+<ng-template #visaChecklist>
+    <app-training-visachecklist [TrainingEventID]="TrainingEventID"
+                                [Participants]="TrainingEventParticipants"
+                                (CloseModal)="CloseModal($event)">
+    </app-training-visachecklist>
+</ng-template>
+
+<ng-template #bulkUpdate>
+    <app-person-status-form (CloseModal)="CloseModal($event)"
+                            (ReloadParticipants)="ReloadParticipants()"
+                            [TrainingEventID]="TrainingEventID"
+                            [Participants]="uniqueTrainingEventParticipants">
+    </app-person-status-form>
+</ng-template>
+
+<ng-template #participantPerformanceRosterGeneration>
+    <app-participant-performance-roster-generation (CloseModal)="CloseModal(false)"
+                                                   [TrainingEventID]="TrainingEventID">
+    </app-participant-performance-roster-generation>
+</ng-template>
+
+
+<ng-template #participantSearch>
+    <app-participant-search (CloseModal)="CloseModal(false)"
+                            (ParticipantsChanged)="ParticipantsSearch_ParticipantsAdded()"
+                            [TrainingEventID]="TrainingEventID">
+    </app-participant-search>
+</ng-template>

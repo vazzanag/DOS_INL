@@ -1,0 +1,153 @@
+
+
+<div class="row" *ngIf="Batch.Participants.length > 0" style="margin-top:15px;">
+    <div class="col-sm-12">
+        <div *ngIf="DisplayFor == 'Batch'" style="font-weight:bold; font-size:11pt;padding-bottom:7px;">
+            <span class="BatchType">{{ IsLeahy ? 'LEAHY' : 'Courtesy' }}</span> Vetting Batch {{ Batch.BatchNumber }}
+        </div>
+
+        <table id="ParticipantTable" name="ParticipantTable" mat-table matSort [matSortDisableClear]="true" [(dataSource)]="DataSource" style="width:100%;border-bottom:1px solid black;" loading="Loading batch...">
+            <!-- Participant Type Column -->
+            <ng-container matColumnDef="IsParticipant">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" style="text-align:center;border-top-left-radius: 10px;max-width:70px;padding-left:5px;" *matHeaderCellDef mat-sort-header>Type</th>
+                <td class="listCell" style="max-width:70px;padding-left:0;margin-left:0;" mat-cell *matCellDef="let participant">{{ participant.IsParticipant ? 'Participant' : 'Alternate' }}</td>
+            </ng-container>
+
+            <!-- ID Column -->
+            <ng-container matColumnDef="Ordinal">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" style="text-align:center;" *matHeaderCellDef mat-sort-header>#</th>
+                <td class="listCell" style="" mat-cell *matCellDef="let participant"> {{participant.Ordinal}} </td>
+            </ng-container>
+
+            <!-- First Name Column -->
+            <ng-container matColumnDef="FirstMiddleNames">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" style="text-align:center;" *matHeaderCellDef mat-sort-header>First / Middle Name</th>
+                <td class="listCell" style="" mat-cell *matCellDef="let participant">
+					<a routerLink="/gtts/training/{{ TrainingEventID }}/vettingbatches/preview/participants/{{ participant.PersonID }}/edit">
+						{{ participant.FirstMiddleNames }}
+					</a>
+                </td>
+            </ng-container>
+
+            <!-- Last Name Column -->
+            <ng-container matColumnDef="LastNames">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" style="text-align:center;" *matHeaderCellDef mat-sort-header>Last Name</th>
+                <td class="listCell" style="" mat-cell *matCellDef="let participant">
+					<a routerLink="/gtts/training/{{ TrainingEventID }}/vettingbatches/preview/participants/{{ participant.PersonID }}/edit">
+						{{participant.LastNames}}
+					</a>
+                </td>
+            </ng-container>
+
+            <!-- Date of Birth Column -->
+            <ng-container matColumnDef="DOB">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" style="text-align:center;" *matHeaderCellDef mat-sort-header>Date of Birth</th>
+                <td class="listCell" style="" mat-cell *matCellDef="let participant"> {{participant.DOB | date: 'MM/dd/yy'}} </td>
+            </ng-container>
+
+            <!-- Gender Column -->
+            <ng-container matColumnDef="Gender">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" *matHeaderCellDef mat-sort-header>Gender</th>
+                <td class="listCell" style="text-align:center;" mat-cell *matCellDef="let participant"> {{participant.Gender}} </td>
+            </ng-container>
+
+            <!-- Departure City Column -->
+            <ng-container matColumnDef="DepartureCity">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" *matHeaderCellDef mat-sort-header>Departure City</th>
+                <td class="listCell" style="text-align:center;" mat-cell *matCellDef="let participant">
+                    {{ participant.DepartureCity == null ? '' : participant.DepartureCity + ',' }} {{participant.DepartureState}}
+                </td>
+            </ng-container>
+
+            <!-- Departure Date Column -->
+            <ng-container matColumnDef="DepartureDate">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" *matHeaderCellDef mat-sort-header>Departure Date</th>
+                <td class="listCell" style="text-align:center;" mat-cell *matCellDef="let participant"> {{participant.DepartureDate | date: 'MM/dd/yy'}} </td>
+            </ng-container>
+
+            <!-- Return Date Column -->
+            <ng-container matColumnDef="ReturnDate">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" *matHeaderCellDef mat-sort-header>Return Date</th>
+                <td class="listCell" style="text-align:center;" mat-cell *matCellDef="let participant"> {{participant.ReturnDate | date: 'MM/dd/yy'}} </td>
+            </ng-container>
+
+            <!-- Agency / Organization Column -->
+            <ng-container matColumnDef="AgencyNameEnglish">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" style="text-align:left;max-width:300px;" *matHeaderCellDef mat-sort-header>Agency / Organization</th>
+                <td class="listCell" style="max-width:300px;" mat-cell *matCellDef="let participant"> {{participant.AgencyNameEnglish}} </td>
+            </ng-container>
+
+            <!-- Job Title Column -->
+            <ng-container matColumnDef="JobTitle">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" style="text-align:left;" *matHeaderCellDef mat-sort-header>Job Title</th>
+                <td class="listCell" mat-cell *matCellDef="let participant"> {{participant.JobTitle}} </td>
+            </ng-container>
+
+            <!-- Rank / Position Column -->
+            <ng-container matColumnDef="RankName">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" style="text-align:left;" *matHeaderCellDef mat-sort-header>Rank</th>
+                <td class="listCell" mat-cell *matCellDef="let participant"> {{participant.RankName}} </td>
+            </ng-container>
+
+            <!-- Contact E-mail Column -->
+            <ng-container matColumnDef="ContactEmail">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" style="text-align:left;" *matHeaderCellDef mat-sort-header>E-mail</th>
+                <td class="listCell" mat-cell *matCellDef="let participant"> {{participant.ContactEmail}} </td>
+            </ng-container>
+
+            <!-- Vetting Column -->
+            <ng-container matColumnDef="VettingStatus">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" *matHeaderCellDef mat-sort-header>LEAHY / Courtesy</th>
+                <td class="listCell" mat-cell *matCellDef="let participant"> {{participant.VettingStatus}} </td>
+            </ng-container>
+
+            <!-- Edit Vetting Column -->
+            <ng-container matColumnDef="EditVetting">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" style="max-width:80px;" *matHeaderCellDef>Change<br/>Vetting</th>
+                <td class="listCell" [ngClass]="{editVetting: participant.UnitID > 0}" style="max-width:80px;" mat-cell *matCellDef="let participant">
+                    <a *ngIf="participant.UnitID > 0" (click)="ChangeVettingType(participant)"><img src="../../../assets/images/pencil-alt.svg" alt="Edit" style="height:16px;" /></a>
+                </td>
+            </ng-container>
+
+            <!-- Visa Column -->
+            <ng-container matColumnDef="Visa">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" *matHeaderCellDef>Visa</th>
+                <td class="listCell" mat-cell *matCellDef="let participant"> {{participant.Visa}} </td>
+            </ng-container>
+
+            <!-- Documents -->
+            <ng-container matColumnDef="Documents">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" style="text-align:center;max-width:75px;" *matHeaderCellDef>Documents</th>
+                <td class="listCell" style="text-align:center;padding-right:5px;max-width:75px;" mat-cell *matCellDef="let participant">
+                    <img src="../../../assets/images/file-alt-green.svg" alt="Documents" style="height:16px;" />
+                </td>
+            </ng-container>
+
+            <!-- Documents (at End) Column -->
+            <ng-container matColumnDef="DocumentsEnd">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" style="border-top-right-radius: 10px;text-align:center;max-width:75px;" *matHeaderCellDef>Documents</th>
+                <td class="listCell" style="text-align:center;padding-right:5px;max-width:75px;" mat-cell *matCellDef="let participant">
+                    <img src="../../../assets/images/file-alt-green.svg" alt="Documents" style="height:16px;" />
+                </td>
+            </ng-container>
+
+            <!-- Status (at End) Column -->
+            <ng-container matColumnDef="StatusEnd">
+                <th [ngClass]="{leahyHeader: IsLeahy, courtesyHeader: !IsLeahy}" style="border-top-right-radius: 10px;text-align:center;max-width:75px;" *matHeaderCellDef>Status</th>
+                <td class="listCell" style="text-align:center;padding-right:5px;max-width:75px;" mat-cell *matCellDef="let participant">
+                    {{participant.Status}}
+                </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="DisplayedColumns" style="height:40px;text-align:center;"></tr>
+            <tr mat-row *matRowDef="let row; columns: DisplayedColumns;" class="hoverable listRow" style="height:35px;text-align:center;"></tr>
+        </table>
+
+        <br />
+        <!--<mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>-->
+        <!--<mat-paginator [length]="100"
+                   [pageSize]="10"
+                   [pageSizeOptions]="[5, 10, 25, 100]">
+    </mat-paginator>-->
+    </div>
+</div>

@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Debug;Release;inl-dev;inl-test;inl-uat;inl-production</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\INL.Clients\INL.Clients.csproj" />
+    <ProjectReference Include="..\INL.UnitLibraryService.Models\INL.UnitLibraryService.Models.csproj" />
+  </ItemGroup>
+
+</Project>

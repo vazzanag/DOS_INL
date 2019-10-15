@@ -1,0 +1,24 @@
+
+<section class="content-header" style="padding: 7px 25px 8px;">
+    <h1>
+        Global Admin
+    </h1>
+</section>
+
+<form #globalAdminForm="ngForm">
+    <div class="container-fluid">
+        <div class="row" style="padding-right:5px;padding-top:5px;">
+            <div class="col-xs-3">
+                <label for="SwitchPost">Current Post</label>
+                <select name="SwitchPost" class="form-control" [(ngModel)]="currentPostID">
+                    <option *ngFor="let post of posts" [value]="post.PostID">
+                        {{ post.PostName }}
+                    </option>
+                </select>
+            </div>
+            <div class="col-xs-1">
+                <button id="SwitchPostButton" [disabled]="posts.length <= 1" (click)="switchPost();" class="btn btn-rounded bColorPrimary">Switch</button>
+            </div>
+        </div>
+    </div>
+</form>

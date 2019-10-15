@@ -1,0 +1,27 @@
+<div class="modal-body no-overflow-x" style="border-radius: 20px 20px 0 0; background-color: aliceblue; padding-bottom: 5px;">
+    <div id="contentMessage">
+        <div class="panel panel-default" style="border: none; border-radius: 10px; margin-bottom:5px;">
+            <div class="panel-body">
+                <div class="col-xs-12 noti-title">
+                    {{ notification.NotificationSubject}}
+                </div>
+                <div class=" col-xs-12 noti-message">
+                    <p [innerHtml]="notification.NotificationMessage"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="contentMessageFooter" class="col-md-12 no-padding">
+        <div class="col-xs-6 noti-id no-padding">
+            <a *ngIf="notification.IncludeContextLink" (click)="Redirect()" class="color-alert ever-alert" style="cursor:pointer">
+                Go to {{ notification.NotificationContextType === "Vetting" ? "batch view" : "request" }}
+            </a>
+        </div>
+        <div class="col-xs-6 noti-date no-padding">
+            {{ notification.ModifiedDate | date : "M/d/yyyy, h:mm a" }}            
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-rounded btn-default" data-dismiss="modal" (click)="Close()">Close</button>
+</div>

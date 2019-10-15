@@ -1,0 +1,875 @@
+/*body {
+    height: 100%;
+    font-family: "segoe ui", Arial;
+    color: #2E2B29;
+    font-size: 12pt;
+}*/
+
+.center {
+    text-align: center;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+}
+
+.red {
+    color: #B31717;
+}
+
+.text-red {
+    color: #dd4b39 !important;
+}
+
+.border-color-black {
+    border: 1px solid #000;
+}
+
+.error {
+    color: #B31717;
+    font-weight: 600;
+    font-size: 10pt;
+}
+.error-input {
+    border: 1px solid #B31717 !important;
+}
+
+input:invalid.ng-touched {
+    border: 1px solid #B31717 !important;
+}
+
+/*select2:invalid {
+    border: 1px solid #B31717 !important;
+}*/
+
+select2.invalid span.select2-selection {
+    border: 1px solid #B31717 !important;
+}
+
+.success {
+    color: #699228;
+    font-weight: 600;
+    font-size: 10pt;
+}
+
+.pageContainer {
+    border: 2px solid #DAA302;
+    padding-bottom: 15px;
+    width: 100%;
+    margin-bottom: 15px;
+    min-height: 339px;
+}
+
+.pageHeader {
+    font-weight: bold;
+    color: #535e64;
+    margin-top: 10px;
+    margin-bottom: 0;
+    padding-bottom: 5px;
+    font-size: 18pt;
+    font-family: "segoe ui", Arial;
+}
+
+.pageSubHeader {
+    font-size: 12pt;
+    color: #6581AF;
+    font-weight: 600;
+    font-style: italic;
+}
+
+.pageHeaderForm {
+    font-weight: bold;
+    color: #6581AF;
+    margin-top: 10px;
+    margin-bottom: 0;
+    padding-bottom: 5px;
+    font-size: 18pt;
+    font-style: italic;
+    font-family: "segoe ui", Arial;
+}
+
+.subHeadingKey {
+    color: #3B86FF;
+    font-weight: 600;
+    font-size: 11pt;
+}
+
+    .subHeadingKey a:link {
+        color: #3B86FF;
+    }
+
+    .subHeadingKey a:visited {
+        color: #3B86FF;
+    }
+
+    .subHeadingKey a:hover {
+        color: #3B86FF;
+        cursor: pointer;
+    }
+
+.subHeadingValue {
+    font-weight: 600;
+    font-size: 11pt;
+}
+
+    .subHeadingValue a:link {
+        color: #000000;
+    }
+
+    .subHeadingValue a:visited {
+        color: #000000;
+    }
+
+    .subHeadingValue a:hover {
+        color: #000000;
+    }
+
+
+.valueText {
+    color: #803F1D;
+    font-weight: 600;
+}
+
+.keyText {
+    color: #2E2B29;
+    font-weight: 600;
+}
+
+.keyTextRed {
+    color: #B31717;
+    font-weight: 600;
+}
+
+.overviewContainer {
+    border: 1px solid #707070;
+    width: 99%;
+    margin-bottom: 10px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 15px 0px lightgray;
+    font-family: "segoe ui", Arial;
+    font-size: 10pt;
+    color: #2E2B29;
+    margin-bottom: 20px;
+}
+
+    .overviewContainer .value {
+        color: #803F1D;
+    }
+
+        .overviewContainer .value a:link {
+            color: #3B86FF;
+        }
+
+        .overviewContainer .value a:visited {
+            color: #3B86FF;
+        }
+
+        .overviewContainer .value a:hover {
+            color: #3B86FF;
+        }
+
+.overviewHeader {
+    display: block;
+    background-color: #3C628F;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    height: 25px;
+    margin-top: auto;
+    margin-bottom: auto;
+    vertical-align: middle;
+    width: 100%;
+    font-size: 12pt;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+    .overviewHeader a:link {
+        color: white;
+    }
+
+    .overviewHeader a:visited {
+        color: white;
+    }
+
+    .overviewHeader a:hover {
+        color: white;
+        text-decoration: underline;
+    }
+
+
+.overviewContainerContent {
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    font-size: 10pt;
+    font-weight: 600;
+    color: #2E2B29;
+}
+
+    .overviewContainerContent .value .calloutContact {
+        display: none;
+        position: absolute;
+        left: 50px;
+        margin-top: -90px;
+        z-index: 100;
+        box-shadow: 2px 2px 2px #aaaaaa;
+        border: 1px solid #707070;
+        background-color: #F9F9F6;
+        min-width: 225px;
+        color: #2E2B29;
+    }
+
+        .overviewContainerContent .value .calloutContact:after, .overviewContainerContent .value .calloutContact:before {
+            top: 100%;
+            left: 25%;
+            border: solid transparent;
+            content: " ";
+            height: 0;
+            width: 0;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        .overviewContainerContent .value .calloutContact:after {
+            border-color: rgba(249, 249, 246, 0);
+            border-top-color: #F9F9F6;
+            border-width: 8px;
+            margin-left: -8px;
+        }
+
+        .overviewContainerContent .value .calloutContact:before {
+            border-color: rgba(112, 112, 112, 0);
+            border-top-color: #707070;
+            border-width: 9px;
+            margin-left: -9px;
+        }
+
+    .overviewContainerContent .value:hover .calloutContact {
+        display: flex;
+    }
+
+    .overviewContainerContent .value a:link {
+        color: #3B86FF;
+    }
+
+    .overviewContainerContent .value a:visited {
+        color: #3B86FF;
+    }
+
+    .overviewContainerContent .value a:hover {
+        color: #3B86FF;
+    }
+
+    .overviewContainerContent .bottomBorder {
+        border-bottom: 1px solid #707070;
+    }
+
+    .overviewContainerContent .rightBorder {
+        border-right: 1px solid #707070;
+    }
+
+    .overviewContainerContent .bottomborderDiv {
+        border-bottom: 1px solid #707070;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+
+    .overviewContainerContent .lastRowDiv {
+        padding-top: 5px;
+    }
+
+    .overviewContainerContent td {
+        padding: 4px;
+        vertical-align: top;
+        color: #2E2B29;
+    }
+
+.overviewAlertHeader {
+    background-color: #B31717;
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    font-size: 12pt;
+    height: 25px;
+    margin-top: auto;
+    margin-bottom: auto;
+    vertical-align: middle;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.overviewArrangementsHeader {
+    text-align: center;
+}
+
+.overviewArrangementsStatus {
+    padding-bottom: 2px;
+    text-align: center;
+    color: white;
+}
+
+.bottomLine {
+    box-shadow: 0 1px 1px #aaaaaa;
+    border-bottom: 1px solid #707070;
+}
+
+
+/* Flip classes*/
+.flipContainer {
+    transform-style: preserve-3d;
+    transition: transform 1s;
+    position: relative;
+    height: 100%;
+}
+
+.flipSide {
+    height: 100%;
+    width: 100%;
+    backface-visibility: hidden;
+    text-align: center;
+    user-select: none;
+    font-size: 10pt;
+}
+
+.flipFront {
+    background: #F9F9F9;
+    position: absolute;
+}
+
+.flipBack {
+    transform: rotateY(179.9deg);
+}
+/* End Flip Classes */
+
+
+/* Radio button Classes */
+.radioContainer {
+    display: inline-block;
+    position: relative;
+    padding-left: 20px;
+    padding-right: 15px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+    /* Hide the browser's default radio button */
+    .radioContainer input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+
+/* Create a custom radio button */
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 17px;
+    width: 17px;
+    background-color: #EAECEE;
+    border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.radioContainer:hover input ~ .checkmark {
+    background-color: #ABB2B9;
+}
+
+/* When the radio button is checked, add a blue background */
+.radioContainer input:checked ~ .checkmark {
+    background-color: #535E64;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radioContainer input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radioContainer .checkmark:after {
+    width: 3px;
+    height: 3px;
+    top: 7px;
+    left: 7px;
+    border-radius: 50%;
+    background: #535E64;
+}
+/* End Radio button classes */
+
+/* Buttons */
+
+
+
+.cancelButton {
+    height: 40px;
+    width: 122px;
+    background-image: url('images/Cancel-Button.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.closeButton {
+    height: 40px;
+    width: 122px;
+    background-image: url('images/Close-Button.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.cancelButtonDisabled {
+    height: 40px;
+    width: 122px;
+    background-image: url('images/Cancel-Button-Gray-Large.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.saveButton {
+    height: 40px;
+    width: 122px;
+    background-image: url('images/Save-Button.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+    .saveButtonDisabled,
+    .saveButton:disabled {
+        height: 40px;
+        width: 122px;
+        background-image: url('images/Save-Button-disabled.svg');
+        background-color: #ffffff;
+        background-repeat: no-repeat;
+        padding: 0;
+        border: none;
+    }
+
+.submitButton {
+    height: 40px;
+    width: 122px;
+    background-image: url('images/Submit-Button.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.button {
+    border-radius: 5px;
+    padding-top: 4px;
+    padding-bottom: 5px;
+    padding-right: 10px;
+    padding-left: 10px;
+    border: none;
+    font-size: 13px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-left: 20px;
+    font-weight: bold;
+    height: 25px;
+}
+
+.buttonDisabled {
+    background-color: #535E64;
+    color: #ffffff;
+}
+
+.buttonGreen {
+    background-color: #699228;
+    color: #ffffff;
+}
+
+.buttonDarkGreen {
+    background-color: #667450;
+    color: #ffffff;
+}
+
+.buttonPink {
+    background-color: #B56767;
+    color: #ffffff;
+}
+
+.buttonRed {
+    background-color: #B31717;
+    color: #ffffff;
+}
+
+.buttonGray {
+    background-color: #535E64;
+    color: #ffffff;
+}
+
+.buttonBlue {
+    background-color: #3C628F;
+    color: #ffffff;
+}
+
+
+.cancelEventButton {
+    height: 40px;
+    width: 150px;
+    background-image: url('images/Cancel-Event-Button.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.uncancelEventButton {
+    height: 40px;
+    width: 150px;
+    background-image: url('images/Re-Open-Event-Button.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.closeEvent {
+    height: 40px;
+    width: 122px;
+    background-image: url('images/Close-Event-Button.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+
+.buttonSpacer {
+    width: 60px;
+    text-align: center;
+    display: inline-block;
+}
+
+.viewBatchesButton {
+    height: 30px;
+    width: 40px;
+    background-image: url('images/Batch-icon.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.addParticipantButton {
+    height: 30px;
+    width: 30px;
+    background-image: url('images/Add-Participant.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.uploadParticipantsButton {
+    height: 30px;
+    width: 30px;
+    background-image: url('images/upload.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.orgchartButton {
+    height: 30px;
+    width: 30px;
+    background-image: url('images/Org-chart-button-green.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.transferButton {
+    height: 30px;
+    width: 35px;
+    background-image: url('images/Transfer-icon.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.groupButton {
+    height: 30px;
+    width: 40px;
+    background-image: url('images/Group-icon.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.rosterButton {
+    height: 30px;
+    width: 25px;
+    background-image: url('images/Roster-icon.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.submitToVettingButton {
+    height: 30px;
+    width: 35px;
+    background-image: url('images/Vetting-INL.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+
+.exportFileButton {
+    height: 30px;
+    width: 35px;
+    background-image: url('images/file-export.svg');
+    background-color: #ffffff;
+    background-repeat: no-repeat;
+    padding: 0;
+    border: none;
+}
+/* End Buttons */
+
+/* Large Table */
+
+.tableHeader {
+    font-weight: 600;
+    font-size: 0.9em;
+    text-align: center;
+    padding: 2px;
+    margin: 2px;
+}
+
+.tableHeaderBlue {
+    color: #FFFFFF;
+    background-color: #3C628F;
+}
+
+.tableHeaderGreen {
+    background-color: #667450;
+    color: #FFFFFF;
+}
+
+.tableHeaderGray {
+    background-color: #535E64;
+    color: #FFFFFF;
+}
+
+.tableHeaderPurple {
+    background-color: #661C97;
+    color: #FFFFFF;
+}
+
+.tableHeaderPurpleLight {
+    background-color: rgba(102,28,151, .60);
+    color: #FFFFFF;
+}
+
+.tableRow {
+}
+
+    .tableRow:hover {
+        background-color: #FFF3CF;
+        cursor: pointer;
+    }
+
+
+.tableHeaderRow {
+    border-bottom: 1px solid #707070;
+}
+
+
+.tableCell {
+    text-align: center;
+}
+
+.tableheaderInsideCell {
+    padding: 5px;
+    border-right: 1px solid #707070;
+}
+
+.leftCorner {
+    border-top-left-radius: 10px;
+}
+
+.rightCorner {
+    border-top-right-radius: 10px;
+}
+
+
+/* Modals*/
+#ModalOverlayContainer {
+    visibility: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+    background-color: rgba(255, 255, 255, .60);
+    z-index: 500;
+    padding-top: 10%;
+}
+
+    #ModalOverlayContainer.showing {
+        visibility: visible;
+    }
+
+    #ModalOverlayContainer #ModalContainer {
+        margin-left: auto;
+        margin-right: auto;
+        background-color: #FFFFFF;
+        border: 1px solid #AAAAAA;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        padding: 0;
+    }
+
+.ModalOverlayContainer {
+    visibility: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+    background-color: rgba(255, 255, 255, .60);
+    z-index: 250;
+}
+
+    .ModalOverlayContainer.showing {
+        visibility: visible;
+    }
+
+.ModalContainer {
+    visibility: hidden;
+    left: 0;
+    right: 0;
+    margin: auto;
+    max-width: 100%;
+    background-color: #FFFFFF;
+    border: 1px solid #AAAAAA;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    top: 0;
+    position: fixed;
+    z-index: 500;
+}
+
+    .ModalContainer.showing {
+        visibility: visible;
+    }
+
+.modalHeader {
+    color: #FFFFFF;
+    background-color: #661C97;
+    font-size: 14pt;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.modalHeaderPurple {
+    color: #FFFFFF;
+    background-color: #661C97;
+}
+
+.modalHeaderPurpleLight {
+    color: #FFFFFF;
+    background-color: rgba(102,28,151, .60);
+}
+
+.modalHeaderYellow {
+    color: #FFFFFF;
+    background-color: #DAA302;
+}
+
+.modalSubHeader {
+    font-weight: 600;
+    font-size: 11pt;
+}
+
+.budget-dialog-container .mat-dialog-container {
+    padding: 0px;
+    border-radius: 16px;
+}
+/* End Modals*/
+
+
+
+/* Tables */
+.listHeader {
+    background-color: #3C628F;
+    font-weight: 600;
+    font-size: 10pt;
+    color: #FFFFFF;
+    text-align: center;
+}
+
+.listRow {
+}
+
+    .listRow:hover {
+        background-color: #F0F0F0;
+        cursor: pointer;
+    }
+/* End Tables */
+
+.gtts-dialog .mat-dialog-container {
+    padding: 4px;
+    border-radius: 24px;
+    border: 1px #CCCCCC solid;
+}
+
+.message-thread-dialog .mat-dialog-container {
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px #CCCCCC solid;
+}
+
+.message-thread-backdrop {
+
+}
+
+.calculator-modal {
+    width: 1050px !important;
+}
+
+.calculator-data-dialog{
+    width: 300px !important;
+}
+
+td.no-outline {
+    outline: none !important;
+}

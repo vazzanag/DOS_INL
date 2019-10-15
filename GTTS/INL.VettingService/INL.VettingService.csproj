@@ -1,0 +1,70 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Debug;Release;inl-dev;inl-test;inl-uat;inl-production</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.50.5" />
+    <PackageReference Include="Mapster" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="9.0.1" />
+    <PackageReference Include="NPOI" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\__Entities__.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>__Entities__.cs</LastGenOutput>
+    </None>
+    <None Update="Data\__Entities__.tt.BASE.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>__Entities__.tt.BASE.cs</LastGenOutput>
+    </None>
+    <None Update="Data\__Entities__.tt.LOCAL.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>__Entities__.tt.LOCAL.cs</LastGenOutput>
+    </None>
+    <None Update="Data\__Entities__.tt.REMOTE.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>__Entities__.tt.REMOTE.cs</LastGenOutput>
+    </None>
+    <None Update="Files\Courtesy Results Template.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\Invest Batch Spreadsheet Template.xlsm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Files\Invest Batch Spreadsheet Template.xlsx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\INL.DocumentService.Client\INL.DocumentService.Client.csproj" />
+    <ProjectReference Include="..\INL.MessagingService.Client\INL.MessagingService.Client.csproj" />
+    <ProjectReference Include="..\INL.Repositories\INL.Repositories.csproj" />
+    <ProjectReference Include="..\INL.Services\INL.Services.csproj" />
+    <ProjectReference Include="..\INL.TrainingService.Client\INL.TrainingService.Client.csproj" />
+    <ProjectReference Include="..\INL.VettingService.Client\INL.VettingService.Client.csproj" />
+    <ProjectReference Include="..\INL.VettingService.Models\INL.VettingService.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Files\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Data\__Entities__.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>__Entities__.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

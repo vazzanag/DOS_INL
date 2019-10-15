@@ -1,0 +1,256 @@
+<section class="content-header" style="padding: 7px 25px 8px;">
+    <h1 *ngIf="model.TrainingEventID == null || model.TrainingEventID == 0">
+        Create event
+    </h1>
+    <h1 *ngIf="model.TrainingEventID != null && model.TrainingEventID > 0">
+        Modify event
+    </h1>
+</section>
+
+<section class="content" style="padding: 0px 40px 20px;">
+    <div class="box no-top-border">
+        <div class="box-body" style="padding: 10px 30px">
+            <form #trainingEventForm="ngForm">
+                <div>
+                    <div class="container-fluid">
+                        <div class="row" style="padding-right:5px;padding-top:5px;">
+
+                            <div class="col-xs-1 no-padding-right">
+                                <div class="form-group">
+                                    <label>Section</label>
+                                    <span class="required-field-marker">*</span>
+                                    <select placeholder="Trainer Unit" class="form-control" required [(ngModel)]="model.TrainingUnitID" name="TrainingUnitID" (change)="onBusinessUnitIDChanged()">
+                                        <option *ngFor="let unit of BusinessUnits" [value]="unit.BusinessUnitID">{{ unit.Acronym }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-5">
+                                <div class="form-group">
+                                    <label>Event name</label>
+                                    <span class="required-field-marker">*</span>
+                                    <input class="form-control" placeholder="Enter event name in English (Ex. Protection of National Leaders Course)" required [(ngModel)]="model.Name" name="Name">
+                                </div>
+                            </div>
+                            <div class="col-xs-3 no-padding-left" style="padding-top: 32px;">
+                                <a style="cursor: pointer" (click)="onLocalLanguageClick()">
+                                    <i class="fa fa-globe" style="font-size: 1.5em"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="row" style="padding-right:5px;">
+                            <div class="col-md-7 no-padding">
+                                <div class="col-xs-12">
+                                    <label for="formGroupExampleInput">Event location</label>
+                                    <span class="required-field-marker">*</span>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="col-md-6 text-left no-padding-left">
+                                    <label for="formGroupExampleInput0">Event dates</label>
+                                    <span class="required-field-marker">*</span>
+                                </div>
+                                <div class="col-md-6 text-left no-padding-right">
+                                    <div class="col-md-6">
+                                        <label for="formGroupExampleInput0">Travel dates</label>
+                                        <span class="required-field-marker">*</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <training-event-location *ngFor="let trainingEventLocationComponentModel of TrainingEventLocationComponentModels; index as i; first as isFirst;" [(ngModel)]="TrainingEventLocationComponentModels[i]" name="trainingEventLocationComponentModel_{{TrainingEventLocationComponentModels[i].UniqueID}}" [FirstInList]="isFirst" (AddRemoveLocationEvent)="OnAddRemoveLocationEvent($event, trainingEventLocationComponentModel.UniqueID)" [shouldAlertCalculatorAffected]="shouldAlertCalculatorAffected"></training-event-location>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12 no-padding">
+                                <div class="col-xs-2">
+                                    <div class="form-group">
+                                        <label for="formGroupExampleInput">Event type</label>
+                                        <span class="required-field-marker">*</span>
+                                        <select class="form-control" name="TrainingEventTypeID" required [(ngModel)]="model.TrainingEventTypeID" #TrainingEventType="ngModel">
+                                            <option></option>
+                                            <option *ngFor="let eventType of TrainingEventTypes" [value]="eventType.TrainingEventTypeID">
+                                                {{ eventType.TrainingEventTypeName }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="form-group">
+                                        <label for="formGroupExampleInput">Program / key activities</label>
+                                        <span class="required-field-marker">*</span>
+                                        <select2 [data]="keyActivities"
+                                                 [value]="defaultKeyActivityIds"
+                                                 [options]="select2Options"
+                                                 (valueChanged)="onKeyActivitiesChange($event)"
+                                                 [ngClass]="{'invalid': ((model.TrainingEventID == null && TrainingEventType.touched) || (model.TrainingEventID != null && trainingEventForm.dirty)) && !KeyActivitiesIsValid() }">
+                                        </select2>
+                                        <input class="hide" type="text" required name="selectedKeyActivityIds"
+                                            [(ngModel)]="selectedKeyActivityIds" />
+                                    </div>
+                                </div>
+                                <div class="col-xs-2">
+                                    <div class="form-group">
+                                        <label for="formGroupExampleInput">Funding source(s)</label>
+                                        <select2 [data]="projectCodes" [value]="defaultProjectCodeIds" [options]="select2Options" multiple="" required (valueChanged)="onProjectCodesChange($event)">
+                                        </select2>
+                                    </div>
+                                </div>
+                                <div class="col-xs-3">
+                                    <div class="form-group">
+                                        <label for="formGroupExampleInput">Authorizing document(s)</label>
+                                        <select2 [data]="iaas" [value]="defaultIaaIds" [options]="select2Options" multiple="" required (valueChanged)="onIaasChange($event)">
+                                        </select2>
+                                    </div>
+                                </div>
+                                <div class="col-xs-2">
+                                    <div class="form-group">
+                                        <label for="formGroupExampleInput0">Implementing partner(s)</label>
+                                        <select2 [data]="usPartnerAgencies" [value]="defaultUsPartnerAgencyIds" [options]="select2Options" multiple="" required (valueChanged)="onUsPartnerAgenciesChange($event)">
+                                        </select2>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 no-padding">
+                                    <div class="col-md-5">
+                                        <fieldset class="fieldP">
+                                            <legend class="color-mrdarkgray" style="font-weight: normal;">Participants</legend>
+                                            <div class="no-padding padding-b-5" style="width:19%; float:left;">
+                                                <div class="form-group">
+                                                    <label class="col-xs-12 no-padding control-label text-center tooltip-2" for="PlannedParticipantCnt">Host nation<span class="tooltiptext tooltipP" style="bottom: 22px;">Planned no. of host nation participants</span></label>
+                                                    <input type="text" pattern="\d*" style="display: block" class="form-control text-center inputP" id="PlannedParticipantCnt"
+                                                           [(ngModel)]="model.PlannedParticipantCnt" name="PlannedParticipantCnt" (change)="onNumParticipantsValueChanged()"
+                                                           (click)="selectInputVal($event)" placeholder="0">
+                                                </div>
+                                            </div>
+                                            <div class="no-padding padding-b-5" style="width:19%; float:left;">
+                                                <div class="form-group">
+                                                    <label class="col-xs-12 no-padding control-label text-center tooltip-2" for="PlannedMissionDirectHireCnt" title="">USG (Mission)<span class="tooltiptext tooltipP" style="bottom: 22px;">Planned no. of Mission direct hires (USG)</span></label>
+                                                    <input type="text" pattern="\d*" style="display: block" class="form-control text-center inputP" id="PlannedMissionDirectHireCnt"
+                                                           [(ngModel)]="model.PlannedMissionDirectHireCnt" name="PlannedMissionDirectHireCnt" (change)="onNumParticipantsValueChanged()"
+                                                           (click)="selectInputVal($event)" placeholder="0">
+                                                </div>
+                                            </div>
+                                            <div class="no-padding padding-b-5" style="width:24%; float:left;">
+                                                <div class="form-group">
+                                                    <label class="col-xs-12 no-padding control-label text-center tooltip-2" for="PlannedNonMissionDirectHireCnt" title="">USG (non-Mission)<span class="tooltiptext tooltipP" style="bottom: 22px;">Planned no. of non-Mission direct hires (USG)</span></label>
+                                                    <input type="text" pattern="\d*" style="display: block" class="form-control text-center inputP" id="PlannedNonMissionDirectHireCnt"
+                                                           [(ngModel)]="model.PlannedNonMissionDirectHireCnt" name="PlannedNonMissionDirectHireCnt" (change)="onNumParticipantsValueChanged()"
+                                                           (click)="selectInputVal($event)" placeholder="0">
+                                                </div>
+                                            </div>
+                                            <div class="no-padding padding-b-5" style="width:15%; float:left;">
+                                                <div class="form-group">
+                                                    <label class="col-xs-12 no-padding control-label text-center tooltip-2" for="PlannedMissionOutsourceCnt" title="">TPC<span class="tooltiptext tooltipP" style="bottom: 22px;">Planned no. of Mission outsourced hires (TPC)</span></label>
+                                                    <input type="text" pattern="\d*" style="display: block" class="form-control text-center inputP" id="PlannedMissionOutsourceCnt"
+                                                           [(ngModel)]="model.PlannedMissionOutsourceCnt" name="PlannedMissionOutsourceCnt" (change)="onNumParticipantsValueChanged()"
+                                                           (click)="selectInputVal($event)" placeholder="0">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 no-padding padding-b-5 " style="width:23%; float:left;">
+                                                <div class="form-group">
+                                                    <label class="col-xs-12 no-padding control-label text-center tooltip-2" for="PlannedOtherCnt">Instructors / SMEs<span class="tooltiptext tooltipP" style="bottom: 22px;">Planned no. of instructors / subject matter experts (non-USG)</span></label>
+                                                    <input type="text" pattern="\d*" style="display: block" class="form-control text-center inputP" id="PlannedOtherCnt"
+                                                           [(ngModel)]="model.PlannedOtherCnt" name="PlannedOtherCnt" (change)="onNumParticipantsValueChanged()"
+                                                           (click)="selectInputVal($event)" placeholder="0">
+                                                </div>
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                    <div class="col-md-7 no-padding">
+                                        <div class="col-xs-2 no-padding-right">
+                                            <div class="form-group">
+                                                <label for="formGroupExampleInput0">Estimated budget ($)</label>
+                                                <div class="input-wrappers" data-toggle="modal" data-target="#genericModal" data-url="/Training/BudgetCalculator" data-size="modal-lg">
+                                                    <input type="text" pattern="\d+(\.\d{1,2})?" class="form-control icon-inside" id="formGroupExampleInput0" placeholder="0.00" [(ngModel)]="model.EstimatedBudget" name="EstimatedBudget">
+                                                    <label for="stuff" class="fa fa-calculator input-icons" aria-hidden="true" (click)="onEstimatedBudgetClick(budgetCalculatorModal)"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-3">
+                                            <div class="form-group">
+                                                <label for="formGroupExampleInput0">Event organizer</label>
+                                                <select placeholder="Organizer" class="form-control" name="OrganizerAppUserID" [(ngModel)]="model.OrganizerAppUserID">
+                                                    <option *ngFor="let user of BusinessUnitUsers" [value]="user.AppUserID">{{ user.First }} {{ user.Last }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-5">
+                                            <div class="form-group">
+                                                <label for="formGroupExampleInput0" class="tooltip-2">Additional stakeholders</label>
+                                                <select2 [data]="stakeHolders" [value]="defaultStakeHolderIds" [options]="select2Options" multiple="" required (valueChanged)="onStakeHoldersChange($event)">
+                                                </select2>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-2 padding-t-10 text-left no-padding">
+                                            <a class="btn btn-rounded btn-default margin-t-15" data-toggle="modal" data-target="#genericModal" data-url="/Training/EventDocuments" data-size="modal-md-docs-specialVetting" (click)="onManageDocumentsClick()">
+                                                Manage documents
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row margin-t-15">
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <label id="lObjectives" class="col-xs-12 text-center bg-blue tooltip-2 padding-5" title="">Event objectives <span class="tooltiptext tooltipP" style="bottom: 32px;">Enter the objectives and expected outcomes of the event. Be as detailed as possible.</span></label>
+                                    <div class="col-xs-12 no-padding">
+                                        <textarea [(ngModel)]="model.Objectives" class="form-control areaEvent" cols="20" id="CourseObjectives" maxlength="1023" name="CourseObjectives" rows="2" placeholder="Ex. The two-week Protection of National Leaders Course will assist the host nation in increasing its overall anti-terrorism capabilities by improving the skill levels of personnel responsible for the protection of national leaders. Participants will learn to organize and conduct a protective security detail through extensive training on motorcade operations, vehicle dynamics, and counter-terrorist driving techniques."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <label id="lParticipant" title="" class="col-xs-12 text-center bg-blue tooltip-2 padding-5">Participant profile <span class="tooltiptext tooltipP" style="bottom: 32px;">Enter the desired profile (qualifications, education level, rank/position, etc.) of event participants.</span></label>
+                                    <div class="col-xs-12 no-padding">
+                                        <textarea [(ngModel)]="model.ParticipantProfile" class="form-control areaEvent" cols="20" id="ParticipantProfile" maxlength="1023" name="ParticipantProfile" rows="2" placeholder="Ex. This course is designed for operational personnel responsible for dignitary protection. Course participants should remain in their protective security positions for a minimum of two years and must be in excellent physical condition to attend this training."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <label id="lJustification" title="" class="col-xs-12 text-center bg-blue tooltip-2 padding-5">Event justification <span class="tooltiptext tooltipP" style="bottom: 32px;">Enter the justification and background information for this event.</span></label>
+                                    <div class="col-xs-12  no-padding">
+                                        <textarea [(ngModel)]="model.Justification" class="form-control areaEvent" cols="20" id="Justification" maxlength="1500" name="Justification" rows="2" placeholder="Ex. The state and local police play a pivotal role in combating terrorist violence and should receive training to develop professional protection agents within their respective agencies. This training falls under the “Counter-terrorism” strategy approved by INL leadership in February 2019."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-3">
+                                <div class="form-group">
+                                    <label id="lComments" title="" class="col-xs-12 text-center bg-blue tooltip-2 padding-5">Comments <span class="tooltiptext tooltipP" style="bottom: 32px;">Enter any special requests or additional comments for this event.</span></label>
+                                    <div class="col-xs-12  no-padding">
+                                        <textarea [(ngModel)]="model.SpecialRequirements" class="form-control areaEvent" cols="20" id="Comments" maxlength="1500" name="Comments" rows="2" placeholder="Ex. Actual lodging is being requested for three high-level dignitaries that will oversee and participate in this event. An event assistant is also required to help facilitate collection of documents at training site. "></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row margin-t-15">
+                    <div class="col-xs-4">
+                    </div>
+                    <div class="col-xs-8 text-right">
+                        <button routerLink="/gtts/training/{{model.TrainingEventID}}" style="margin: 2px;" class="btn btn-rounded btn-default">Cancel</button>
+                        <button *ngIf="model.TrainingEventID == null || model.TrainingEventID == 0" (click)="SaveTrainingEvent();" style="margin: 2px;" [disabled]="!trainingEventForm.valid || ParticipantsSectionIsInvalid()" class="btn btn-rounded bColorPrimary">Create Event</button>
+                        <button *ngIf="model.TrainingEventID != null && model.TrainingEventID > 0" (click)="SaveTrainingEvent();" style="margin: 2px;" [disabled]="!trainingEventForm.valid || ParticipantsSectionIsInvalid()" class="btn btn-rounded bColorPrimary">Modify Event</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<ng-template #budgetCalculatorModal>
+    <app-budget-calculator (done)="onBudgetCalculatorDone($event)"
+                           (close)="onBudgetCalculatorClose()"
+                           [model]="estimatedBudgetModel">
+    </app-budget-calculator>
+</ng-template>
+<ng-template #documentsModal>
+    <app-files-modal [Files]="eventFileAttachments"
+                     (OnFileDrop)="OnUploadDocumentsDrop($event)"
+                     (OnFileDeleted)="OnFileDeleted($event)"
+                     (Close)="FilesModalClose($event)">
+    </app-files-modal>
+</ng-template>

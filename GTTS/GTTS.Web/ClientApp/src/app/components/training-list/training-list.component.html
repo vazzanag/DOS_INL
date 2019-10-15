@@ -1,0 +1,84 @@
+<!--<section class="content-header">
+    <h1>
+        Training Events
+    </h1>
+</section>-->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box no-top-border">
+                <div class="box-header">
+                    <div class="col-xs-12 text-right no-padding">
+                        <ul class="nav nav-pills">
+                            <li class="active"><a href="#tabAdded" data-toggle="tab" aria-expanded="true">My Section(s)</a></li>
+                            <li class="pull-right" *ngIf="AuthSrvc.HasPermission('CREATE TRAINING EVENT')">
+                                <button class="btn btn-rounded bColorPrimary" routerLink="/gtts/training/new">Create event</button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- /.box-header -->
+                <div class="box-body table-responsive" style="padding-top:0px;">
+                    <table id="TrainingEventsTable" datatable class="table table-hover" [dtOptions]="dtOptions" [dtTrigger]="dtTrigger">
+                        <thead>
+                            <tr>
+                                <th class="sorting">Section</th>
+                                <th class="sorting">ID</th>
+                                <th class="sorting">Event name / location</th>
+                                <th class="sorting">Type</th>
+                                <th class="sorting">Program / key activities</th>
+                                <th class="sorting">Start date</th>
+                                <th class="sorting">End date</th>
+                                <th class="sorting">Organizer</th>
+                                <th class="sorting">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr routerLink="/gtts/training/{{event.TrainingEventID}}" *ngFor="let event of TrainingEvents; let i = index" loading="Loading training events..">
+                                <td class="center" [ngClass]="{'bg-removed': event.TrainingEventStatus == 'Canceled'}">
+                                    <span class="outstanding-text">{{event.BusinessUnitAcronym}}</span>
+                                </td>
+                                <td class="center" [ngClass]="{'bg-removed': event.TrainingEventStatus == 'Canceled'}">{{event.TrainingEventID}}</td>
+                                <td style="width:50%;" [ngClass]="{'bg-removed': event.TrainingEventStatus == 'Canceled'}">
+                                    <span class="lTitle">{{event.Name}}</span><br />
+                                    <span class="lTitle hide">{{RemoveDiacritics(event.Name)}}</span><br />
+                                    <span class="lSubtitle">
+                                        <span class="list-forwardslash" *ngFor="let location of event?.TrainingEventLocations" style="padding-left:0;text-indent:-1.5em;">
+                                            {{ location.LocationName }}
+                                        </span>
+                                    </span>
+                                    <span class="lSubtitle hide">
+                                        <span class="list-forwardslash" *ngFor="let location of event?.TrainingEventLocations" style="padding-left:0;text-indent:-1.5em;">
+                                            {{ RemoveDiacritics(location.LocationName) }}
+                                        </span>
+                                    </span>
+                                </td>
+                                <td class="center" [ngClass]="{'bg-removed': event.TrainingEventStatus == 'Canceled'}">{{ event.TrainingEventType }}</td>
+                                <td class="center" [ngClass]="{'bg-removed': event.TrainingEventStatus == 'Canceled'}">
+                                    <span class="list-comma" *ngFor="let activity of event?.TrainingEventKeyActivities" style="padding-left:0;text-indent:-1.5em;">
+                                        {{ activity.Code }}
+                                    </span>
+                                </td>
+                                <td class="center" style="width:90px;" [ngClass]="{'bg-removed': event.TrainingEventStatus == 'Canceled'}">
+                                    {{ event.EventStartDate.toLocaleDateString()}}
+                                </td>
+                                <td class="center" style="width:90px;" [ngClass]="{'bg-removed': event.TrainingEventStatus == 'Canceled'}">
+                                    {{ event.EventEndDate.toLocaleDateString()}}
+                                </td>
+                                <td class="center" [ngClass]="{'bg-removed': event.TrainingEventStatus == 'Canceled'}">
+                                    {{event.OrganizerName}} <span class="hide">{{RemoveDiacritics(event.OrganizerName)}}</span>
+                                </td>
+                                <td class="center" [ngClass]="{'bg-removed': event.TrainingEventStatus == 'Canceled'}">
+                                    <span *ngIf="event.TrainingEventStatus == 'Canceled' || event.TrainingEventStatus == 'Closed'">
+                                        {{event.TrainingEventStatus}}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

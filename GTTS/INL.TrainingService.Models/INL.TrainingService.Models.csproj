@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Debug;Release;inl-dev;inl-test;inl-uat;inl-production</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\INL.PersonService.Models\INL.PersonService.Models.csproj" />
+    <ProjectReference Include="..\INL.Services\INL.Services.csproj" />
+  </ItemGroup>
+
+</Project>

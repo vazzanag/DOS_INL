@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 23.111">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #535e64;
+      }
+    </style>
+  </defs>
+  <g id="exclamation-triangle" transform="translate(-911 -23)">
+    <path id="exclamation-triangle-2" data-name="exclamation-triangle" class="cls-1" d="M25.707,19.862a2.168,2.168,0,0,1-1.877,3.249H2.169A2.168,2.168,0,0,1,.292,19.862L11.123,1.083a2.168,2.168,0,0,1,3.753,0ZM13,15.979a2.076,2.076,0,1,0,2.076,2.076A2.076,2.076,0,0,0,13,15.979ZM11.028,8.516l.335,6.139a.542.542,0,0,0,.541.512H14.1a.542.542,0,0,0,.541-.512l.335-6.139a.542.542,0,0,0-.541-.571H11.569A.542.542,0,0,0,11.028,8.516Z" transform="translate(911 23)"/>
+  </g>
+</svg>

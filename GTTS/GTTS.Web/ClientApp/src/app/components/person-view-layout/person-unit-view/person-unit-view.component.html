@@ -1,0 +1,84 @@
+<div id="tabUnitInformation" class="tab-pane" *ngIf="isUnitDataLoaded === true" >
+    <div class="panel panel-default">
+
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <div class="col-xs-4 no-padding"><label style="padding-top:7px;" for="txtAgencyOrganization">Agency / Organization</label></div>
+                    <div class="col-xs-8"><input type="text" class="form-control" id="txtAgencyOrganization" value="{{PersonUnitViewResult?.AgencyName}}" [disabled]="!isEdit" /></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <div class="col-xs-4 no-padding"><label style="padding-top:7px;" for="txtPositionRank">Position / Rank</label></div>
+                    <div class="col-xs-8"><input type="text" class="form-control" id="txtPositionRank" value="{{PersonUnitViewResult?.JobTitle}} / {{PersonUnitViewResult?.RankName}}" [disabled]="!isEdit" /></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <div class="col-xs-4 no-padding"><label style="padding-top:7px;" for="txtYearsPosition">Years in position</label></div>
+                    <div class="col-xs-2"><input type="text" pattern="\d*" class="form-control" id="txtYearsPosition" value="{{PersonUnitViewResult?.YearsInPosition}}" [disabled]="!isEdit" /></div>
+                    <div class="col-xs-6"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 form-group">
+                    <div class="col-xs-4 no-padding"><label style="padding-top:7px;" for="txtIsCommander">Is commander?</label></div>
+                    <div class="col-xs-2">
+                        <input type="text" class="form-control" id="txtcitizen" value="{{IsUnitCommander}}" [disabled]="!isEdit" />
+                    </div>
+                    <div class="col-xs-6"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="txtUnitId">GTTS unit ID</label>
+                        <input type="text" class="form-control" id="txtUnitId" value="{{PersonUnitViewResult?.UnitGenID}}" [disabled]="!isEdit" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="txtUnitType">Unit type</label>
+                        <input type="text" class="form-control" id="txtUnitType" value="{{PersonUnitViewResult?.UnitType}}" [disabled]="!isEdit" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="txtUnitBreakdown">Unit breakdown</label>
+                        <textarea rows="4" class="form-control" id="txtUnitBreakdown" style="resize:none;" [disabled]="!isEdit">{{PersonUnitViewResult?.UnitBreakDownLocalLang}}</textarea>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="txtUnitAlias">Unit alias</label>
+                        <textarea rows="4" class="form-control" id="txtUnitAlias" style="resize:none;" [disabled]="!isEdit">{{PersonUnitViewResult?.UnitBreakDownEnglish}}</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="txtUnitId">Badge number</label>
+                        <input type="text" class="form-control" id="txtBadgeNumber" value="{{PersonUnitViewResult?.BadgeNumber}}" [disabled]="!isEdit" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="txtUnitType">Host nation POC name</label>
+                        <input type="text" class="form-control" id="txtHostNationN" value="{{PersonUnitViewResult?.HostNationPOCName}}" [disabled]="!isEdit" />
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label for="txtUnitType">Host nation POC email</label>
+                        <input type="text" class="form-control" id="txtHostNation" value="{{PersonUnitViewResult?.HostNationPOCEmail}}" [disabled]="!isEdit" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

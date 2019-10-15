@@ -1,0 +1,21 @@
+﻿.unread {
+    background: rgb(255, 255, 255);
+}
+
+.read {
+    background: rgb(233, 233, 233);
+}
+
+/*
+   server-side-angular-way.component.css
+*/
+.no-data-available {
+    text-align: center;
+}
+
+/*
+   src/styles.css (i.e. your global style)
+*/
+.dataTables_empty {
+    display: none;
+}

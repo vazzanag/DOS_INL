@@ -1,0 +1,47 @@
+.unread {
+    background: rgb(255, 255, 255);
+}
+
+.read {
+    background: rgb(233, 233, 233);
+}
+
+.dropdown-menu {
+    left: 0;
+    right: auto;
+    top:44px;
+
+    &.bottom-right {
+        right: 0;
+        left: auto;
+    }
+}
+
+.num-unread-messages-label {
+    position: absolute;
+    top: 8px;
+    right: 1px;
+    padding: 2px 3px 2px 3px;
+    font-size: 9px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 10px;
+}
+
+/* Taken from Mockup*/
+.dropdown-menu.chat-wrapper-menu {
+    border: 1px solid #d2d6de;
+    border-radius: 10px 0px 20px 20px;
+    width: 425px;
+    overflow-x: hidden;
+}
+
+.notifications-dd-items {
+    overflow-y: auto;
+    height: calc(60vh);
+    max-height: 450px;
+}

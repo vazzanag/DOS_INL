@@ -1,0 +1,230 @@
+<div class="modal-content">
+    <div class="modal-header no-border">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="CancelClick()"><span aria-hidden="true">×</span></button>
+        <h4 class="modal-title text-center">{{PersonName}} - {{DOB | date: 'MM/dd/yyyy'}}</h4>
+    </div><form #participantForm="ngForm">
+        <div class="modal-body no-padding-top-bottom" id="top" name="top" #top>
+            <div class="box no-top-border no-margin-bottom">
+                <div class="box-header no-padding-top-bottom" *ngIf="ShowEdit">
+                    <span class="pull-right">&nbsp;<a id="enableEdit" class="modal-action-link pointer" (click)="EditClick()">Edit participant data</a></span>
+                </div>
+                <div class="box-body no-padding-top-bottom">
+                    <a id="btnDuplicateParticipant" class="modal-action-link" style="cursor:pointer; display:none;" data-toggle="modal" data-target="#duplicateParticipantModal" data-url="/Vetting/_ParticipantDuplicate" data-size="modal-md-lg">
+                        Trigger duplicate modal (demo)
+                    </a>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="txtFirstname">First name(s) *</label>
+                                <input type="text" class="form-control" id="txtFirstname" [disabled]="ReadOnlyBio" name="FirstMiddlNames" #FirstMiddleNames="ngModel" required [(ngModel)]="participant.FirstMiddleNames" (change)="personDataEdited = true;" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="txtLastname">Last name(s) *</label>
+                                <input type="text" class="form-control" id="txtLastname" [disabled]="ReadOnlyBio" name="LastNames" #LastNames="ngModel" required [(ngModel)]="participant.LastNames" (change)="personDataEdited = true;">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label>Date of birth</label>
+                                        <div class="input-group date">
+                                            <input type="text" class="form-control pull-right" name="DateOfBirth" #DateOfBirth #dpDOB="bsDatepicker" bsDatepicker [disabled]="ReadOnlyBio"
+                                                   DOBValidRange [(ngModel)]="participant.DOB" [bsConfig]="{ showWeekNumbers:false, containerClass:'theme-dark-blue' }"
+                                                   (change)="DOBChanged($event)" />
+                                            <div class="input-group-addon" *ngIf="!ReadOnlyBio">
+                                                <i class="fa fa-calendar" (click)="dpDOB.toggle()"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-7">
+                                    <div class="form-group">
+                                        <label for="txtNationalId">National ID</label>
+                                        <input type="text" class="form-control" name="NationalID" [(ngModel)]="participant.NationalID" [disabled]="ReadOnlyBio" (change)="personDataEdited = true;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-6">
+                                    <div class="form-group">
+                                        <label for="rdoGender">Gender</label>
+                                        <div class="btn-group btn-group-justified radios" data-toggle="buttons">
+                                            <label class="btn btn-default rounded" (click)="!ReadOnlyBio && participant.Gender='M' ;"
+                                                   [ngClass]="{active: participant.Gender == 'M'}" [class.toggle-disabled]="ReadOnlyBio">
+                                                <input name="Gender" type="radio" value="M" [(ngModel)]="participant.Gender" required [disabled]="ReadOnlyBio" [class.disabled]="ReadOnlyBio" (change)="personDataEdited = true;"><span>Male</span>
+                                            </label>
+                                            <label class="btn btn-default rounded" (click)="!ReadOnlyBio && participant.Gender='F' ;"
+                                                   [ngClass]="{active: participant.Gender == 'F'}" [class.toggle-disabled]="ReadOnlyBio">
+                                                <input name="Gender" type="radio" value="F" [(ngModel)]="participant.Gender" required [disabled]="ReadOnlyBio" [class.disabled]="ReadOnlyBio" (change)="personDataEdited = true;"><span>Female</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!ShowEdit" class="col-md-4">
+                            <label>
+                                Upload National ID
+                            </label>
+                            <app-file-upload #NationalIDFileUploadComponent (onFileDrop)="NationalIDDocuments_OnUploadDrop($event)"></app-file-upload>
+                        </div>
+                        <div *ngIf="!ShowEdit && CanEditBio; else readOnlyDocuments" class="col-md-2">
+                            <div *ngFor="let document of nationalIDDocuments; let i = index">
+                                <div class="col-md-6">
+                                    <app-file-attachment [file]="MapPersonAttachmentToFileAttachment(document)"
+                                                         [ShowFileName]="false"
+                                                         (onFileDeleted)="NationalIDDocument_OnFileDeleted($event)">
+                                    </app-file-attachment>
+                                </div>
+                            </div>
+                        </div>
+                        <ng-template #readOnlyDocuments>
+                            <div class="col-md-6">
+                                <label>National ID Document(s)</label>
+                                <div *ngFor="let document of nationalIDDocuments; let i = index">
+                                    <div class="col-md-2" >
+                                        <app-file-attachment [file]="MapPersonAttachmentToFileAttachment(document)"
+                                                             [ShowFileName]="false"
+                                                             [CanDelete]="false"
+                                                             (onFileDeleted)="NationalIDDocument_OnFileDeleted($event)">
+                                        </app-file-attachment>
+                                    </div>
+                                </div>
+                        </div>
+                    </ng-template>
+                </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>
+                                    POB country
+                                    <span *ngIf="!participant?.IsUSCitizen">*</span>
+                                </label>
+                                <ng-select name="CountryOfBirth" [items]="countries" bindLabel="CountryName" bindValue="CountryID" [disabled]="ReadOnlyBio || participant?.IsUSCitizen"
+                                           (change)="CountrySelectionChange($event, 'CountryOfBirth')" [(ngModel)]="participant.POBCountryID"
+                                           [required]="!participant?.IsUSCitizen ? 'required': null">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>
+                                    POB state
+                                    <span *ngIf="!participant?.IsUSCitizen">*</span>
+                                </label>
+                                <ng-select name="StateOfBirth" [items]="BirthStates" bindLabel="StateName" bindValue="StateID" [disabled]="ReadOnlyBio || participant?.IsUSCitizen"
+                                           [required]="!participant?.IsUSCitizen ? 'required': null" (change)="StateSelectionChange($event, 'StateOfBirth')" [(ngModel)]="participant.POBStateID">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>
+                                    POB city
+                                    <span *ngIf="!participant?.IsUSCitizen">*</span>
+                                </label>
+                                <ng-select name="CityOfBirth" [items]="BirthCities" bindLabel="CityName" bindValue="CityID" [disabled]="ReadOnlyBio || participant?.IsUSCitizen"
+                                           [required]="!participant?.IsUSCitizen ? 'required': null" [(ngModel)]="participant.POBCityID" (change)="personDataEdited = true;">
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-divider text-center"><span>Unit information</span></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="txtUnitId">Agency / Organization</label>
+                                <ng-select name="Agency" [items]="agencies" bindLabel="UnitNameEnglish" bindValue="UnitID" required [disabled]="ReadOnlyUnit"
+                                           (change)="AgencySelectionChange($event)" [(ngModel)]="participant.UnitMainAgencyID">
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="txtUnitId">GTTS unit ID *</label>
+                                <ng-select name="Unit" [items]="Units" bindLabel="UnitNameEnglish" bindValue="UnitID" required [disabled]="ReadOnlyUnit"
+                                           (change)="UnitSelectionChange($event)" [(ngModel)]="participant.UnitID" [searchFn]="Units_CustomSearch">
+                                    <ng-template ng-label-tmp let-item="item">
+                                        {{ item.UnitGenID}} <span *ngIf="unit?.UnitGetID">-</span> {{ item.UnitNameEnglish }}
+                                    </ng-template>
+                                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                                        {{ item.UnitGenID}} - {{ item.UnitNameEnglish }}
+                                    </ng-template>
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group" *ngIf="Unit !== undefined && Unit !== null">
+                                <label for="txtUnitId">Unit Type</label>
+                                <ng-select name="VettingActivityType" [items]="VettingActivityTypes" bindLabel="Name" bindValue="VettingActivityTypeID" required disabled="disabled"
+                                           [(ngModel)]="Unit.VettingActivityTypeID">
+                                </ng-select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="txtUnitBreakdown">Unit breakdown</label>
+                                <textarea class="form-control" rows="4" id="txtUnitBreakdown" disabled="disabled">{{ Unit?.UnitBreakdownLocalLang }}</textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="txtUnitAlias">Unit alias</label>
+                                <textarea class="form-control" rows="4" id="txtUnitAlias" disabled="disabled">{{ Unit?.UnitBreakdown }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="txtPostion">Position</label>
+                                <input type="text" class="form-control" name="txtPostion" [(ngModel)]="participant.JobTitle" [disabled]="ReadOnlyUnit">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="txtRank">Rank</label>
+                                <ng-select name="Rank" [items]="Ranks" bindLabel="RankName" bindValue="RankID" [disabled]="ReadOnlyUnit" [dropdownPosition]="'top'"
+                                           [(ngModel)]="participant.RankID">
+                                </ng-select>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label for="rdoCommander">Is commander</label>
+                                <div class="btn-group btn-group-justified radios" data-toggle="buttons">
+                                    <label class="btn btn-default rounded Commander" [ngClass]="{active: participant.IsUnitCommander }" (click)="participant.IsUnitCommander=true;" [class.toggle-disabled]="ReadOnlyUnit">
+                                        <input name="Commander" type="radio" value="1" [disabled]="ReadOnlyUnit"><span>Yes</span>
+                                    </label>
+                                    <label class="btn btn-default rounded Commander" [ngClass]="{active: !participant.IsUnitCommander }" (click)="participant.IsUnitCommander=false;" [class.toggle-disabled]="ReadOnlyUnit">
+                                        <input name="Commander" type="radio" value="0" checked="" [disabled]="ReadOnlyUnit"><span>No</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-rounded closeBtn_PD" data-dismiss="modal" (click)="CancelClick()" *ngIf="ReadOnlyBio && ReadOnlyUnit; else saveButtons">Close</button>
+            <ng-template #saveButtons>
+                <button type="button" class="btn btn-rounded cancelBtn_PD" (click)="CancelClick()">Cancel</button>
+                <button type="submit" class="btn btn-rounded bColorPrimary saveBtn_PD" (click)="SaveClick()"
+                        [disabled]="!participantForm.valid">Save</button>
+            </ng-template>
+        </div>
+    </form>
+</div>

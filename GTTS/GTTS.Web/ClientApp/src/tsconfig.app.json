@@ -1,0 +1,24 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "module": "es2015",
+    "types": [],
+    "baseUrl": "../",
+    "paths": {
+      "@environments/*": [ "src/environments/*" ],
+      "@node_modules/*": [ "node_modules/*" ],
+      "@modules/*": [ "src/app/modules/*" ],
+      "@assets/*": [ "src/app/assets/*" ],
+      "@components/*": [ "src/app/components/*" ],
+      "@models/*": [ "src/app/models/*" ],
+      "@services/*": [ "src/app/services/*" ],
+      "@utils/*": [ "src/app/utils/*" ],
+      "@adal/*": [ "src/app/adal/*" ]
+    }
+  },
+  "exclude": [
+    "test.ts",
+    "**/*.spec.ts"
+  ]
+}

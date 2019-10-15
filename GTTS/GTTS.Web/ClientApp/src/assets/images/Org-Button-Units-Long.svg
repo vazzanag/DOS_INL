@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 256 42">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #699228;
+      }
+
+      .cls-2, .cls-3 {
+        fill: #fff;
+      }
+
+      .cls-2 {
+        font-size: 12px;
+        font-family: SegoeUI-Bold, Segoe UI;
+        font-weight: 700;
+      }
+
+      .cls-4 {
+        filter: url(#Rectangle_1536);
+      }
+    </style>
+    <filter id="Rectangle_1536" x="0" y="0" width="256" height="42" filterUnits="userSpaceOnUse">
+      <feOffset dy="3" input="SourceAlpha"/>
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feFlood flood-opacity="0.392"/>
+      <feComposite operator="in" in2="blur"/>
+      <feComposite in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g id="Group_401" data-name="Group 401" transform="translate(-1166 -15)">
+    <g class="cls-4" transform="matrix(1, 0, 0, 1, 1166, 15)">
+      <rect id="Rectangle_1536-2" data-name="Rectangle 1536" class="cls-1" width="238" height="24" rx="5" transform="translate(9 6)"/>
+    </g>
+    <g id="Group_180" data-name="Group 180" transform="translate(-6002 2014)">
+      <g id="Group_67" data-name="Group 67" transform="translate(7212 -1988.945)">
+        <text id="ORGANIZATIONAL_CHART_-_UNITS" data-name="ORGANIZATIONAL CHART - UNITS" class="cls-2" transform="translate(-1 13)"><tspan x="0" y="0">ORGANIZATIONAL CHART - UNITS</tspan></text>
+      </g>
+      <path id="sitemap" class="cls-3" d="M4.5,12.375H1.125A1.125,1.125,0,0,0,0,13.5v3.375A1.125,1.125,0,0,0,1.125,18H4.5a1.125,1.125,0,0,0,1.125-1.125V13.5A1.125,1.125,0,0,0,4.5,12.375ZM3.656,9.563h6.75V11.25h1.688V9.563h6.75V11.25h1.688V9.225a1.352,1.352,0,0,0-1.35-1.35H12.094V5.625H13.5A1.125,1.125,0,0,0,14.625,4.5V1.125A1.125,1.125,0,0,0,13.5,0H9A1.125,1.125,0,0,0,7.875,1.125V4.5A1.125,1.125,0,0,0,9,5.625h1.406v2.25H3.319a1.352,1.352,0,0,0-1.35,1.35V11.25H3.656Zm9.281,2.813H9.563A1.125,1.125,0,0,0,8.438,13.5v3.375A1.125,1.125,0,0,0,9.563,18h3.375a1.125,1.125,0,0,0,1.125-1.125V13.5A1.125,1.125,0,0,0,12.938,12.375Zm8.438,0H18A1.125,1.125,0,0,0,16.875,13.5v3.375A1.125,1.125,0,0,0,18,18h3.375A1.125,1.125,0,0,0,22.5,16.875V13.5A1.125,1.125,0,0,0,21.375,12.375Z" transform="translate(7186 -1990)"/>
+    </g>
+  </g>
+</svg>

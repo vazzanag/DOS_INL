@@ -1,0 +1,35 @@
+<div>
+    <div class="alert alert-dismissible" style="text-align:justify;">
+        <button type="button" class="close" (click)="OnCancelClick()">×</button>
+        <div>
+            <br>
+            <p>
+                <b>Please correct the folowing <span style="color: #ff0000;">error(s)</span> in the spreadsheet.</b>
+            </p>
+            <br>
+            <ul>
+                <mat-selection-list #list>
+                    <mat-list-option *ngFor="let rowError of rowErrors">
+                        <li>
+                            Row {{ rowError.RowNumber}}:
+                            <ul>
+                                <li *ngFor="let error of rowError.Errors">
+                                    {{ error }}
+                                </li>
+                            </ul>
+                        </li>
+                    </mat-list-option>
+                </mat-selection-list>
+            </ul>
+            <br>
+        </div>
+        <div>
+            <p>
+                <b>Nothing has been imported.  Correct the spreadsheet and try again.</b>
+            </p>
+        </div>        
+        <div style="text-align:right;">
+            <button class="btn btn-rounded bColorPrimary" data-dismiss="modal" (click)="OnOkClick()">OK</button>
+        </div>
+    </div>
+</div>

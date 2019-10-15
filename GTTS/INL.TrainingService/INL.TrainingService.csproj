@@ -1,0 +1,60 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Configurations>Debug;Release;inl-dev;inl-test;inl-uat;inl-production</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="1.50.5" />
+    <PackageReference Include="Mapster" Version="3.1.8" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="1.1.1" />
+    <PackageReference Include="NPOI" Version="2.4.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\INL.DocumentService.Client\INL.DocumentService.Client.csproj" />
+    <ProjectReference Include="..\INL.LocationService.Client\INL.LocationService.Client.csproj" />
+    <ProjectReference Include="..\INL.MessagingService.Client\INL.MessagingService.Client.csproj" />
+    <ProjectReference Include="..\INL.PersonService.Client\INL.PersonService.Client.csproj" />
+    <ProjectReference Include="..\INL.ReferenceService.Client\INL.ReferenceService.Client.csproj" />
+    <ProjectReference Include="..\INL.Repositories\INL.Repositories.csproj" />
+    <ProjectReference Include="..\INL.Services\INL.Services.csproj" />
+    <ProjectReference Include="..\INL.TrainingService.Models\INL.TrainingService.Models.csproj" />
+    <ProjectReference Include="..\INL.UnitLibraryService.Client\INL.UnitLibraryService.Client.csproj" />
+    <ProjectReference Include="..\INL.UnitLibraryService.Models\INL.UnitLibraryService.Models.csproj" />
+    <ProjectReference Include="..\INL.VettingService.Client\INL.VettingService.Client.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Data\__Entities__.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>__Entities__.cs</LastGenOutput>
+    </None>
+    <None Update="Data\__Entities__.tt.BASE.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>__Entities__.tt.BASE.cs</LastGenOutput>
+    </None>
+    <None Update="Data\__Entities__.tt.LOCAL.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>__Entities__.tt.LOCAL.cs</LastGenOutput>
+    </None>
+    <None Update="Data\__Entities__.tt.REMOTE.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>__Entities__.tt.REMOTE.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Data\__Entities__.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>__Entities__.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.436 16">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+    </style>
+  </defs>
+  <path id="Unit_Library_INL" data-name="Unit Library INL" class="cls-1" d="M36.307,26.707V24.388H30.6V22.083a2,2,0,1,0-.584,0v2.306h-5.7v2.318a2,2,0,1,0,.584,0v-1.74h5.132V30.13a2,2,0,1,0,.584,0V24.966h5.132v1.74a2.01,2.01,0,1,0,.565,0Z" transform="translate(-22.6 -18.1)"/>
+</svg>

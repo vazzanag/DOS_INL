@@ -1,0 +1,88 @@
+<div class="content-wrapper" style="min-height: 857px;">
+    <div class="clearfix"></div>
+    <section class="content">
+        <div class="row">
+            <div class="col-sm-6">
+                <!-- Event summary -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <app-event-summary-overview [Training]="model"
+                                                    (RefreshTrainingEvent)="EventSummary_RefreshTrainingEvent()">
+                        </app-event-summary-overview>
+                    </div>
+                </div>
+                <!-- Participants -->
+                <div class="row">
+                    <!-- Participant overview-->
+                    <div class="col-sm-7">
+                        <app-participants-overview [TrainingEventID]="trainingEventID"
+                                                   [PlannedParticipantCount]="plannedParticipantCount">
+                        </app-participants-overview>
+                    </div>
+                    <!-- Notifications overview -->
+                    <div class="col-sm-5">
+                        <app-notifications-overview [TrainingEventID]="trainingEventID"></app-notifications-overview>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <!-- Arrangements overview -->
+                        <div class="col-sm-12 no-padding">
+                            <app-arrangements-overview [Training]="model"></app-arrangements-overview>
+                        </div>
+                        <!-- Press overvnew -->
+                        <div class="col-sm-12 no-padding">
+                            <app-press-overview></app-press-overview>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <!-- Procurement overview -->
+                        <div class="col-sm-12 no-padding">
+                            <app-procurement-overview></app-procurement-overview>
+                        </div>
+                        <!-- Event Feedback overview -->
+                        <div class="col-sm-12 no-padding">
+                            <app-feedback-overview [Training]="model"></app-feedback-overview>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+<!--<div class="row">
+    <div class="col-md-6">
+        <h3 class="pageHeader">Event Overview</h3>
+    </div>
+    <div class="col-md-6" style="float: right; text-align: right; margin: 8px;">
+        <app-start-thread [contextID]="model.TrainingEventID" [contextTypeID]="1"></app-start-thread>
+    </div>
+    <div style="clear: both"></div>
+    <div class="col-md-6">
+        <div style="width:100%;text-align:right;font-weight:bold;padding-top:5px;">
+            <button *ngIf="IsModalCancel && model?.TrainingEventStatus?.toUpperCase() != 'CLOSED'" (click)="ShowCancelUncancelModal = true; CancelUncancelModalState = 'active';" class="cancelEventButton"></button>
+            <button *ngIf="!IsModalCancel && model?.TrainingEventStatus?.toUpperCase() != 'CLOSED'" (click)="ShowCancelUncancelModal = true; CancelUncancelModalState = 'active';" class="uncancelEventButton"></button>
+            <button *ngIf="IsModalCancel && model?.TrainingEventStatus?.toUpperCase() != 'CLOSED'" (click)="OpenEventCloseout(eventCloseoutModal)" class="closeEvent"></button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div><app-event-summary-overview [Training]="model"></app-event-summary-overview></div>
+        <div><app-instructors-overview></app-instructors-overview></div>
+        <div class="row">
+            <div class="col-md-6"><app-participants-overview [Training]="model"></app-participants-overview></div>
+            <div class="col-md-6"><app-vetting-alerts-overview [Training]="model"></app-vetting-alerts-overview></div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div><app-arrangements-overview [Training]="model"></app-arrangements-overview></div>
+        <div><app-status-overview [Training]="model"></app-status-overview></div>
+        <div><app-feedback-overview [Training]="model"></app-feedback-overview></div>
+    </div>
+</div>-->

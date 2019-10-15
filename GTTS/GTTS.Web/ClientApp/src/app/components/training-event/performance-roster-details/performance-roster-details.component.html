@@ -1,0 +1,172 @@
+﻿<div class="modal-header">
+    <button type="button" class="close" (click)="Cancel();">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <div class="col-md-8">
+        <h4 class="modal-title" id="txtTitleParticipant" style="vertical-align: middle !important;">
+            Student Roster: 
+            <span class="color-blue margin-r-5" style="margin-right:5px;">
+                {{ TrainingEventModel?.Name }}
+                ({{ TrainingEventModel?.EventStartDate.toLocaleDateString() }} - {{ TrainingEventModel?.EventEndDate.toLocaleDateString() }}  )
+            </span>
+            <a style="cursor:pointer" (click)="DownloadRoster()"><i class="fa fa-share-alt"></i></a>
+        </h4>
+    </div>
+    <div id="divBtnsRoster" *ngIf="ParticipantPerformance?.RosterGroups?.length > 1" style="margin-bottom: 5px;" class="col-md-3 pull-right text-center">
+        <!-- Individual rosters here; based on groups -->
+        <a *ngFor="let group of ParticipantPerformance?.RosterGroups, let i = index" class="btn btn-rounded-md"
+           [ngClass]="{'bColorPrimary': i == SelectedGroupIndex, 'btn-default': i != SelectedGroupIndex}" (click)="ChangeScoresGroup(i);">{{ group.GroupName
+                }}</a>
+</div>
+</div>
+
+<div class="modal-body no-overflow-x no-padding-bottom">
+    <div class="" id="pnlSearchParticipantPerformanceRecord">
+        <div class="row">
+            <div class="box no-top-border">
+                <div class="box-header no-padding-bottom no-padding-top">
+                    <div class="col-xs-12 text-right no-padding">
+                        <div class="col-md-11">
+                            <ul class="nav nav-pills" id="tabSearchParticipantPerformanceRecord">
+                                <li class="active tab-s"><a data-toggle="tab" href="#tabScores" id="liScores" (click)="TabClick(TabType.Scores)">Scores</a></li>
+                                <li class="tab-s"><a href="#tabAttendance" data-toggle="tab" id="liAttendance" (click)="TabClick(TabType.Attendance)">Attendance</a></li>
+                            </ul>
+                        </div>
+                        <div id="divAP" *ngIf="CurrentTab == TabType.Attendance" class="col-md-1 border-color-black" style="padding-top: 8px;padding-left:0px;padding-right: 3px;padding-bottom: 8px;">
+                            <span class="pull-right">
+                                <b>P</b>-Present
+                            </span>
+                            <span class="pull-right margin-r-5">
+                                <b>A</b>-Absent
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="tab-content">
+                        <div id="tabScores" class="tab-pane fade active in">
+                            <div class="table-responsive no-overflow-x">
+
+                                <!-- Scores -->
+                                <table id="ScoreTable" datatable class="table dataTable hide-icon-sort hover" 
+                                       [dtOptions]="ScoreOptions" [dtTrigger]="ScoreTrigger" style="width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th class="no-padding" style="background-color:#fff;"></th>
+                                            <th class="no-padding" style="background-color:#fff;"></th>
+                                            <th class="no-padding" style="background-color:#fff;"></th>
+                                            <th class="no-padding" style="background-color:#fff; text-decoration: none;">
+                                                <div class="text-center color-orange" style="font-size: 13px; cursor:default;">
+                                                    <var style="font-weight:normal;">Weighted at </var><b>{{ TrainingCourseDefinition?.TestsWeighting}}</b>%
+                                                </div>
+                                            </th>
+                                            <th class="no-padding" style="background-color:#fff; text-decoration: none;">
+                                                <div class="text-center color-orange" style="font-size: 13px">
+                                                    <var style="font-weight:normal">Weighted at </var><b>{{ TrainingCourseDefinition?.PerformanceWeighting}}</b>%
+                                                </div>
+                                            </th>
+                                            <th class="no-padding" style="background-color:#fff; text-decoration: none;">
+                                                <div class="text-center color-orange" style="font-size: 13px">
+                                                    <var style="font-weight:normal">Min. </var><b>{{ TrainingCourseDefinition?.ProductsWeighting}}</b>%
+                                                </div>
+                                            </th>
+                                            <th class="no-padding" style="background-color:#fff; text-decoration: none;">
+                                                <div class="text-center color-orange" style="font-size: 13px">
+                                                    <var style="font-weight:normal">Min. </var><b>{{ TrainingCourseDefinition?.MinimumAttendance}}</b>
+                                                </div>
+                                            </th>
+                                            <th class="no-padding" style="background-color:#fff; text-decoration: none;">
+                                                <div class="text-center color-orange" style="font-size: 13px">
+                                                    <var style="font-weight:normal">Min. </var><b>{{ TrainingCourseDefinition?.MinimumFinalGrade}}</b>
+                                                </div>
+                                            </th>
+                                            <th class="no-padding" style="background-color:#fff;"></th>
+                                            <th class="no-padding" style="background-color:#fff;"></th>
+                                            <th class="no-padding" style="background-color:#fff; width:20%;"></th>
+                                        </tr>
+                                        <tr>
+                                            <th>No.</th>
+                                            <th style="text-align:left;">Student name</th>
+                                            <th>Pre-test</th>
+                                            <th>Post-test</th>
+                                            <th>Performance</th>
+                                            <th>Product(s)</th>
+                                            <th>Attendance</th>
+                                            <th>Final grade</th>
+                                            <th>Complete/Certificate</th>
+                                            <th>Distinction</th>
+                                            <th style="min-width:20%;text-align:left;">Comments</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let roster of PerformanceRosters">
+                                            <td class="center">{{ roster.PersonID }}</td>
+                                            <td><span style="display:none;">{{ roster.LastNames}}</span>{{ roster.FirstMiddleNames }} {{ roster.LastNames}}</td>
+                                            <td class="center">{{ roster.PreTestScore }}</td>
+                                            <td class="center">{{ roster.PostTestScore }}</td>
+                                            <td class="center">{{ roster.PerformanceScore }}</td>
+                                            <td class="center">{{ roster.ProductsScore }}</td>
+                                            <td class="center">{{ roster.AttendanceScore }}</td>
+                                            <td class="center">{{ roster.FinalGradeScore }}</td>
+                                            <td class="center" [ngClass]="{'text-red': !roster.Certificate}">{{ roster.Certificate == true ? 'YES' : 'NO'}}</td>
+                                            <td class="center" [ngClass]="{'text-red': roster.TrainingEventRosterDistinction == 'Unsatisfactory Participant'}">{{ roster.TrainingEventRosterDistinction }}</td>
+                                            <td style="min-width:20%;">{{ roster.Comments }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div id="tabAttendance" class="tab-pane fade">
+                            <div class="table-responsive">
+
+                                <!-- Attendance -->
+                                <table id="AttendanceTable" datatable class="table dataTable hide-icon-sort hover" 
+                                       [dtOptions]="AttendanceOptions" [dtTrigger]="AttendanceTrigger" style="width:100%;">
+                                    <thead>
+                                        <tr>
+                                            <th style="min-width:75px;">No.</th>
+                                            <th style="min-width:250px;text-align:left;">Student name</th>
+                                            <th style="min-width:60px;" *ngFor="let date of AttendanceDates">{{ date | date: 'dd-MMM'}}</th>
+                                            <th style="min-width:200px;">Non-attendance reason</th>
+                                            <th style="min-width:200px;">Non-attendance cause</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr *ngFor="let roster of PerformanceRosters">
+                                            <td class="center">{{ roster.PersonID }}</td>
+                                            <td>
+                                                <span style="display:none;">{{ roster.LastNames}}</span>
+                                                {{ roster.FirstMiddleNames }} {{ roster.LastNames}}
+                                            </td>
+                                            <td class="center" *ngFor="let date of AttendanceDates">
+                                                {{ CheckAttendance(date, roster.Attendance) }}
+                                            </td>
+                                            <td class="center">{{ roster.NonAttendanceReason}}</td>
+                                            <td class="center">{{ roster.NonAttendanceCause}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal-footer no-pad-top" style="padding-top: 5px;">
+    <div class="text-left color-blue text-bold col-md-6" style="font-style: italic; padding-top: 10px;">
+        Uploaded by 
+        <var>
+            {{ TrainingCourseDefinition?.PerformanceRosterUploadedByFirstName}}   
+            {{ TrainingCourseDefinition?.PerformanceRosterUploadedByLastName}}
+        </var> on 
+        <var>{{ TrainingCourseDefinition?.PerformanceRosterUploadedDate | date: 'MM/dd/yyyy, hh:mm a Z'}}</var>
+    </div>
+    <div class="col-md-6">
+        <button id="btnCancel" type="button" class="btn btn-rounded btn-default" (click)="Cancel();">Close</button>
+    </div>
+</div>
+<a #DownloadLink></a>

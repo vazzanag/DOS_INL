@@ -1,0 +1,229 @@
+﻿<#@ template language="C#" hostspecific="true" debug="true" #>
+<#@ assembly name="System" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Xml" #>
+<#@ assembly name="Microsoft.CSharp" #>
+<#@ assembly name="Microsoft.SqlServer.ConnectionInfo" #>
+<#@ assembly name="Microsoft.SqlServer.Management.Sdk.Sfc" #>
+<#@ assembly name="Microsoft.SqlServer.Smo" #>
+<#@ assembly name="Newtonsoft.Json.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="Microsoft.CSharp" #>
+<#@ import namespace="Microsoft.SqlServer.Management.Smo" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="Microsoft.SqlServer.Management.Common" #> 
+<#@ import namespace="System.IO" #>  
+<#@ import namespace="Newtonsoft.Json" #>
+
+
+
+<#
+	
+
+	// ##################################
+	// List of tables to generate entities for
+	// ##################################
+	var generateTheseEntities = new System.Collections.Generic.List<string> {
+		// Tables
+		"budgets.BudgetCategories",
+        "budgets.BudgetItems",
+		"budgets.BudgetItemTypes",
+		"budgets.CustomBudgetCategories",
+		"budgets.CustomBudgetItems",
+
+		// Views
+		"budgets.BudgetItemTypesView",
+		"budgets.BudgetItemsView",
+		"budgets.CustomBudgetCategoriesView",
+		"budgets.CustomBudgetItemsView",
+
+		// Stored Procedures
+		"budgets.GetBudgetItemTypes",
+		"budgets.SaveBudgetItems",
+		"budgets.GetBudgetItemsByTrainingEventID",
+		"budgets.SaveCustomBudgetCategories",
+		"budgets.GetCustomBudgetCategoriesByTrainingEventID",
+		"budgets.SaveCustomBudgetItems",
+		"budgets.GetCustomBudgetItemsByTrainingEventID"
+	};
+	
+
+    
+	
+
+    
+	// ##################################
+	// Namespace for generated entities
+	// ##################################
+    var ns = "INL.BudgetsService.Data";
+
+
+
+	// ##################################
+	// Database connection details
+	// ##################################
+	dynamic config = JsonConvert.DeserializeObject(
+		File.ReadAllText(this.Host.ResolvePath("__Entities__Config.json"))
+	);
+
+	var databaseName = config["databaseName"].Value;
+	var connectionString = config["connectionString"].Value;
+
+
+#>
+
+using System;
+
+
+namespace <#= ns #>
+{
+  
+<#       
+	var sqlConnection = new SqlConnection(connectionString);
+	var serverConnection = new ServerConnection(sqlConnection);	
+
+    Server server = new Server(serverConnection);
+    foreach (Table table in server.Databases[databaseName].Tables)
+    { 
+        if (generateTheseEntities.Contains($"{table.Schema}.{table.Name}")) {
+#>
+	public interface I<#= table.Name #>Entity
+	{
+<# foreach (Column col in table.Columns) { #>
+		<#= GetCSharpDataType(col.DataType.Name, col.Nullable) #> <#= col.Name #> { get; set; }
+<# } #>
+
+	}
+
+    public class <#= table.Name #>Entity : I<#= table.Name #>Entity
+    {
+        <# foreach (Column col in table.Columns) { #>
+public <#= GetCSharpDataType(col.DataType.Name, col.Nullable) #> <#= col.Name #> { get; set; }
+        <# } #>
+
+    }
+      
+<#   
+        }
+    }
+#>
+
+
+<#   
+    foreach (View view in server.Databases[databaseName].Views)
+    { 
+        if (generateTheseEntities.Contains($"{view.Schema}.{view.Name}")) {
+#>
+	public interface I<#= view.Name #>Entity
+	{
+<# foreach (Column col in view.Columns) { #>
+	    <#= GetCSharpDataType(col.DataType.Name, col.Nullable) #> <#= col.Name #> { get; set; }
+<# } #>
+
+	}
+
+    public class <#= view.Name #>Entity : I<#= view.Name #>Entity
+    {
+        <# foreach (Column col in view.Columns) { #>
+public <#= GetCSharpDataType(col.DataType.Name, col.Nullable) #> <#= col.Name #> { get; set; }
+        <# } #>
+
+    }
+      
+<#   
+        }
+    }
+#>
+
+
+<#   
+    foreach (StoredProcedure proc in server.Databases[databaseName].StoredProcedures)
+    { 
+        if (generateTheseEntities.Contains($"{proc.Schema}.{proc.Name}")) {
+#>
+	public interface I<#= proc.Name #>Entity
+    {
+<# foreach (StoredProcedureParameter param in proc.Parameters) { #>
+        <#= GetCSharpDataType(param.DataType.Name, true) #> <#= param.Name.Replace("@", "") #> { get; set; }
+<# } #>
+
+    }
+
+    public class <#= proc.Name #>Entity : I<#= proc.Name #>Entity
+    {
+<# foreach (StoredProcedureParameter param in proc.Parameters) { #>
+		public <#= GetCSharpDataType(param.DataType.Name, true) #> <#= param.Name.Replace("@", "") #> { get; set; }
+<# } #>
+
+    }
+      
+<#   
+        }
+    }
+#>
+
+
+
+
+
+}
+
+
+
+
+<#+
+        public static string GetCSharpDataType(string sqlDataTypeName, bool nullable)
+        {
+			string nullSwitch = nullable ? "?" : "";
+
+            switch (sqlDataTypeName.ToLower())
+            {
+                case "bigint":
+                    return $"long{nullSwitch}";
+                case "binary":
+                case "varbinary":
+                case "image":
+                    return $"byte[]";
+                case "bit":
+                    return $"bool{nullSwitch}";
+                case "char":
+                    return $"char{nullSwitch}";
+                case "cursor":
+                    return string.Empty;
+                case "datetime":
+                case "datetime2":
+                case "smalldatetime":
+                    return $"DateTime{nullSwitch}" ;
+                case "decimal":
+                case "money":
+                case "numeric":
+                    return $"decimal{nullSwitch}";
+                case "float":
+                case "real":
+                    return $"double{nullSwitch}";
+                case "int":
+                case "smallint":
+                    return $"int{nullSwitch}";
+                case "nchar":
+                case "nvarchar":
+                case "varchar":
+                case "text":
+				case "ntext":
+                case "xml":
+                    return "string";
+                case "tinyint":
+                    return $"byte{nullSwitch}";
+              
+                default:
+                    return string.Empty;
+            }
+
+    
+      
+        }
+#>
+

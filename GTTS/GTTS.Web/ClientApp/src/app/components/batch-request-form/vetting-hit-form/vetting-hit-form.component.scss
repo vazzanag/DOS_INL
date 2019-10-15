@@ -1,0 +1,29 @@
+.span-fileviewer {
+    display: inline-block;
+    float: left;
+}
+
+.a-fileviewer {
+    display: inline-flex;
+    float: left;
+}
+
+.file-icon {
+    display: block;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 5px 5px 0 0;
+    float: left;
+    width: 41px;
+    height: 100%;
+}
+
+.file-icon-noimage {
+    display: block;
+    height: 40%;
+    width: 30px;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 5px 5px 0 0;
+    float: left;
+}
